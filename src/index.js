@@ -1,12 +1,13 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const mongodbRoute= 'mongodb+srv://mikellasa:12345@cluster0.wdl73cy.mongodb.net/LUMADB';
+const express = require("express");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+const mongodbRoute =
+  "mongodb+srv://mikellasa:12345@cluster0.wdl73cy.mongodb.net/LUMADB";
 
-const userRouter=require('./routes/userRoutes');
+const userRouter = require("./routes/userRoutes");
 
-const app= express();
-const PORT= process.env.PORT || 3000;
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
@@ -15,10 +16,10 @@ app.use("api/users", userRouter);
 async function start() {
   try {
     await mongoose.connect(mongodbRoute);
-    app.listen(PORT, ()=>{
+    app.listen(PORT, () => {
       console.log(`API IS LISTENING ON PORT ${PORT}`);
     });
-    console.log('Connection executed correctly')
+    console.log("Connection executed correctly");
   } catch (error) {
     console.log(`Error cannot connect DB: ${error.message}`);
   }
