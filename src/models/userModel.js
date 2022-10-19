@@ -3,10 +3,10 @@ const mongoose=require('mongoose');
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
-    idToken: String,
+    idToken: Number,
     name: String,
     mail: String,
-    role: String,
+    isJoshua: Boolean,
     isActive: Boolean
 });
 

@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const mongodbRoute =
   "mongodb+srv://mikellasa:12345@cluster0.wdl73cy.mongodb.net/LUMADB";
+  
 
 const userRouter = require("./routes/userRoutes");
 
@@ -11,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
-app.use("api/users", userRouter);
+app.use("/api/users", userRouter);
 
 async function start() {
   try {

@@ -10,26 +10,23 @@ const User = require("../models/userModel");
 //   }
 // };
 
-const loginUser = async (newUser) => {
-  try {
-    const user = await User.find({ idToken: newUser.idToken });
-
+const loginUser = async (idToken, newUser) => {
+  try { 
+    const user = await User.findOne({ idToken: idToken });
     if (!user) {
       let userToInsert = new User(newUser);
       const createdUser = await userToInsert.save();
       return createdUser;
     }
 
-    if (!user.role) {
+    if (!user.isActive) {
       const updatedUser = await User.findOneAndUpdate(
-        { idToken: newUser.idToken },
+        { idToken: idToken },
         { isActive: true },
         { new: true }
       );
-
       return updatedUser;
     }
-
     return user;
   } catch (error) {
     throw error;
@@ -58,8 +55,8 @@ const loginUser = async (newUser) => {
 // };
 
 module.exports = {
-    loginUser
-//   getOneUser,
-//   createNewUser,
-//   updateOneUser,
+  loginUser,
+  //   getOneUser,
+  //   createNewUser,
+  //   updateOneUser,
 };
