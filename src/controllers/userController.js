@@ -64,22 +64,22 @@ const userService = require("../services/userService");
 const createNewUser = async (req, res) => {
   const { idToken, name, mail } = req.body;
 
-  if(!idToken){
-     return res.status(400).send({
-      status: "FAILED",
-      data: {
-        error:
-          "Parameter idToken can not be empty",
-      },
-    });
-  }
+  // if(!idToken){
+  //    return res.status(400).send({
+  //     status: "FAILED",
+  //     data: {
+  //       error:
+  //         "Parameter idToken can not be empty",
+  //     },
+  //   });
+  // }
 
-  if (!name || !mail) {
+  if (!idToken || !name || !mail) {
     return res.status(400).send({
       status: "FAILED",
       data: {
         error:
-          "One of the following keys is missing or is empty in request body: 'name', 'mail'",
+          "One of the following keys is missing or is empty in request body: 'idToken', 'name', 'mail'",
       },
     });
   }

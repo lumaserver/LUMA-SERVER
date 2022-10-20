@@ -1,10 +1,10 @@
+require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const mongodbRoute =
-  "mongodb+srv://mikellasa:12345@cluster0.wdl73cy.mongodb.net/LUMADB";
-  
 
+const mongodbRoute =process.env.DB_ROUTE;
+  
 const userRouter = require("./routes/userRoutes");
 
 const app = express();
@@ -12,7 +12,8 @@ const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
-app.use("/api/users", userRouter);
+
+app.use("/api/idToken", userRouter);
 
 async function start() {
   try {
