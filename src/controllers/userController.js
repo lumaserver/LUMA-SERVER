@@ -62,8 +62,8 @@ const userService = require("../services/userService");
 
 //POST
 const createNewUser = async (req, res) => {
-  const { idToken } = req.body;
-  const { displayName, email } = req.body.user;
+  const { token } = req.body;
+  const { name, email } = req.body.claims;
 
   // if(!idToken){
   //    return res.status(400).send({
@@ -75,28 +75,28 @@ const createNewUser = async (req, res) => {
   //   });
   // }
 
-  if (!idToken || !displayName || !email) {
+  if (!token || !name || !email) {
+    console.log(token);
     return res.status(400).send({
       status: "FAILED",
       data: {
         error:
-          "One of the following keys is missing or is empty in request body: 'idToken', 'name', 'mail'",
+          "One of the following keys is missing or is empty in request body: 'idToken', 'name', 'email'",
       },
     });
   }
 
   const newUser = {
-    idToken: idToken,
-    name: displayName,
+    idToken: token,
+    name: name,
     email: email,
     isJoshua: false,
     isActive: true,
   };
 
   try {
-    const createdUser = await userService.createNewUser(idToken, newUser);
+    const createdUser = await userService.createNewUser(token, newUser);
     res.send({ status: "OK", data: createdUser.isJoshua });
-
   } catch (error) {
     res.status(error?.status || 500).send({
       status: "FAILED",

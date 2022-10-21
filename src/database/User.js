@@ -11,7 +11,7 @@ const User = require("../models/userModel");
 // };
 
 const loginUser = async (idToken, newUser) => {
-  try { 
+  try {
     const user = await User.findOne({ idToken: idToken });
     if (!user) {
       let userToInsert = new User(newUser);
@@ -27,6 +27,7 @@ const loginUser = async (idToken, newUser) => {
       );
       return updatedUser;
     }
+    
     return user;
   } catch (error) {
     throw error;
