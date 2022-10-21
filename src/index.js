@@ -3,8 +3,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
-const mongodbRoute =process.env.DB_ROUTE;
-  
+const mongodbRoute =
+  "mongodb+srv://mikellasa:12345@cluster0.wdl73cy.mongodb.net/LUMADB";
+
 const userRouter = require("./routes/userRoutes");
 
 const app = express();
