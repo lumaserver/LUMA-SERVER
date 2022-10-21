@@ -14,9 +14,15 @@ const loginUser = async (idToken, newUser) => {
   try {
     const user = await User.findOne({ idToken: idToken });
     if (!user) {
-      let userToInsert = new User(newUser);
-      const createdUser = await userToInsert.save();
-      return createdUser;
+      if (process.env.LUMA_ADMIN.split('"').includes(newUser.email)) {
+        let userToInsert = new User({ ...newUser, isJoshua: true });
+        const createdUser = await userToInsert.save();
+        return createdUser;
+      } else {
+        let userToInsert = new User(newUser);
+        const createdUser = await userToInsert.save();
+        return createdUser;
+      }
     }
 
     if (!user.isActive) {
@@ -27,7 +33,7 @@ const loginUser = async (idToken, newUser) => {
       );
       return updatedUser;
     }
-    
+
     return user;
   } catch (error) {
     throw error;
