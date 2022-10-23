@@ -5,7 +5,7 @@ const loginUser = async (idToken, newUser) => {
   try {
     const user = await User.findOne({ idToken: idToken });
     if (!user) {
-      
+
       if (JSON.parse(process.env.LUMA_ADMIN).includes(newUser.email)) {
         let userToInsert = new User({ ...newUser, isJoshua: true });
         const createdUser = await userToInsert.save();
