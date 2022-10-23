@@ -1,82 +1,11 @@
 const userService = require("../services/userService");
 
-//LOGIN
-// const loginUser = async (req, res) => {
-//   const { body } = req;
-
-//   if (!body.userId) {
-//     return res.status(400).send({
-//       status: "FAILED",
-//       data: { error: "Parameter 'userId' can not be empty" },
-//     });
-//   }
-//   try {
-//     const user = await userService.getOneUser(body.userId);
-//     if (user) {
-//       if (!user.isActive) {
-//         updateOneUser(req, res);
-//       }
-//       res.send({ status: "OK", data: user });
-//     } else {
-//       createNewUser(req, res);
-//     }
-//   } catch (error) {
-//     res.status(error?.status || 500).send({
-//       status: "FAILED",
-//       message: "Failed trying the request",
-//       data: { error: error?.message || error },
-//     });
-//   }
-// };
-
-//GET ONE
-// const getOneUser = async (req, res) => {
-//   const {
-//     params: { userId },
-//   } = req;
-
-//   if (!userId) {
-//     return res.status(400).send({
-//       status: "FAILED",
-//       data: { error: "Parameter 'userId' can not be empty" },
-//     });
-//   }
-
-//   try {
-//     const user = await userService.getOneUser(userId);
-//     if (!user) {
-//       return res.status(404).send({
-//         status: "FAILED",
-//         data: { error: `Can't find user with the id ${userId}` },
-//       });
-//     }
-//     res.send({ status: "OK", data: user });
-//   } catch (error) {
-//     res.status(error?.status || 500).send({
-//       status: "FAILED",
-//       message: "Failed trying the request",
-//       data: { error: error?.message || error },
-//     });
-//   }
-// };
-
 //POST
 const createNewUser = async (req, res) => {
   const { token } = req.body;
   const { name, email } = req.body.claims;
 
-  // if(!idToken){
-  //    return res.status(400).send({
-  //     status: "FAILED",
-  //     data: {
-  //       error:
-  //         "Parameter idToken can not be empty",
-  //     },
-  //   });
-  // }
-
   if (!token || !name || !email) {
-    console.log(token);
     return res.status(400).send({
       status: "FAILED",
       data: {
@@ -88,8 +17,8 @@ const createNewUser = async (req, res) => {
 
   const newUser = {
     idToken: token,
-    name: name,
-    email: email,
+    name,
+    email,
     isJoshua: false,
     isActive: true,
   };
@@ -106,40 +35,6 @@ const createNewUser = async (req, res) => {
   }
 };
 
-//UPDATE
-// const updateOneUser = async (req, res) => {
-//   const {
-//     body,
-//     params: { userId },
-//   } = req;
-
-//   if (!userId) {
-//     return res.status(400).send({
-//       status: "FAILED",
-//       data: { error: "Parameter 'idUser' can not be empty " },
-//     });
-//   }
-
-//   try {
-//     const updatedUser = await userService.updateOneUser(userId, body);
-
-//     if (!updatedUser) {
-//       return res.status(404).send({
-//         status: "FAILED",
-//         data: { error: `Can't find user with the id` },
-//       });
-//     }
-//     res.send({ status: "OK", data: updatedUser });
-//   } catch (error) {
-//     res
-//       .status(error?.status || 500)
-//       .send({ status: "FAILED", data: { error: error?.message || error } });
-//   }
-// };
-
 module.exports = {
   createNewUser,
-  // loginUser,
-  // getOneUser,
-  // updateOneUser,
 };

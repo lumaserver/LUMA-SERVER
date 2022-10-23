@@ -1,24 +1,19 @@
 const User = require("../models/userModel");
 
-//GET ONE
-// const getOneUser = async (userId) => {
-//   try {
-//     const user = await User.findById(userId);
-//     return user;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
 
 const loginUser = async (idToken, newUser) => {
   try {
     const user = await User.findOne({ idToken: idToken });
     if (!user) {
-      if (process.env.LUMA_ADMIN.split('"').includes(newUser.email)) {
+      //insert new admin user
+      
+      if (JSON.parse(process.env.LUMA_ADMIN).includes(newUser.email)) {
         let userToInsert = new User({ ...newUser, isJoshua: true });
         const createdUser = await userToInsert.save();
         return createdUser;
+
       } else {
+        //insert normal user
         let userToInsert = new User(newUser);
         const createdUser = await userToInsert.save();
         return createdUser;
@@ -26,6 +21,7 @@ const loginUser = async (idToken, newUser) => {
     }
 
     if (!user.isActive) {
+      //update user to active
       const updatedUser = await User.findOneAndUpdate(
         { idToken: idToken },
         { isActive: true },
@@ -40,30 +36,8 @@ const loginUser = async (idToken, newUser) => {
   }
 };
 
-//POST
-// const createNewUser = async (newUser) => {
-//   try {
-//     let userToInsert = new User(newUser);
-//     const createdUser = await userToInsert.save();
-//     return createdUser;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
 
-//PATCH
-// const updateOneUser = async (userId, changes) => {
-//   try {
-//     const updatedUser = await User.findByIdAndUpdate(userId, { $set: changes });
-//     return updatedUser;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
 
 module.exports = {
-  loginUser,
-  //   getOneUser,
-  //   createNewUser,
-  //   updateOneUser,
+  loginUser
 };
