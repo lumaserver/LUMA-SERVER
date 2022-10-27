@@ -3,6 +3,7 @@ const User = require("../models/userModel");
 
 const loginUser = async (idToken, newUser) => {
   try {
+    console.log("Hola")
     const user = await User.findOne({ idToken: idToken });
     if (!user) {
       //insert new admin user

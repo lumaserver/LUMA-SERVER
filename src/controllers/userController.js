@@ -2,10 +2,11 @@ const userService = require("../services/userService");
 
 //POST
 const createNewUser = async (req, res) => {
+  console.log("Hola2")
   const { token } = req.body;
-  const { name, email } = req.body.claims;
+  const { name, email, picture } = req.body.claims;
 
-  if (!token || !name || !email) {
+  if (!token || !name || !email || !picture) {
     return res.status(400).send({
       status: "FAILED",
       data: {
@@ -19,8 +20,13 @@ const createNewUser = async (req, res) => {
     idToken: token,
     name,
     email,
+    picture,
     isJoshua: false,
     isActive: true,
+    isInside: false,
+    health: 100,
+    money: 29
+
   };
 
   try {
