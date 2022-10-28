@@ -1,19 +1,19 @@
 const User = require("../models/userModel");
 
-
 const loginUser = async (idToken, newUser) => {
   try {
-    const user = await User.findOne({ idToken: idToken });
-    if (!user) {
+    const user = await User.findOne({ email: newUser.email });
 
+    if (!user) {
       if (JSON.parse(process.env.LUMA_ADMIN).includes(newUser.email)) {
         let userToInsert = new User({ ...newUser, isJoshua: true });
         const createdUser = await userToInsert.save();
         return createdUser;
-
       } else {
         //insert normal user
+        console.log("hola");
         let userToInsert = new User(newUser);
+
         const createdUser = await userToInsert.save();
         return createdUser;
       }
@@ -35,8 +35,6 @@ const loginUser = async (idToken, newUser) => {
   }
 };
 
-
-
 module.exports = {
-  loginUser
+  loginUser,
 };
