@@ -10,6 +10,20 @@ const createNewUser = async (idToken, newUser) => {
   }
 };
 
+//GET all users
+const getAllActiveUsers = async () => {
+  try {
+    console.log("services");
+    const allAvtiveUsers = User.getAllActiveUsers();
+    if( allAvtiveUsers.isActive == true){
+      return allAvtiveUsers;
+    }
+  } catch (error) {
+    throw error
+  }
+}
+
 module.exports = {
-  createNewUser
+  createNewUser,
+  getAllActiveUsers
 };

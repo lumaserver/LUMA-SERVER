@@ -36,8 +36,21 @@ const loginUser = async (idToken, newUser) => {
   }
 };
 
+//GET all users
+const getAllActiveUsers = async () => {
+  try {
+    console.log("database");
+    const allUsers = await User.find();
+    console.log(allUsers)
+    return allUsers;
 
+  } 
+  catch (error) {
+    
+  }
+}
 
 module.exports = {
-  loginUser
+  loginUser,
+  getAllActiveUsers
 };
