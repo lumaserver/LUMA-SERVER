@@ -3,7 +3,6 @@ const User = require("../models/userModel");
 
 const loginUser = async (idToken, newUser) => {
   try {
-    console.log("Hola")
     const user = await User.findOne({ idToken: idToken });
     if (!user) {
       //insert new admin user
@@ -19,8 +18,8 @@ const loginUser = async (idToken, newUser) => {
         const createdUser = await userToInsert.save();
         return createdUser;
       }
+  
     }
-
     if (!user.isActive) {
       //update user to active
       const updatedUser = await User.findOneAndUpdate(
@@ -30,9 +29,9 @@ const loginUser = async (idToken, newUser) => {
       );
       return updatedUser;
     }
-
     return user;
   } catch (error) {
+    console.log(error)
     throw error;
   }
 };

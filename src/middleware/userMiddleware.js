@@ -3,7 +3,6 @@ const admin = require("../config/firebaseConfig");
 const firebaseAuth = async (req, res, next) => {
   const token = req.body.token;
   try {
-    console.log("Hola3")
     const decodeValue = await admin.auth().verifyIdToken(token);
     if (decodeValue) {
       return next();
