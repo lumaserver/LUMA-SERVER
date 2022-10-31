@@ -3,7 +3,7 @@ const User = require("../database/User");
 //POST
 const createNewUser = async (idToken, newUser) => {
   try {
-    const createdUser = User.loginUser(idToken, newUser);
+    const createdUser = await User.loginUser(idToken, newUser);
     return createdUser;
   } catch (error) {
     throw error;
@@ -13,11 +13,8 @@ const createNewUser = async (idToken, newUser) => {
 //GET all users
 const getAllActiveUsers = async () => {
   try {
-    console.log("services");
-    const allAvtiveUsers = User.getAllActiveUsers();
-    if( allAvtiveUsers.isActive == true){
-      return allAvtiveUsers;
-    }
+    const allActiveUsers = await User.getAllActiveUsers();
+    return allActiveUsers;
   } catch (error) {
     throw error
   }

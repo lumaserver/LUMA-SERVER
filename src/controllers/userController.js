@@ -35,15 +35,16 @@ const createNewUser = async (req, res) => {
   }
 };
 
-//GET all users
+//GET all Active users
 const getAllActiveUsers = async (req, res) => {
   try {
     console.log("controller");
     const allUsers = await userService.getAllActiveUsers();
-    if(allUsers.length == 0){
-      return res.status(400).send({message: "No hay usuarios activos"});
-    }
-    res.send({ status: "OK", data: allUsers})
+    const activeUsers = allUsers.filter(allUsers => allUsers.isActive = true);
+      if(activeUsers.length == 0){
+        return res.status(400).send({message: "No hay usuarios activos"});
+      }
+        return res.send({ status: "OK", data: activeUsers});
   } catch (error) {
     res.status(error?.status || 500).send({
       status: "FAILED",
