@@ -36,8 +36,18 @@ const loginUser = async (idToken, newUser) => {
   }
 };
 
-
+//GET all users
+const getAllActiveUsers = async () => {
+  try {
+    const allUsers = await User.find();
+    return allUsers;
+  } 
+  catch (error) {
+    throw error;
+  }
+}
 
 module.exports = {
-  loginUser
+  loginUser,
+  getAllActiveUsers
 };

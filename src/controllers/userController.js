@@ -44,6 +44,25 @@ const createNewUser = async (req, res) => {
   }
 };
 
+//GET all Active users
+const getAllActiveUsers = async (req, res) => {
+  try {
+    console.log("controller");
+    const allUsers = await userService.getAllActiveUsers();
+    const activeUsers = allUsers.filter(allUsers => allUsers.isActive = true);
+      if(activeUsers.length == 0){
+        return res.status(400).send({message: "No hay usuarios activos"});
+      }
+        return res.send({ status: "OK", data: activeUsers});
+  } catch (error) {
+    res.status(error?.status || 500).send({
+      status: "FAILED",
+      message: "Failed making the req: ",
+      data: { error: error?.message || error },
+    });
+  }
+}
 module.exports = {
   createNewUser,
+  getAllActiveUsers,
 };
