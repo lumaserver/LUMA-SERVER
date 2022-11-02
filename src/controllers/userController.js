@@ -49,7 +49,10 @@ const getAllActiveUsers = async (req, res) => {
   try {
     console.log("controller");
     const allUsers = await userService.getAllActiveUsers();
-    const activeUsers = allUsers.filter(allUsers => allUsers.isActive = true);
+    const activeUsers = allUsers.filter((allUsers) => {
+      return allUsers.isActive == true && allUsers.isJoshua == false
+    });
+
       if(activeUsers.length == 0){
         return res.status(400).send({message: "No hay usuarios activos"});
       }

@@ -1,9 +1,9 @@
 const User = require("../models/userModel");
 
 
-const loginUser = async (idToken, newUser) => {
+const loginUser = async (newUser) => {
   try {
-    const user = await User.findOne({ idToken: idToken });
+    const user = await User.findOne({ newUser: newUser.email });
     if (!user) {
       //insert new admin user
       
@@ -24,8 +24,7 @@ const loginUser = async (idToken, newUser) => {
       //update user to active
       const updatedUser = await User.findOneAndUpdate(
         { idToken: idToken },
-        { isActive: true },
-        { new: true }
+        { isActive: true }
       );
       return updatedUser;
     }
