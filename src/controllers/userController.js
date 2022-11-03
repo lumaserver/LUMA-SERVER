@@ -76,8 +76,26 @@ const changeCryptValue = async (req, res) => {
   }
 }
 
+//UPDATE money
+const changeMoneyValue = async (req, res) => {
+  const userEmailAndMoney = req.body;
+  try {
+    const money = await userService.changeMoneyValue(userEmailAndMoney);
+    return res.send({ status: "OK", data: money});
+  } catch (error) {
+    res.status(error?.status || 500).send({
+      status: "FAILED",
+      message: "Failed making the req: ",
+      data: { error: error?.message || error },
+    });
+  }
+}
+
+
+
 module.exports = {
   createNewUser,
   getAllActiveUsers,
-  changeCryptValue
+  changeCryptValue,
+  changeMoneyValue
 };

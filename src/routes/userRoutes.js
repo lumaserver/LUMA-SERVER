@@ -13,4 +13,7 @@ router.get("/", userController.getAllActiveUsers );
 
 router.patch("/", userController.changeCryptValue);
 
+router.patch("/:email", userController.changeMoneyValue );
+
+
 module.exports= router;

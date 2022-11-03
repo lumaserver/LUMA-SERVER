@@ -30,8 +30,22 @@ const changeCryptValue = async (user) => {
   }
 }
 
+//UPDATE money
+
+const changeMoneyValue = async (userEmailAndMoney) => {
+  try {
+    const update = await User.changeMoneyValue(userEmailAndMoney);
+
+    return update;
+  } catch (error) {
+    throw error
+  }
+}
+
+
 module.exports = {
   createNewUser,
   getAllActiveUsers,
-  changeCryptValue
+  changeCryptValue,
+  changeMoneyValue
 };
