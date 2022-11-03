@@ -1,9 +1,9 @@
 const User = require("../database/User");
 
 //POST
-const createNewUser = async (idToken, newUser) => {
+const createNewUser = async (newUser) => {
   try {
-    const createdUser = await User.loginUser(idToken, newUser);
+    const createdUser = await User.loginUser(newUser);
     return createdUser;
   } catch (error) {
     throw error;

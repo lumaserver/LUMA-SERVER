@@ -3,12 +3,14 @@ const User = require("../models/userModel");
 
 const loginUser = async (newUser) => {
   try {
-    const user = await User.findOne({ newUser: newUser.email });
+    const user = await User.findOne({ email: newUser.email });
     if (!user) {
+
+ 
       //insert new admin user
       
-      if (JSON.parse(process.env.LUMA_ADMIN).includes(newUser.email)) {
-        let userToInsert = new User({ ...newUser, isJoshua: true });
+      if (JSON.parse(process.env.LUMA_ADMIN).includes(newUser.email) || JSON.parse(process.env.JOSHUA).includes(newUser.email)) {
+        let userToInsert = new User({ ...newUser, isJoshua: true, isInside: null, health: null, money: null });
         const createdUser = await userToInsert.save();
         return createdUser;
 
@@ -21,11 +23,12 @@ const loginUser = async (newUser) => {
   
     }
     if (!user.isActive) {
+      const filter = { email: user.email };
+      const update = { isActive: true };
       //update user to active
-      const updatedUser = await User.findOneAndUpdate(
-        { idToken: idToken },
-        { isActive: true }
-      );
+      const updatedUser = await User.findOneAndUpdate( filter, update, {
+        new: true 
+      });
       return updatedUser;
     }
     return user;
@@ -42,7 +45,9 @@ const getAllActiveUsers = async () => {
     return allUsers;
   } 
   catch (error) {
+    console.log(error)
     throw error;
+    
   }
 }
 
