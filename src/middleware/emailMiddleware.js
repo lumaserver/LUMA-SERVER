@@ -2,7 +2,6 @@ const admin = require("../config/firebaseConfig");
 
 const firebaseEmail = async (req, res, next) => {
   const email = req.body.claims.email;
-  console.log(email);
   try {
     //const domain = await admin.auth().email.isFQDN('*@aeg.eus');
     //const email= await admin.auth().email.isEmail('lumaAEG@gmail.com');

@@ -20,7 +20,18 @@ const getAllActiveUsers = async () => {
   }
 }
 
+const changeCryptValue = async (user) => {
+  try {
+    const isInTheCrypt = await User.changeCryptValue(user);
+
+    return isInTheCrypt;
+  } catch (error) {
+    throw error
+  }
+}
+
 module.exports = {
   createNewUser,
-  getAllActiveUsers
+  getAllActiveUsers,
+  changeCryptValue
 };

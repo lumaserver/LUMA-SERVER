@@ -11,5 +11,6 @@ router.post("/", authMiddleware, emailMiddleware, userController.createNewUser);
 
 router.get("/", userController.getAllActiveUsers );
 
+router.patch("/", userController.changeCryptValue);
 
 module.exports= router;
