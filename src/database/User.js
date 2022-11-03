@@ -5,10 +5,8 @@ const loginUser = async (newUser) => {
   try {
     const user = await User.findOne({ email: newUser.email });
     if (!user) {
-
- 
       //insert new admin user
-      
+
       if (JSON.parse(process.env.LUMA_ADMIN).includes(newUser.email) || JSON.parse(process.env.JOSHUA).includes(newUser.email)) {
         let userToInsert = new User({ ...newUser, isJoshua: true, isInside: null, health: null, money: null });
         const createdUser = await userToInsert.save();
@@ -23,12 +21,11 @@ const loginUser = async (newUser) => {
   
     }
     if (!user.isActive) {
-      const filter = { email: user.email };
-      const update = { isActive: true };
       //update user to active
-      const updatedUser = await User.findOneAndUpdate( filter, update, {
-        new: true 
-      });
+      const updatedUser = await User.findOneAndUpdate(
+        { idToken: idToken },
+        { isActive: true }
+      );
       return updatedUser;
     }
     return user;
@@ -51,7 +48,29 @@ const getAllActiveUsers = async () => {
   }
 }
 
+const changeCryptValue = async (acolitoEmail) => {
+  try {   
+    const updateUser = await User.findOne({ email: acolitoEmail.email });
+    const filter = { email: updateUser.email};
+    const update ={isInside : updateUser.isInside};
+    if(!update.isInside){
+      update.isInside = true
+    }
+    else{
+      update.isInside = false;
+    }
+    const isInTheCrypt = await User.findOneAndUpdate(filter, update,
+      { new:true}
+    )
+  return isInTheCrypt;
+  } 
+  catch (error) {
+    throw error
+  }
+}
+
 module.exports = {
   loginUser,
-  getAllActiveUsers
+  getAllActiveUsers,
+  changeCryptValue
 };

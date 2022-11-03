@@ -59,7 +59,25 @@ const getAllActiveUsers = async (req, res) => {
     });
   }
 }
+
+const changeCryptValue = async (req, res) => {
+  const user = req.body;
+  try {
+    const isInTheCrypt = await userService.changeCryptValue(user);
+    if(isInTheCrypt){
+      return res.send({ status: "OK", data: isInTheCrypt});
+    }
+  } catch (error) {
+    res.status(error?.status || 500).send({
+      status: "FAILED",
+      message: "Failed making the req: ",
+      data: { error: error?.message || error },
+    });
+  }
+}
+
 module.exports = {
   createNewUser,
   getAllActiveUsers,
+  changeCryptValue
 };
