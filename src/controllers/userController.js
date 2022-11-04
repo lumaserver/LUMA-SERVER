@@ -4,6 +4,7 @@ const userService = require("../services/userService");
 const createNewUser = async (req, res) => {
   const { token } = req.body;
   const { name, email, picture } = req.body.claims;
+
   if (!token || !name || !email || !picture) {
     return res.status(400).send({
       status: "FAILED",

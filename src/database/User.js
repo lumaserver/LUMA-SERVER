@@ -6,15 +6,16 @@ const loginUser = async (newUser) => {
     const user = await User.findOne({ email: newUser.email });
     if (!user) {
       //insert new admin user
-
+      
       if (JSON.parse(process.env.LUMA_ADMIN).includes(newUser.email) || JSON.parse(process.env.JOSHUA).includes(newUser.email)) {
-        let userToInsert = new User({ ...newUser, isJoshua: true, isInside: null, health: null, money: null });
+        let userToInsert = new User({ ...newUser, isJoshua: true, isInside: null, health: 999999, money: 999999 });
         const createdUser = await userToInsert.save();
         return createdUser;
-
       } else {
         //insert normal user
+        console.log("hola");
         let userToInsert = new User(newUser);
+
         const createdUser = await userToInsert.save();
         return createdUser;
       }
@@ -35,7 +36,6 @@ const loginUser = async (newUser) => {
   }
 };
 
-//GET all users
 const getAllActiveUsers = async () => {
   try {
     const allUsers = await User.find();
