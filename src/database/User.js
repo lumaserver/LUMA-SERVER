@@ -69,25 +69,26 @@ const changeCryptValue = async (acolitoEmail) => {
   }
 }
 
-//UPDATE money
-const changeMoneyValue = async (userEmailAndMoney) => {
+//UPDATE money and health
+const changeMoneyAndHealth = async (userEmailMoneyAndHealth) => {
   try {   
-    const updateUserMoney = await User.findOne({ email: userEmailAndMoney.email });
-    const filter = { email: updateUserMoney.email };
-    const update ={ money : userEmailAndMoney.money };
-    const money = await User.findOneAndUpdate(filter, update,
+    const updateUserMoneyAndHealth = await User.findOne({ email: userEmailMoneyAndHealth.email });
+    const filter = { email: updateUserMoneyAndHealth.email };
+    const update ={ money : userEmailMoneyAndHealth.money, health: userEmailMoneyAndHealth.health };
+    const moneyAndHealth = await User.findOneAndUpdate(filter, update,
       { new:true}
     )
-    return money;
+    return moneyAndHealth;
   } 
   catch (error) {
     throw error
   }
 }
 
+
 module.exports = {
   loginUser,
   getAllActiveUsers,
   changeCryptValue,
-  changeMoneyValue
+  changeMoneyAndHealth
 };

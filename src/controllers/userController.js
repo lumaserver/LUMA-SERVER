@@ -76,11 +76,11 @@ const changeCryptValue = async (req, res) => {
   }
 }
 
-//UPDATE money
-const changeMoneyValue = async (req, res) => {
-  const userEmailAndMoney = req.body;
+//UPDATE money and health
+const changeMoneyAndHealth = async (req, res) => {
+  const userEmailMoneyAndHealth = req.body;
   try {
-    const money = await userService.changeMoneyValue(userEmailAndMoney);
+    const money = await userService.changeMoneyAndHealth(userEmailMoneyAndHealth);
     return res.send({ status: "OK", data: money});
   } catch (error) {
     res.status(error?.status || 500).send({
@@ -92,10 +92,9 @@ const changeMoneyValue = async (req, res) => {
 }
 
 
-
 module.exports = {
   createNewUser,
   getAllActiveUsers,
   changeCryptValue,
-  changeMoneyValue
+  changeMoneyAndHealth
 };
