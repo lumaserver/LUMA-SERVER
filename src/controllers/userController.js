@@ -66,7 +66,7 @@ const changeCryptValue = async (req, res) => {
   try {
     const isInTheCrypt = await userService.changeCryptValue(user);
     if(isInTheCrypt){
-      return res.send({ status: "OK", data: isInTheCrypt});
+      return res.send({ status: "OK", data: isInTheCrypt.isInside});
     }
   } catch (error) {
     res.status(error?.status || 500).send({
@@ -82,7 +82,7 @@ const changeMoneyAndHealth = async (req, res) => {
   const userEmailMoneyAndHealth = req.body;
   try {
     const money = await userService.changeMoneyAndHealth(userEmailMoneyAndHealth);
-    return res.send({ status: "OK", data: money});
+    return res.send({ status: "OK"});
   } catch (error) {
     res.status(error?.status || 500).send({
       status: "FAILED",
