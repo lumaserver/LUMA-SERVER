@@ -30,11 +30,11 @@ const changeCryptValue = async (user) => {
   }
 }
 
-//UPDATE money
+//UPDATE money and health
 
-const changeMoneyValue = async (userEmailAndMoney) => {
+const changeMoneyAndHealth = async (userEmailMoneyAndHealth) => {
   try {
-    const update = await User.changeMoneyValue(userEmailAndMoney);
+    const update = await User.changeMoneyAndHealth(userEmailMoneyAndHealth);
 
     return update;
   } catch (error) {
@@ -47,5 +47,5 @@ module.exports = {
   createNewUser,
   getAllActiveUsers,
   changeCryptValue,
-  changeMoneyValue
+  changeMoneyAndHealth
 };
