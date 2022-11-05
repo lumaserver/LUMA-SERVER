@@ -51,7 +51,7 @@ const getAllActiveUsers = async (req, res) => {
       if(activeUsers.length == 0){
         return res.status(400).send({message: "No hay usuarios activos"});
       }
-        return res.send({ status: "OK", data: activeUsers});
+        return res.send(activeUsers);
   } catch (error) {
     res.status(error?.status || 500).send({
       status: "FAILED",
@@ -66,7 +66,7 @@ const changeCryptValue = async (req, res) => {
   try {
     const isInTheCrypt = await userService.changeCryptValue(user);
     if(isInTheCrypt){
-      return res.send({ status: "OK", data: isInTheCrypt.isInside});
+      return res.send(isInTheCrypt.isInside);
     }
   } catch (error) {
     res.status(error?.status || 500).send({
@@ -82,7 +82,7 @@ const changeMoneyAndHealth = async (req, res) => {
   const userEmailMoneyAndHealth = req.body;
   try {
     const money = await userService.changeMoneyAndHealth(userEmailMoneyAndHealth);
-    return res.send({ status: "OK"});
+    return res.send(`Has actualizado el estado del Acolito ${userEmailMoneyAndHealth.email}`);
   } catch (error) {
     res.status(error?.status || 500).send({
       status: "FAILED",
