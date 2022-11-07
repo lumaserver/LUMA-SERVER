@@ -11,7 +11,7 @@ router.post("/", authMiddleware, emailMiddleware, userController.createNewUser);
 
 router.get("/", userController.getAllActiveUsers );
 
-router.patch("/", userController.changeCryptValue);
+router.patch("/cript/:email", userController.changeCryptValue);
 
 router.patch("/:email", userController.changeMoneyAndHealth );
 

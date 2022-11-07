@@ -1,14 +1,21 @@
 const User = require("../models/userModel");
 
-
 const loginUser = async (newUser) => {
   try {
     const user = await User.findOne({ email: newUser.email });
     if (!user) {
       //insert new admin user
-      
-      if (JSON.parse(process.env.LUMA_ADMIN).includes(newUser.email) || JSON.parse(process.env.JOSHUA).includes(newUser.email)) {
-        let userToInsert = new User({ ...newUser, isJoshua: true, isInside: null, health: 999999, money: 999999 });
+
+      if (
+        JSON.parse(process.env.LUMA_ADMIN).includes(newUser.email)
+      ) {
+        let userToInsert = new User({
+          ...newUser,
+          isJoshua: true,
+          isInside: null,
+          health: 999999,
+          money: 999999,
+        });
         const createdUser = await userToInsert.save();
         return createdUser;
       } else {
@@ -19,7 +26,6 @@ const loginUser = async (newUser) => {
         const createdUser = await userToInsert.save();
         return createdUser;
       }
-  
     }
     if (!user.isActive) {
       //update user to active
@@ -31,7 +37,7 @@ const loginUser = async (newUser) => {
     }
     return user;
   } catch (error) {
-    console.log(error)
+    console.log(error);
     throw error;
   }
 };
@@ -40,55 +46,54 @@ const getAllActiveUsers = async () => {
   try {
     const allUsers = await User.find();
     return allUsers;
-  } 
-  catch (error) {
-    console.log(error)
+  } catch (error) {
+    console.log(error);
     throw error;
-    
   }
-}
+};
 
 const changeCryptValue = async (acolitoEmail) => {
-  try {   
+  try {
     const updateUser = await User.findOne({ email: acolitoEmail.email });
-    const filter = { email: updateUser.email};
-    const update ={isInside : updateUser.isInside};
-    if(!update.isInside){
-      update.isInside = true
-    }
-    else{
+    const filter = { email: updateUser.email };
+    const update = { isInside: updateUser.isInside };
+    if (!update.isInside) {
+      update.isInside = true;
+    } else {
       update.isInside = false;
     }
-    const isInTheCrypt = await User.findOneAndUpdate(filter, update,
-      { new:true}
-    )
-  return isInTheCrypt;
-  } 
-  catch (error) {
-    throw error
+    const isInTheCrypt = await User.findOneAndUpdate(filter, update, {
+      new: true,
+    });
+    return isInTheCrypt;
+  } catch (error) {
+    throw error;
   }
-}
+};
 
 //UPDATE money and health
 const changeMoneyAndHealth = async (userEmailMoneyAndHealth) => {
-  try {   
-    const updateUserMoneyAndHealth = await User.findOne({ email: userEmailMoneyAndHealth.email });
+  try {
+    const updateUserMoneyAndHealth = await User.findOne({
+      email: userEmailMoneyAndHealth.email,
+    });
     const filter = { email: updateUserMoneyAndHealth.email };
-    const update ={ money : userEmailMoneyAndHealth.money, health: userEmailMoneyAndHealth.health };
-    const moneyAndHealth = await User.findOneAndUpdate(filter, update,
-      { new:true}
-    )
+    const update = {
+      money: userEmailMoneyAndHealth.money,
+      health: userEmailMoneyAndHealth.health,
+    };
+    const moneyAndHealth = await User.findOneAndUpdate(filter, update, {
+      new: true,
+    });
     return moneyAndHealth;
-  } 
-  catch (error) {
-    throw error
+  } catch (error) {
+    throw error;
   }
-}
-
+};
 
 module.exports = {
   loginUser,
   getAllActiveUsers,
   changeCryptValue,
-  changeMoneyAndHealth
+  changeMoneyAndHealth,
 };

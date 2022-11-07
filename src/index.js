@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 app.use(bodyParser.json());
 
 
-app.use("/api/idToken", userRouter);
+app.use("/api/user", userRouter);
 
 async function start() {
   try {

@@ -3,17 +3,17 @@ const admin = require("../config/firebaseConfig");
 const firebaseEmail = async (req, res, next) => {
   const email = req.body.claims.email;
   try {
-    if (/^\w+([\.-]?\w+)*@\ikasle.aeg.eus/.test(email) || JSON.parse(process.env.LUMA_ADMIN).includes(email)) {
-      console.log("a")
+    if (
+      /^\w+([\.-]?\w+)*@\ikasle.aeg.eus/.test(email) ||
+      JSON.parse(process.env.LUMA_ADMIN).includes(email)
+    ) {
+      console.log("a");
       return next();
-    }
-    else{
-      console.log("b")
-      return res.json({ message: "Unauthorized" });
+    } else {
+      throw new Error("email unauthorized");
     }
   } catch (error) {
-    console.log(error)
-    return res.json({ message: error});
+    return res.status(401).json({ message: error });
   }
 };
 
