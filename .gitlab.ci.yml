@@ -1,0 +1,17 @@
+image: node:latest
+ 
+before_script:
+   - apt-get update -qq && apt-get install -y curl
+   - curl -L https://fly.io/install.sh | sh
+ 
+stages:
+   - production
+
+production:
+   stage: production
+   environment:
+      name: production
+   script:
+      - /root/.fly/bin/flyctl deploy --config ./fly.production.toml
+   only:
+      - main
