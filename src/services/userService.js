@@ -20,9 +20,9 @@ const getAllActiveUsers = async () => {
   }
 }
 
-const changeCryptValue = async (user) => {
+const changeCryptValue = async (email) => {
   try {
-    const isInTheCrypt = await User.changeCryptValue(user);
+    const isInTheCrypt = await User.changeCryptValue(email);
 
     return isInTheCrypt;
   } catch (error) {
@@ -32,9 +32,9 @@ const changeCryptValue = async (user) => {
 
 //UPDATE money and health
 
-const changeMoneyAndHealth = async (userEmailMoneyAndHealth) => {
+const updateUser = async (userEmail, updateData) => {
   try {
-    const update = await User.changeMoneyAndHealth(userEmailMoneyAndHealth);
+    const update = await User.updateUser(userEmail, updateData);
 
     return update;
   } catch (error) {
@@ -47,5 +47,5 @@ module.exports = {
   createNewUser,
   getAllActiveUsers,
   changeCryptValue,
-  changeMoneyAndHealth
+  updateUser
 };

@@ -25,7 +25,6 @@ const createNewUser = async (req, res) => {
     isInside: false,
     health: 100,
     money: 29
-
   };
 
   try {
@@ -49,9 +48,9 @@ const getAllActiveUsers = async (req, res) => {
     });
 
       if(activeUsers.length == 0){
-        return res.status(400).send({message: "No hay usuarios activos"});
+        return res.status(400).send({message: "There is no active users"});
       }
-        return res.send(activeUsers);
+        return res.send({ status: "OK", data: activeUsers });
   } catch (error) {
     res.status(error?.status || 500).send({
       status: "FAILED",
@@ -62,11 +61,11 @@ const getAllActiveUsers = async (req, res) => {
 }
 
 const changeCryptValue = async (req, res) => {
-  const user = req.body;
+  const email = req.params.email;
   try {
-    const isInTheCrypt = await userService.changeCryptValue(user);
+    const isInTheCrypt = await userService.changeCryptValue(email);
     if(isInTheCrypt){
-      return res.send(isInTheCrypt.isInside);
+      return res.send({ status: "OK", data: isInTheCrypt.isInside });
     }
   } catch (error) {
     res.status(error?.status || 500).send({
@@ -78,11 +77,13 @@ const changeCryptValue = async (req, res) => {
 }
 
 //UPDATE money and health
-const changeMoneyAndHealth = async (req, res) => {
-  const userEmailMoneyAndHealth = req.body;
+const updateUser = async (req, res) => {
+  const userEmail = req.params.email;
+  const updateData= req.body;
+  
   try {
-    const money = await userService.changeMoneyAndHealth(userEmailMoneyAndHealth);
-    return res.send(`Has actualizado el estado del Acolito ${userEmailMoneyAndHealth.email}`);
+    await userService.updateUser(userEmail, updateData );
+    return res.send({ status: "OK"});
   } catch (error) {
     res.status(error?.status || 500).send({
       status: "FAILED",
@@ -97,5 +98,5 @@ module.exports = {
   createNewUser,
   getAllActiveUsers,
   changeCryptValue,
-  changeMoneyAndHealth
+  updateUser
 };

@@ -7,13 +7,12 @@ const firebaseEmail = async (req, res, next) => {
       /^\w+([\.-]?\w+)*@\ikasle.aeg.eus/.test(email) ||
       JSON.parse(process.env.LUMA_ADMIN).includes(email)
     ) {
-      console.log("a");
       return next();
     } else {
       throw new Error("email unauthorized");
     }
   } catch (error) {
-    return res.status(401).json({ message: error });
+    return res.status(401).send({message: error});
   }
 };
 

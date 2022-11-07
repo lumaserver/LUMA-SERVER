@@ -19,8 +19,7 @@ const loginUser = async (newUser) => {
         const createdUser = await userToInsert.save();
         return createdUser;
       } else {
-        //insert normal user
-        console.log("hola");
+       
         let userToInsert = new User(newUser);
 
         const createdUser = await userToInsert.save();
@@ -31,7 +30,8 @@ const loginUser = async (newUser) => {
       //update user to active
       const updatedUser = await User.findOneAndUpdate(
         { idToken: idToken },
-        { isActive: true }
+        { isActive: true },
+        {new: true}
       );
       return updatedUser;
     }
@@ -52,16 +52,14 @@ const getAllActiveUsers = async () => {
   }
 };
 
-const changeCryptValue = async (acolitoEmail) => {
+const changeCryptValue = async (email) => {
   try {
-    const updateUser = await User.findOne({ email: acolitoEmail.email });
+    const updateUser = await User.findOne({ email });
     const filter = { email: updateUser.email };
     const update = { isInside: updateUser.isInside };
-    if (!update.isInside) {
-      update.isInside = true;
-    } else {
-      update.isInside = false;
-    }
+
+    update.isInside? update.isInside = false : update.isInside = true;
+
     const isInTheCrypt = await User.findOneAndUpdate(filter, update, {
       new: true,
     });
@@ -72,17 +70,10 @@ const changeCryptValue = async (acolitoEmail) => {
 };
 
 //UPDATE money and health
-const changeMoneyAndHealth = async (userEmailMoneyAndHealth) => {
+const updateUser = async (userEmail, updateData) => {
   try {
-    const updateUserMoneyAndHealth = await User.findOne({
-      email: userEmailMoneyAndHealth.email,
-    });
-    const filter = { email: updateUserMoneyAndHealth.email };
-    const update = {
-      money: userEmailMoneyAndHealth.money,
-      health: userEmailMoneyAndHealth.health,
-    };
-    const moneyAndHealth = await User.findOneAndUpdate(filter, update, {
+    const filter = { email: userEmail };
+    const moneyAndHealth = await User.findOneAndUpdate(filter, updateData, {
       new: true,
     });
     return moneyAndHealth;
@@ -95,5 +86,5 @@ module.exports = {
   loginUser,
   getAllActiveUsers,
   changeCryptValue,
-  changeMoneyAndHealth,
+  updateUser,
 };
