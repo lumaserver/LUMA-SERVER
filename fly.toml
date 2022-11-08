@@ -1,6 +1,6 @@
-# fly.toml file generated for absentia on 2022-10-30T18:54:55+01:00
+# fly.toml file generated for luma-production on 2022-11-08T08:53:20+01:00
 
-app = "luma-server.prod"
+app = "luma-production"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
