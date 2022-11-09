@@ -5,7 +5,7 @@ const firebaseEmail = async (req, res, next) => {
   try {
     if (
       /^\w+([\.-]?\w+)*@\ikasle.aeg.eus/.test(email) ||
-      JSON.parse(process.env.LUMA_ADMIN).includes(email)
+      process.env.LUMA_ADMIN === email
     ) {
       return next();
     } else {
