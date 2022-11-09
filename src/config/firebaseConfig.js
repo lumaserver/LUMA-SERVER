@@ -7,9 +7,8 @@ admin.initializeApp({
       privateKey: process.env.PRIVATE_KEY
       ? process.env.PRIVATE_KEY.replace(/\\n/gm, "\n")
       : undefined,
-      clientEmail: process.env.CLIENT_EMAIL,
+      clientEmail: process.env.CLIENT_ID,
   })
 });
 
 module.exports= admin;
-
