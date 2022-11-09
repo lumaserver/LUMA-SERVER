@@ -12,7 +12,7 @@ const firebaseEmail = async (req, res, next) => {
       throw new Error("email unauthorized");
     }
   } catch (error) {
-    return res.status(401).send({message: error});
+    return res.status(401).send({message: error.message});
   }
 };
 
