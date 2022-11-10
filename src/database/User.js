@@ -7,7 +7,7 @@ const loginUser = async (newUser) => {
       //insert new admin user
 
       if (
-        process.env.LUMA_ADMIN === newUser.email || process.env.MORTIMER === email
+        process.env.LUMA_ADMIN === newUser.email || process.env.MORTIMER === newUser.email
       ) {
         let userToInsert = new User({
           ...newUser,
