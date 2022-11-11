@@ -15,5 +15,5 @@ router.patch("/cript/:email", userController.changeCryptValue);
 
 router.patch("/:email", userController.updateUser );
 
-
+ 
 module.exports= router;
