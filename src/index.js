@@ -6,6 +6,8 @@ const mongoose = require("mongoose");
 const mongodbRoute = process.env.DB_ROUTE;
 
 const userRouter = require("./routes/userRoutes");
+const dollRouter = require("./routes/dollRoutes");
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,6 +16,8 @@ app.use(bodyParser.json());
 
 
 app.use("/api/user", userRouter);
+app.use("/api/doll", dollRouter);
+
 
 async function start() {
   try {
