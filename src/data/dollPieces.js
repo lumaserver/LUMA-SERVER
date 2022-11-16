@@ -1,18 +1,18 @@
 [
     {
         "name": "head",
-        "img": "head.jpg"
+        "img": "require('../src/assets/head.jpg')"
     },
     {
         "name": "body",
-        "img": "body.jpg"
+        "img": "require('../src/assets/body.jpg')"
     },
     {
         "name": "arm",
-        "img": "arm.jpg"
+        "img": "require('../src/assets/arm.jpg')"
     },
     {
         "name": "leg",
-        "img": "leg.jpg"
+        "img": "require('../src/assets/leg.jpg')"
     }
 ]
