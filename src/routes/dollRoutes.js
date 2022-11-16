@@ -3,6 +3,8 @@ const router = express.Router();
 
 const dollController = require("../controllers/dollController");
 
-router.get("/", dollController.getAllDollParts );
+router.post("/", dollController.createDollAndDollPiece);
+
+router.get("/", dollController.getAllDollPieces );
 
 module.exports= router;

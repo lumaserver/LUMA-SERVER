@@ -1,9 +1,20 @@
 const Doll = require("../database/Doll");
 
-//GET all users
-const getAllDollParts = async () => {
+//POST create doll and dollPieces documents
+const createDollAndDollPiece = async () => {
+
   try {
-    const allDollParts = await Doll.getAllDollParts();
+    const createdDoll = await Doll.createDollAndDollPiece();
+    return createdDoll;
+  } catch (error) {
+    throw error;
+  }
+};
+
+//GET all doll pieces
+const getAllDollPieces = async () => {
+  try {
+    const allDollParts = await Doll.getAllDollPieces();
     return allDollParts;
   } catch (error) {
     throw error
@@ -11,6 +22,7 @@ const getAllDollParts = async () => {
 }
 
 module.exports = {
-  getAllDollParts,
- 
+  getAllDollPieces,
+  createDollAndDollPiece
+
 };

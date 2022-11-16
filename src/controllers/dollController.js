@@ -1,9 +1,26 @@
+
 const dollService = require("../services/dollService");
 
-//GET all Active users
-const getAllDollParts = async (req, res) => {
+//POST create doll and dollPieces documents
+
+const createDollAndDollPiece = async (req, res) => {
+ 
   try {
-    const allDollParts = await dollService.getAllDollParts();
+    const createdDoll = await dollService.createDollAndDollPiece();
+    res.send({ status: "OK", data: createdDoll });
+  } catch (error) {
+    res.status(error?.status || 500).send({
+      status: "FAILED",
+      message: "Failed making the req: ",
+      data: { error: error?.message || error },
+    });
+  }
+};
+
+//GET all dollPieces
+const getAllDollPieces = async (req, res) => {
+  try {
+    const allDollParts = await dollService.getAllDollPieces();
       if(allDollParts.length == 0){
         return res.status(400).send({message: "There are not a doll"});
       }
@@ -19,5 +36,6 @@ const getAllDollParts = async (req, res) => {
 
 
 module.exports = {
-  getAllDollParts,
+  getAllDollPieces,
+  createDollAndDollPiece,
 };

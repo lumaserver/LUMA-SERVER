@@ -1,4 +1,4 @@
-[
+const dollPieces = [
     {
         "name": "head",
         "img": "require('../src/assets/head.jpg')"
@@ -16,3 +16,5 @@
         "img": "require('../src/assets/leg.jpg')"
     }
 ]
+
+module.exports = dollPieces;
