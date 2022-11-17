@@ -39,6 +39,30 @@ const getAllDollPieces = async () => {
   }
 };
 
+
+
+const updateMissionStatus = async (updateData) => {
+  try {
+  
+    await Doll.update( updateData);
+  } catch (error) {
+    throw error;
+  }
+};
+
+const updateDollPiece = async (pieceName, updateData) => {
+
+  try {
+    const filter = { pieceName };
+    await DollPiece.findOneAndUpdate(filter, updateData, {
+      new: true
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
+
 //DELETE dollPieces and Doll
 const deleteDollAndDollPieces = async () => {
   try {
@@ -54,5 +78,7 @@ const deleteDollAndDollPieces = async () => {
 module.exports = {
   getAllDollPieces,
   createDollAndDollPiece,
-  deleteDollAndDollPieces
+  updateMissionStatus,
+  deleteDollAndDollPieces,
+  updateDollPiece
 };

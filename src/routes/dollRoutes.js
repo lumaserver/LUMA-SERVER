@@ -7,7 +7,10 @@ router.post("/", dollController.createDollAndDollPiece);
 
 router.get("/", dollController.getAllDollPieces );
 
-router.patch("/", dollController.getAllDollPieces );
+router.patch("/", dollController.updateMissionStatus );
+
+router.patch("/dollPieces/:pieceName", dollController.updateDollPiece );
+
 
 router.delete("/", dollController.deleteDollAndDollPieces );
 

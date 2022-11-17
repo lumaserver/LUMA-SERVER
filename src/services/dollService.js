@@ -1,5 +1,7 @@
 const Doll = require("../database/Doll");
 
+
+
 //POST create doll and dollPieces documents
 const createDollAndDollPiece = async () => {
 
@@ -21,6 +23,24 @@ const getAllDollPieces = async () => {
   }
 };
 
+const updateMissionStatus = async (updateData) => {
+  try {
+    await Doll.updateMissionStatus(updateData);
+
+  } catch (error) {
+    throw error
+  }
+}
+
+const updateDollPiece = async (pieceName, updateData) => {
+  try {
+    await Doll.updateDollPiece(pieceName, updateData);
+
+  } catch (error) {
+    throw error
+  }
+}
+
 //DELETE dollPieces and Doll
 const deleteDollAndDollPieces = async () => {
 
@@ -35,6 +55,8 @@ const deleteDollAndDollPieces = async () => {
 module.exports = {
   getAllDollPieces,
   createDollAndDollPiece,
-  deleteDollAndDollPieces
+  deleteDollAndDollPieces,
+  updateMissionStatus,
+  updateDollPiece
 
 };

@@ -33,6 +33,41 @@ const getAllDollPieces = async (req, res) => {
   }
 }
 
+//UPDATE MissionStatus
+
+const updateMissionStatus = async (req, res) => {
+  const missionStatus = req.body;
+  
+  try {
+    await dollService.updateMissionStatus(missionStatus);
+    return res.send({ status: "OK"});
+  } catch (error) {
+    res.status(error?.status || 500).send({
+      status: "FAILED",
+      message: "Failed making the req: ",
+      data: { error: error?.message || error },
+    });
+  }
+}
+
+//UPDATE DollPieces
+const updateDollPiece = async (req, res) => {
+  const pieceName = req.params.pieceName;
+  const updateData= req.body;
+  
+  try {
+    await dollService.updateDollPiece(pieceName, updateData );
+    return res.send({ status: "OK"});
+  } catch (error) {
+    res.status(error?.status || 500).send({
+      status: "FAILED",
+      message: "Failed making the req: ",
+      data: { error: error?.message || error },
+    });
+  }
+}
+
+
 //DELETE dollPieces and Doll
 const deleteDollAndDollPieces = async (req, res) => {
   try {
@@ -51,5 +86,7 @@ const deleteDollAndDollPieces = async (req, res) => {
 module.exports = {
   getAllDollPieces,
   createDollAndDollPiece,
-  deleteDollAndDollPieces
+  deleteDollAndDollPieces,
+  updateMissionStatus,
+  updateDollPiece
 };
