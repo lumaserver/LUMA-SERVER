@@ -1,19 +1,19 @@
 const dollPieces = [
     {
-        "name": "head",
-        "img": "require('../src/assets/head.jpg')"
+        "pieceName": "head",
+        "image": "require('../src/assets/head.jpg')"
     },
     {
-        "name": "body",
-        "img": "require('../src/assets/body.jpg')"
+        "pieceName": "body",
+        "image": "require('../src/assets/body.jpg')"
     },
     {
-        "name": "arm",
-        "img": "require('../src/assets/arm.jpg')"
+        "pieceName": "arm",
+        "image": "require('../src/assets/arm.jpg')"
     },
     {
-        "name": "leg",
-        "img": "require('../src/assets/leg.jpg')"
+        "pieceName": "leg",
+        "image": "require('../src/assets/leg.jpg')"
     }
 ]
 

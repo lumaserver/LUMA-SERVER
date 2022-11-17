@@ -7,4 +7,8 @@ router.post("/", dollController.createDollAndDollPiece);
 
 router.get("/", dollController.getAllDollPieces );
 
+router.patch("/", dollController.getAllDollPieces );
+
+router.delete("/", dollController.deleteDollAndDollPieces );
+
 module.exports= router;

@@ -1,25 +1,23 @@
-const dollPieces = require('../data/dollPieces')
+const dollPiecesData = require('../data/dollPieces')
 const Doll = require("../models/dollModel");
 const DollPiece = require("../models/dollPieceModel");
 
-
+//POST create doll and dollPieces documents
 const createDollAndDollPiece = async () => {
   
   try {
     let dollToInsert = new Doll();
     const createdDoll = await dollToInsert.save();
-    console.log(createdDoll)
-    dollPieces.map(async (item) => { 
+    dollPiecesData.map(async (item) => { 
 
-      let dollPiecesToInsert = new DollPiece();
-      const createdDollPiece = await dollPiecesToInsert.save();
-      console.log(`create 1 ${createdDollPiece} `);
-      const filter = {missionStatus: 'missionStarted'}
+      let dollPiecesToInsert = new DollPiece(item);
       
-      const doll = await createdDoll.findByIdAndUpdate( filter, {$push: { bodyPart: createdDollPiece._id }}, {
+      const createdDollPiece = await dollPiecesToInsert.save();
+    
+      const filter = {missionStatus: 'missionStarted'}
+      const doll = await Doll.findOneAndUpdate( filter, {$push: { bodyPart: createdDollPiece._id }}, {
          new: true 
       });
-      console.log(`create 2 ${doll}`);
     })
     
   
@@ -29,28 +27,32 @@ const createDollAndDollPiece = async () => {
   }
 };
 
+//GET all doll pieces
 const getAllDollPieces = async () => {
   try {
-    const allDollParts = await Doll.find();
-    return allDollParts;
+    const allDollParts = await Doll.find().populate('bodyPart');
+    console.log(allDollParts)
+    return allDollParts[0];
   } catch (error) {
     console.log(error);
     throw error;
   }
 };
 
-module.exports = {
-  getAllDollPieces,
-  createDollAndDollPiece
+//DELETE dollPieces and Doll
+const deleteDollAndDollPieces = async () => {
+  try {
+    await DollPiece.deleteMany();
+    await Doll.deleteMany();
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
 
-/*
-const doll = await createdDoll.findByIdAndUpdate(req.params.id, {
-      $push: {
-        bodyPart: {
-          "name": "head",
-          "img": "require('../src/assets/head.jpg')"
-        }
-      },
-    });
-*/
+
+module.exports = {
+  getAllDollPieces,
+  createDollAndDollPiece,
+  deleteDollAndDollPieces
+};

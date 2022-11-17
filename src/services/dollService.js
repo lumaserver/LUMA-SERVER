@@ -19,10 +19,22 @@ const getAllDollPieces = async () => {
   } catch (error) {
     throw error
   }
-}
+};
+
+//DELETE dollPieces and Doll
+const deleteDollAndDollPieces = async () => {
+
+  try {
+    await Doll.deleteDollAndDollPieces();
+  } catch (error) {
+    throw error;
+  }
+};
+
 
 module.exports = {
   getAllDollPieces,
-  createDollAndDollPiece
+  createDollAndDollPiece,
+  deleteDollAndDollPieces
 
 };
