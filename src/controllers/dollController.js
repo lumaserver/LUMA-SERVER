@@ -1,0 +1,92 @@
+
+const dollService = require("../services/dollService");
+
+//POST create doll and dollPieces documents
+const createDollAndDollPiece = async (req, res) => {
+ 
+  try {
+    const createdDoll = await dollService.createDollAndDollPiece();
+    res.send({ status: "OK", data: createdDoll });
+  } catch (error) {
+    res.status(error?.status || 500).send({
+      status: "FAILED",
+      message: "Failed making the req: ",
+      data: { error: error?.message || error },
+    });
+  }
+};
+
+//GET all dollPieces
+const getAllDollPieces = async (req, res) => {
+  try {
+    const allDollParts = await dollService.getAllDollPieces();
+      if(allDollParts.length == 0){
+        return res.status(400).send({message: "There are not a doll"});
+      }
+        return res.send({ status: "OK", data: allDollParts });
+  } catch (error) {
+    res.status(error?.status || 500).send({
+      status: "FAILED",
+      message: "Failed making the req: ",
+      data: { error: error?.message || error },
+    });
+  }
+}
+
+//UPDATE MissionStatus
+
+const updateMissionStatus = async (req, res) => {
+  const missionStatus = req.body;
+  
+  try {
+    await dollService.updateMissionStatus(missionStatus);
+    return res.send({ status: "OK"});
+  } catch (error) {
+    res.status(error?.status || 500).send({
+      status: "FAILED",
+      message: "Failed making the req: ",
+      data: { error: error?.message || error },
+    });
+  }
+}
+
+//UPDATE DollPieces
+const updateDollPiece = async (req, res) => {
+  const pieceName = req.params.pieceName;
+  const updateData= req.body;
+  
+  try {
+    await dollService.updateDollPiece(pieceName, updateData );
+    return res.send({ status: "OK"});
+  } catch (error) {
+    res.status(error?.status || 500).send({
+      status: "FAILED",
+      message: "Failed making the req: ",
+      data: { error: error?.message || error },
+    });
+  }
+}
+
+
+//DELETE dollPieces and Doll
+const deleteDollAndDollPieces = async (req, res) => {
+  try {
+    await dollService.deleteDollAndDollPieces();
+    res.send({ status: "OK"});
+  } catch (error) {
+    res.status(error?.status || 500).send({
+      status: "FAILED",
+      message: "Failed making the req: ",
+      data: { error: error?.message || error },
+    });
+  }
+}
+
+
+module.exports = {
+  getAllDollPieces,
+  createDollAndDollPiece,
+  deleteDollAndDollPieces,
+  updateMissionStatus,
+  updateDollPiece
+};
