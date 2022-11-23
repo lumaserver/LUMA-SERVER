@@ -6,9 +6,9 @@ const dollPieceSchema = new Schema({
   pieceName: String,
   image: String,
   isFound: { type: Boolean, default: false },
-  position: {
-    xPosition: { type: mongoose.Types.Decimal128, default: null },
-    yPosition: { type: mongoose.Types.Decimal128, default: null },
+  coordinates: {
+    latitude: { type: mongoose.Types.Decimal128, default: null },
+    longitude: { type: mongoose.Types.Decimal128, default: null },
   },
 });
 
