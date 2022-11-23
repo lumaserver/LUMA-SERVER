@@ -7,8 +7,8 @@ const dollPieceSchema = new Schema({
   image: String,
   isFound: { type: Boolean, default: false },
   coordinates: {
-    latitude: { type: mongoose.Types.Decimal128, default: null },
-    longitude: { type: mongoose.Types.Decimal128, default: null },
+    latitude: { type: Double, default: null },
+    longitude: { type: Double, default: null },
   },
 });
 
