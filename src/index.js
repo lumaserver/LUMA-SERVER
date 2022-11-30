@@ -1,5 +1,8 @@
 require("dotenv").config();
+
+const http = require("http");
 const express = require("express");
+const socketIO = require("socket.io");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
@@ -10,7 +13,16 @@ const dollRouter = require("./routes/dollRoutes");
 
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
+
+const server = http.createServer(app);
+const io = socketIO(server, {
+  pingTimeout: 30000,
+  cors: {
+    origin: "*",
+  },
+});
+exports.socketIO = io;
 
 app.use(bodyParser.json());
 
@@ -22,7 +34,7 @@ app.use("/api/doll", dollRouter);
 async function start() {
   try {
     await mongoose.connect(mongodbRoute);
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
       console.log(`API IS LISTENING ON PORT ${PORT}`);
     });
     console.log("Connection executed correctly");
@@ -31,4 +43,5 @@ async function start() {
   }
 }
 
+require("./services/sockets/socketMain");
 start();
