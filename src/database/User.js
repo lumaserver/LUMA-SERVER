@@ -15,6 +15,8 @@ const loginUser = async (newUser) => {
           isInside: null,
           health: 999999,
           money: 999999,
+          resistance: null,
+          concentration: null
         });
         const createdUser = await userToInsert.save();
         return createdUser;
@@ -73,6 +75,8 @@ const changeCryptValue = async (email) => {
 const updateUser = async (userEmail, updateData) => {
   try {
     const filter = { email: userEmail };
+    console.log(filter);
+   
     const moneyAndHealth = await User.findOneAndUpdate(filter, updateData, {
       new: true,
     });
@@ -82,9 +86,22 @@ const updateUser = async (userEmail, updateData) => {
   }
 };
 
+/*const updateUserResAndCon = async () => {
+  try {
+    const filter = {isJoshua: false}
+    const resAndCon = await User.update(filter, {concentration: +1}, {
+      new: true
+    })
+    return resAndCon;
+  } catch (error) {
+    throw error;
+  }
+};*/
+
 module.exports = {
   loginUser,
   getAllActiveUsers,
   changeCryptValue,
   updateUser,
+  //updateUserResAndCon
 };

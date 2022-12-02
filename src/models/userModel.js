@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 
 const userSchema = new Schema({
   idToken: String,
+  idSocket: String,
   name: String,
   email: String,
   isJoshua: Boolean,
@@ -11,7 +12,10 @@ const userSchema = new Schema({
   picture: String,
   isInside: Boolean,
   health: Number,
-  money: Number
+  money: Number,
+  acolitStatus: String,
+  resistance: Number,
+  concentration: Number
 });
 
 module.exports = mongoose.model("User", userSchema);

@@ -32,20 +32,33 @@ const changeCryptValue = async (email) => {
 
 //UPDATE money and health
 
-const updateUser = async (userEmail, updateData) => {
+const updateUser = async (data) => {
   try {
-    const update = await User.updateUser(userEmail, updateData);
 
+    const userEmail = data.email
+    const updateData = data.data
+    const update = await User.updateUser(userEmail, updateData);
+ 
     return update;
   } catch (error) {
     throw error
   }
 }
 
+/* const updateUserResAndCon = async () => {
+  try {
+    const update = await User.updateUser();
+    return update;
+  } catch (error) {
+    throw error
+  }
+}
+ */
 
 module.exports = {
   createNewUser,
   getAllActiveUsers,
   changeCryptValue,
-  updateUser
+  updateUser,
+  //updateUserResAndCon
 };

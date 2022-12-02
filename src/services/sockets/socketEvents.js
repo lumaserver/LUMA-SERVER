@@ -1,3 +1,7 @@
+const User = require('../userService');
+
+const cron = require('node-cron');
+
 events = (socket) => {
   console.log({ Clientsocket: socket.id });
   socket.emit("new_user", socket.id);
@@ -14,19 +18,31 @@ events = (socket) => {
       console.log(error);
       socket.emit("test_broadcastError", error);
     }
+    
   });
 
-  //Enter Crypt
-//   socket.on("crypt-enter", (data) => {
-//     try {
-//       const response = //await al service
-//         socket.emit("crypt-enter", acolit);
-//     } catch (error) {}
-//   });
+  //CHANGE USER DATA
+  socket.on("changeAcolitAttributes", async (data) => {
+    try {
+      console.log(data)
+      const changedAcolit = await User.updateUser(data)
+      socket.broadcast.emit("changeAcolitAttributes", changedAcolit);
+    } catch (error) {
+      console.log(error);
+      socket.emit("changeAcolitAttributes", error);
+    }
+  });
+
+  const lowerResistance = cron.schedule('* * * * * *', () => {
+    console.log('running a task every minute');
+  });
 
   socket.on("disconnect", () => {
     console.log("Client disconnected: ", socket.id);
   });
 };
 
+
+
 exports.socketEvents = events;
+module.exports = lowerResistance

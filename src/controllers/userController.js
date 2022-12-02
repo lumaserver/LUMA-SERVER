@@ -17,6 +17,7 @@ const createNewUser = async (req, res) => {
 
   const newUser = {
     idToken: token,
+    idSocket: null,
     name,
     email,
     picture,
@@ -24,7 +25,9 @@ const createNewUser = async (req, res) => {
     isActive: true,
     isInside: false,
     health: 100,
-    money: 29
+    money: 29,
+    resistance: 100,
+    concentration: 100
   };
 
   try {
