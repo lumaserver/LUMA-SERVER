@@ -45,4 +45,4 @@ events = (socket) => {
 
 
 exports.socketEvents = events;
-module.exports = lowerResistance
+// module.exports = lowerResistance
