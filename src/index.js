@@ -6,7 +6,6 @@ const socketIO = require("socket.io");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
-const lowerResistance = require('./services/sockets/socketEvents');
 const mongodbRoute = process.env.DB_ROUTE;
 
 const userRouter = require("./routes/userRoutes");
@@ -39,7 +38,6 @@ async function start() {
       console.log(`API IS LISTENING ON PORT ${PORT}`);
     });
     console.log("Connection executed correctly");
-    lowerResistance()
   } catch (error) {
     console.log(`Error cannot connect DB: ${error.message}`);
   }

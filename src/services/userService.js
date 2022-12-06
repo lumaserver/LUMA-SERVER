@@ -45,20 +45,20 @@ const updateUser = async (data) => {
   }
 }
 
-/* const updateUserResAndCon = async () => {
+const updateAcolitResistanceAndConcentration = async () => {
   try {
-    const update = await User.updateUser();
+    const update = await User.updateAcolitResistanceAndConcentration();
     return update;
   } catch (error) {
     throw error
   }
 }
- */
+
 
 module.exports = {
   createNewUser,
   getAllActiveUsers,
   changeCryptValue,
   updateUser,
-  //updateUserResAndCon
+  updateAcolitResistanceAndConcentration
 };

@@ -33,16 +33,18 @@ events = (socket) => {
     }
   });
 
-  const lowerResistance = cron.schedule('* * * * * *', () => {
-    console.log('running a task every minute');
-  });
-
   socket.on("disconnect", () => {
     console.log("Client disconnected: ", socket.id);
   });
 };
 
-
+cron.schedule('* * * * *', async() => {
+  console.log('aa')
+  const update = await User.updateAcolitResistanceAndConcentration()
+  console.log(update)
+  console.log('ab')
+  
+});
 
 exports.socketEvents = events;
-module.exports = lowerResistance
+
