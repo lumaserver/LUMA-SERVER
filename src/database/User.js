@@ -115,6 +115,7 @@ const updateAcolitResistanceAndConcentration = async () => {
       .then(async() => {
         const allAcolit = await getAllActiveUsers()
         console.log(allAcolit)
+        return allAcolit
       })
       .catch(error => {
         // ocurrió un error durante la actualización de los acólitos
