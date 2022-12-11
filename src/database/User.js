@@ -64,6 +64,17 @@ const getAllActiveUsers = async () => {
   }
 };
 
+const getCurrentUser = async (email) => {
+  try {
+    const getCurrentUser = await User.findOne({ email }); 
+    console.log(getCurrentUser);
+    return getCurrentUser;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 const changeCryptValue = async (email) => {
   try {
     const updateUser = await User.findOne({ email });
@@ -148,5 +159,6 @@ module.exports = {
   changeCryptValue,
   updateUser,
   updateAcolitResistanceAndConcentration,
-  updateAcolitStatusByResistance
+  updateAcolitStatusByResistance,
+  getCurrentUser,
 };

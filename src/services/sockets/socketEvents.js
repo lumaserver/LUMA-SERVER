@@ -38,4 +38,3 @@ events = (socket) => {
 };
 
 exports.socketEvents = events;
-

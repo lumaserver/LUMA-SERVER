@@ -30,6 +30,16 @@ const changeCryptValue = async (email) => {
   }
 }
 
+//GET current user
+const getCurrentUser = async (email) => {
+  try {
+    const currentUser = await User.getCurrentUser(email);
+    return currentUser;
+  } catch (error) {
+    throw error
+  }
+}
+
 //UPDATE money and health
 
 const updateUser = async (data) => {
@@ -60,5 +70,6 @@ module.exports = {
   getAllActiveUsers,
   changeCryptValue,
   updateUser,
-  updateAcolitResistanceAndConcentration
+  getCurrentUser,
+  updateAcolitResistanceAndConcentration,
 };
