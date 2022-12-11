@@ -41,7 +41,6 @@ events = (socket) => {
 cron.schedule('* * * * *', async() => {
   console.log('aa')
   const update = await User.updateAcolitResistanceAndConcentration()
-  console.log(update)
   console.log('ab')
   
 });

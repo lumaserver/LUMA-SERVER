@@ -1,3 +1,11 @@
+const { ACOLIT_AWAKE_STATUS, DESCENT_RESISTENCE,
+  RISE_RESISTENCE,
+  DESCENT_CONCENTRATION,
+  RISE_CONCENTRATION,
+  ACOLIT_SLEEP_STATUS,
+  ACOLIT_UNCONSCIOUS_STATUS, 
+  RESISTANTE_MIN_VALUE,
+  RESISTANTE_MAX_VALUE} = require("../constants");
 const User = require("../models/userModel");
 
 const loginUser = async (newUser) => {
@@ -88,23 +96,25 @@ const updateUser = async (userEmail, updateData) => {
   }
 };
 
+//UPDATE Acolit Resistance And Concentration with CRON
 const updateAcolitResistanceAndConcentration = async () => {
   try {
-    console.log('database1')
     const updateAcolit = await User.updateMany(
-      { isJoshua: { $eq: false }, acolitStatus: { $eq: "awake" }, resistance: {$gt: 10} },
-      { $inc: { resistance: - 10, concentration: - 10 } },
-      { multi: true }
+      { isJoshua: { $eq: false }, acolitStatus: { $eq: ACOLIT_AWAKE_STATUS }, resistance: { $gt: RESISTANTE_MIN_VALUE } },
+      { $inc: { resistance: DESCENT_RESISTENCE, concentration: DESCENT_CONCENTRATION } },
     )
       .then(() => {
         return User.updateMany(
-          { isJoshua: { $eq: false }, acolitStatus: { $eq: "sleeping" }, resistance: {$lt: 100} },
-          { $inc: { resistance: 10, concentration: 10, } },
-          { multi: true }
+          { isJoshua: { $eq: false }, acolitStatus: { $eq: ACOLIT_SLEEP_STATUS }, resistance: { $lt: RESISTANTE_MAX_VALUE } },
+          { $inc: { resistance: RISE_RESISTENCE, concentration: RISE_CONCENTRATION, } },
         );
       })
-      .then(() => {
-        // todos los acólitos han sido actualizados
+      .then(async() => {
+        await updateAcolitStatusByResistance()
+      })
+      .then(async() => {
+        const allAcolit = await getAllActiveUsers()
+        console.log(allAcolit)
       })
       .catch(error => {
         // ocurrió un error durante la actualización de los acólitos
@@ -114,98 +124,28 @@ const updateAcolitResistanceAndConcentration = async () => {
   }
 };
 
-
+const updateAcolitStatusByResistance = async () => {
+  try {
+    const updateAcolitStatus = await User.updateMany(
+      { isJoshua: { $eq: false }, acolitStatus: { $eq: ACOLIT_AWAKE_STATUS }, resistance: { $lte: RESISTANTE_MIN_VALUE } },
+      { $set: { acolitStatus: ACOLIT_UNCONSCIOUS_STATUS } },
+    )
+    .then(() => {
+      return User.updateMany(
+        { isJoshua: { $eq: false }, acolitStatus: { $eq: ACOLIT_SLEEP_STATUS }, resistance: { $eq: RESISTANTE_MAX_VALUE } },
+        { $set: { acolitStatus: ACOLIT_AWAKE_STATUS } },
+      );
+    })    
+  } catch (error) {
+    throw error;
+  }
+}
 
 module.exports = {
   loginUser,
   getAllActiveUsers,
   changeCryptValue,
   updateUser,
-  updateAcolitResistanceAndConcentration
+  updateAcolitResistanceAndConcentration,
+  updateAcolitStatusByResistance
 };
-
-
-/*
-const updateAcolit = await User.updateMany(
-      { isJoshua: { $eq: false }, acolitStatus: { $eq: "awake" } },
-      { $inc: { resistance: - 10, concentration: - 10 } })
-*/
-
-/*
-const updateAcolit = await User.updateMany(
-      { isJoshua: { $eq: false }},
-      {$inc: {
-        resistance: {
-          $cond: { if: { $eq: ['$acolitStatus', 'awake'] }, then: -10, else: 10 },
-        },
-      },
-    },
-    );
-*/
-
-/*
-const updateAcolit = await User.updateMany(
-      {},
-      {resistance: { $switch: {branches: [
-          { case: { $eq: [ "$acolitStatus", 'awake' ] }, then: {$inc: { resistance: -10 }}},
-          { case: { $eq: [ "$acolitStatus", 'sleeping' ] }, then: {$inc: { resistance: 10 }}},
-        ],
-        default: {$inc: { resistance: 0 }}}}
-      },
-    )
-*/
-
-/*
-const updateAcolit = await User.updateMany(
-      {},
-  {$inc: { resistance:{ $switch: {branches: [
-      { case: { $eq: [ "$acolitStatus", 'awake' ] }, then:  -10 },
-      { case: { $eq: [ "$acolitStatus", 'sleeping' ] }, then: 10 },
-    ],
-    default: {$inc: { resistance: 0 }}}}
-  }}
-)
-*/
-
-///////// FUNCIONA
-/*
-const updateAcolit = await User.updateMany(
-      { isJoshua: { $eq: false }, acolitStatus: { $eq: "awake" } },
-      { $inc: { resistance: - 10, concentration: - 10 } },
-      { multi: true }
-    )
-      .then(() => {
-        return User.updateMany(
-          { isJoshua: { $eq: false }, acolitStatus: { $eq: "sleeping" } },
-          { $inc: { resistance: 10, concentration: 10 } },
-          { multi: true }
-        );
-      })
-      .then(() => {
-        // todos los acólitos han sido actualizados
-      })
-      .catch(error => {
-        // ocurrió un error durante la actualización de los acólitos
-      });
-*/
-
-/*
-const updateAcolit = await User.updateMany(
-      { isJoshua: { $eq: false }, acolitStatus: { $eq: "awake" } },
-      { $inc: { resistance: - 10, concentration: - 10 }, $min:{ resistance: 10, concentration: 10} },
-      { multi: true }
-    )
-      .then(() => {
-        return User.updateMany(
-          { isJoshua: { $eq: false }, acolitStatus: { $eq: "sleeping" } },
-          { $inc: { resistance: 10, concentration: 10, }, $max:{ resistance: 100, concentration: 100} },
-          { multi: true }
-        );
-      })
-      .then(() => {
-        // todos los acólitos han sido actualizados
-      })
-      .catch(error => {
-        // ocurrió un error durante la actualización de los acólitos
-      });
-*/
