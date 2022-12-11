@@ -1,6 +1,5 @@
 const User = require('../userService');
 
-const cron = require('node-cron');
 
 events = (socket) => {
   console.log({ Clientsocket: socket.id });
@@ -37,13 +36,6 @@ events = (socket) => {
     console.log("Client disconnected: ", socket.id);
   });
 };
-
-cron.schedule('* * * * *', async() => {
-  console.log('aa')
-  const update = await User.updateAcolitResistanceAndConcentration()
-  console.log('ab')
-  
-});
 
 exports.socketEvents = events;
 
