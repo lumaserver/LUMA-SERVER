@@ -31,10 +31,9 @@ const changeCryptValue = async (email) => {
 }
 
 //GET current user
-const getCurrentUser = async (_id) => {
+const getCurrentUser = async (email) => {
   try {
-    const currentUser = await User.getCurrentUser(_id);
-
+    const currentUser = await User.getCurrentUser(email);
     return currentUser;
   } catch (error) {
     throw error
