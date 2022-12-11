@@ -4,15 +4,14 @@ const userService = require("../services/userService");
 //GET all Active users
 const getAllData = async (req, res) => {
   try {
-  
-    console.log(req.params)
+
     const userEmail = req.params.email;
     const isAdmin = req.params.isJoshua;
-  
+    
     const allDollParts = await dollService.getAllDollPieces();
-    const acolitUsers = null;
+    let acolitUsers = null;
 
-    if (isAdmin) {
+    if (isAdmin===true) {
       const allUsers = await userService.getAllActiveUsers();
       acolitUsers = allUsers.filter((allUsers) => {
         return allUsers.isJoshua == false;

@@ -15,7 +15,7 @@ const allDataRouter = require("./routes/allDataRoute");
 
 
 const app = express();
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3000;
 
 const server = http.createServer(app);
 const io = socketIO(server, {
