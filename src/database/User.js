@@ -125,6 +125,7 @@ const updateAcolitResistanceAndConcentration = async () => {
       })
       .then(async() => {
         const allAcolit = await getAllActiveUsers()
+
         console.log(allAcolit)
         return allAcolit
       })
@@ -138,6 +139,7 @@ const updateAcolitResistanceAndConcentration = async () => {
 
 const updateAcolitStatusByResistance = async () => {
   try {
+
     const updateAcolitStatus = await User.updateMany(
       { isJoshua: { $eq: false }, acolitStatus: { $eq: ACOLIT_AWAKE_STATUS }, resistance: { $lte: RESISTANTE_MIN_VALUE } },
       { $set: { acolitStatus: ACOLIT_UNCONSCIOUS_STATUS } },

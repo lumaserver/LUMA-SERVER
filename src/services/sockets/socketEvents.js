@@ -2,8 +2,18 @@ const User = require('../userService');
 
 
 events = (socket) => {
+  socket.on("new_user", async (socket) => {
+    try {
+      socket.broadcast.emit("new_user", socket.id);
+    } catch (error) {
+      console.log(error);
+      socket.emit("new_user", error);
+    }
+  });
+
   console.log({ Clientsocket: socket.id });
   socket.emit("new_user", socket.id);
+  //const idSocketAcolit = await User.loginUser
 
   socket.on("slider", (data) => {
     console.log(data);
