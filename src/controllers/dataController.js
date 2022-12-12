@@ -11,7 +11,6 @@ const getAllData = async (req, res) => {
     let users = await userService.getUserByEmail(userEmail);
 
     if (users.isJoshua) {
-      console.log("Hola")
       const allUsers = await userService.getAllActiveUsers();
       users = allUsers.filter((allUsers) => {
         return allUsers.isJoshua == false;
