@@ -110,12 +110,12 @@ const updateUser = async (userEmail, updateData) => {
 //UPDATE Acolit Resistance And Concentration with CRON
 const updateAcolitResistanceAndConcentration = async () => {
   try {
-    const updateAcolit = await User.updateMany(
+    await User.updateMany(
       { isJoshua: { $eq: false }, acolitStatus: { $eq: ACOLIT_AWAKE_STATUS }, resistance: { $gt: RESISTANTE_MIN_VALUE } },
       { $inc: { resistance: DESCENT_RESISTENCE, concentration: DESCENT_CONCENTRATION } },
     )
-      .then(() => {
-        return User.updateMany(
+      .then(async () => {
+        await User.updateMany(
           { isJoshua: { $eq: false }, acolitStatus: { $eq: ACOLIT_SLEEP_STATUS }, resistance: { $lt: RESISTANTE_MAX_VALUE } },
           { $inc: { resistance: RISE_RESISTENCE, concentration: RISE_CONCENTRATION, } },
         );
@@ -123,15 +123,10 @@ const updateAcolitResistanceAndConcentration = async () => {
       .then(async() => {
         await updateAcolitStatusByResistance()
       })
-      .then(async() => {
-        const allAcolit = await getAllActiveUsers()
-
-        console.log(allAcolit)
-        return allAcolit
-      })
       .catch(error => {
         // ocurrió un error durante la actualización de los acólitos
       });
+      
   } catch (error) {
     throw error;
   }
