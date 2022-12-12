@@ -2,7 +2,9 @@ const userService = require("../services/userService");
 
 //POST
 const createNewUser = async (req, res) => {
+  console.log(req.body)
   const { token } = req.body;
+  // const { idSocket } = req.body;
   const { name, email, picture } = req.body.claims;
 
   if (!token || !name || !email || !picture) {

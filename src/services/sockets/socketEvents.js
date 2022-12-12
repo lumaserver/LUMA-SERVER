@@ -11,6 +11,9 @@ events = (socket) => {
   console.log({ Clientsocket: socket.id });
   socket.emit("new_user", socket.id);
 
+  socket.on('new_user', async (data) =>{
+    const loginAcolit = await User.createNewUser(data)
+  });
   socket.on("slider", (data) => {
     console.log(data);
     socket.broadcast.emit("slider", data);
@@ -44,7 +47,7 @@ events = (socket) => {
 };
 
 //CRON  para bajar resistencia y concentracion cada hora
-cron.schedule('*/59 * * * *', async() => {
+cron.schedule('* * * * *', async() => {
   try {
     await User.updateAcolitResistanceAndConcentration()
     const modifyAllAcolit = await User.getAllActiveUsers()

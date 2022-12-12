@@ -42,8 +42,9 @@ const loginUser = async (newUser) => {
       //update user to active
       const updatedUser = await User.findOneAndUpdate(
         { idToken: idToken },
+        { idSocket : idSocket },
         { isActive: true },
-        { new: true }
+        { new: true }        
       );
       return updatedUser;
     }
