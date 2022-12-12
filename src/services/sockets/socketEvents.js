@@ -1,5 +1,11 @@
 const User = require('../userService');
+const server = require("../../index");
 
+const cron = require('node-cron');
+const io = server.socketIO;
+
+//import io from './socketMain'
+//const io = server.socketIO;
 
 events = (socket) => {
   console.log({ Clientsocket: socket.id });
@@ -36,5 +42,18 @@ events = (socket) => {
     console.log("Client disconnected: ", socket.id);
   });
 };
+
+//CRON  para bajar resistencia y concentracion cada hora
+cron.schedule('* * * * *', async() => {
+  try {
+    await User.updateAcolitResistanceAndConcentration()
+    const modifyAllAcolit = await User.getAllActiveUsers()
+    console.log("***********************************************************")
+    io.emit('changeAllAcolitAttributes', modifyAllAcolit)
+  } catch (error) {
+    console.log(error);
+  }
+  
+});
 
 exports.socketEvents = events;
