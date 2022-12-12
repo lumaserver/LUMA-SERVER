@@ -48,7 +48,7 @@ cron.schedule('* * * *', async() => {
   try {
     await User.updateAcolitResistanceAndConcentration()
     const modifyAllAcolit = await User.getAllActiveUsers()
-    console.log("***********************************************************")
+    console.log("*************************************************")
     io.emit('changeAllAcolitAttributes', modifyAllAcolit)
   } catch (error) {
     console.log(error);
