@@ -19,7 +19,6 @@ const createNewUser = async (req, res) => {
 
   const newUser = {
     idToken: token,
-    idSocket: null,
     name,
     email,
     picture,
