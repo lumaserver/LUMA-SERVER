@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 
 const userSchema = new Schema({
   idToken: { type: String, required: true },
-  idSocket: { type: String, default: null, required: true },
+  idSocket: { type: String, default: null},
   name: { type: String, required: true },
   email: { type: String, required: true },
   picture: { type: String, required: true },
