@@ -35,7 +35,6 @@ const updateMissionStatus = async (updateData) => {
 const updateDollPiece = async (pieceName, updateData) => {
   try {
     await Doll.updateDollPiece(pieceName, updateData);
-
   } catch (error) {
     throw error
   }

@@ -43,7 +43,7 @@ events = (socket) => {
 //CHANGE DOLL MISSION STATUS
   socket.on("changeDollMissionStatus", async (data) => {
     try {
-      console.log(data)
+      console.log(changeDollMissionStatus)
       const changeDollMissionStatus = await dollService.updateMissionStatus(data)
       socket.broadcast.emit("changeDollMissionStatus", changeDollMissionStatus);
     } catch (error) {
@@ -55,7 +55,7 @@ events = (socket) => {
   //CHANGE DOLL PIECES
   socket.on("changeDollPiece", async (data) => {
     try {
-      console.log(data)
+      console.log(changeDollPiece)
       const changeDollPiece = await dollService.updateDollPiece(data)
       socket.broadcast.emit("changeDollPiece", changeDollPiece);
     } catch (error) {
