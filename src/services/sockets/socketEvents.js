@@ -1,23 +1,13 @@
-const User = require('../userService');
 const server = require("../../index");
+const userService = require("../userService");
 
 const cron = require('node-cron');
 const io = server.socketIO;
 
-//import io from './socketMain'
-//const io = server.socketIO;
-
 events = (socket) => {
   console.log({ Clientsocket: socket.id });
-  socket.emit("new_user", socket.id);
+ 
 
-  socket.on('new_user', async (data) =>{
-    const loginAcolit = await User.createNewUser(data)
-  });
-  socket.on("slider", (data) => {
-    console.log(data);
-    socket.broadcast.emit("slider", data);
-  });
   // TEST BROADCAST
   socket.on("test_broadcast", async (data) => {
     try {
@@ -26,21 +16,30 @@ events = (socket) => {
       console.log(error);
       socket.emit("test_broadcastError", error);
     }
-    
   });
 
   //CHANGE USER DATA
+  let joshua = null;
+
   socket.on("changeAcolitAttributes", async (data) => {
     try {
       console.log(data)
-      const changedAcolit = await User.updateUser(data)
+      const changedAcolit = await userService.updateUser(data)
+      if (data.idSocket != null) {
+        const allUsers = await userService.getAllActiveUsers();
+        joshua = allUsers.filter((allUsers) => {
+          return allUsers.isJoshua == true;
+        });
+       console.log([joshua]); 
+
+        io.to([joshua].idSocket).emit("newUser", changedAcolit);
+      }
       socket.broadcast.emit("changeAcolitAttributes", changedAcolit);
     } catch (error) {
       console.log(error);
       socket.emit("changeAcolitAttributes", error);
     }
   });
-
   socket.on("disconnect", () => {
     console.log("Client disconnected: ", socket.id);
   });
@@ -50,7 +49,7 @@ events = (socket) => {
 cron.schedule('*/59 * * * *', async() => {
   try {
     await User.updateAcolitResistanceAndConcentration()
-    const modifyAllAcolit = await User.getAllActiveUsers()
+    const modifyAllAcolit = await userService.getAllActiveUsers()
     console.log("*************************************************")
     io.emit('changeAllAcolitAttributes', modifyAllAcolit)
   } catch (error) {
