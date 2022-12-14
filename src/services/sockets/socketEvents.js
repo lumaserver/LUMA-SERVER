@@ -1,5 +1,6 @@
 const server = require("../../index");
 const userService = require("../userService");
+const dollService = require("../dollService");
 
 const cron = require('node-cron');
 const io = server.socketIO;
@@ -38,6 +39,31 @@ events = (socket) => {
       socket.emit("changeAcolitAttributes", error);
     }
   });
+
+//CHANGE DOLL MISSION STATUS
+  socket.on("changeDollMissionStatus", async (data) => {
+    try {
+      console.log(data)
+      const changeDollMissionStatus = await dollService.updateMissionStatus(data)
+      socket.broadcast.emit("changeDollMissionStatus", changeDollMissionStatus);
+    } catch (error) {
+      console.log(error);
+      socket.emit("changeDollMissionStatus", error);
+    }
+  });
+
+  //CHANGE DOLL PIECES
+  socket.on("changeDollPiece", async (data) => {
+    try {
+      console.log(data)
+      const changeDollPiece = await dollService.updateDollPiece(data)
+      socket.broadcast.emit("changeDollPiece", changeDollPiece);
+    } catch (error) {
+      console.log(error);
+      socket.emit("changeDollPiece", error);
+    }
+  });
+
   socket.on("disconnect", () => {
     console.log("Client disconnected: ", socket.id);
   });
