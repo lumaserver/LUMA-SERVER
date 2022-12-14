@@ -30,7 +30,7 @@ events = (socket) => {
         joshua = allUsers.filter((allUsers) => {
           return allUsers.isJoshua == true;
         });
-        io.to(joshua).emit("newUser", changedAcolit);
+        io.to(joshua).emit("test_broadcast", changedAcolit);
       }
       socket.broadcast.emit("changeAcolitAttributes", changedAcolit);
     } catch (error) {
