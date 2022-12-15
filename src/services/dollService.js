@@ -25,7 +25,8 @@ const getAllDollPieces = async () => {
 
 const updateMissionStatus = async (updateData) => {
   try {
-    await Doll.updateMissionStatus(updateData);
+    const dollUpdate = await Doll.updateMissionStatus(updateData);
+    return dollUpdate
 
   } catch (error) {
     throw error

@@ -7,7 +7,7 @@ const io = server.socketIO;
 
 events = (socket) => {
   console.log({ Clientsocket: socket.id });
- 
+
 
   // TEST BROADCAST
   socket.on("test_broadcast", async (data) => {
@@ -40,11 +40,11 @@ events = (socket) => {
     }
   });
 
-//CHANGE DOLL MISSION STATUS
+  //CHANGE DOLL MISSION STATUS
   socket.on("changeDollMissionStatus", async (data) => {
     try {
       const changeDollMissionStatus = await dollService.updateMissionStatus(data)
-      console.log(changeDollMissionStatus)
+      console.log(`events ${changeDollMissionStatus}`)
       socket.broadcast.emit("changeDollMissionStatus", changeDollMissionStatus);
     } catch (error) {
       console.log(error);
@@ -56,7 +56,7 @@ events = (socket) => {
   socket.on("changeDollPiece", async (data) => {
     try {
       const changeDollPiece = await dollService.updateDollPiece(data)
-      console.log(changeDollPiece)
+      console.log(`events doll pieces ${changeDollPiece}`)
       socket.broadcast.emit("changeDollPiece", changeDollPiece);
     } catch (error) {
       console.log(error);
@@ -70,16 +70,16 @@ events = (socket) => {
 };
 
 //CRON  para bajar resistencia y concentracion cada hora
-cron.schedule('*/59 * * * *', async() => {
+cron.schedule('*/59 * * * *', async () => {
   try {
-    await User.updateAcolitResistanceAndConcentration()
+    await userService.updateAcolitResistanceAndConcentration()
     const modifyAllAcolit = await userService.getAllActiveUsers()
     console.log("*************************************************")
     io.emit('changeAllAcolitAttributes', modifyAllAcolit)
   } catch (error) {
     console.log(error);
   }
-  
+
 });
 
 exports.socketEvents = events;

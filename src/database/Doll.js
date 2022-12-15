@@ -4,23 +4,23 @@ const DollPiece = require("../models/dollPieceModel");
 
 //POST create doll and dollPieces documents
 const createDollAndDollPiece = async () => {
-  
+
   try {
     let dollToInsert = new Doll();
     const createdDoll = await dollToInsert.save();
-    dollPiecesData.map(async (item) => { 
+    dollPiecesData.map(async (item) => {
 
       let dollPiecesToInsert = new DollPiece(item);
-      
+
       const createdDollPiece = await dollPiecesToInsert.save();
-    
-      const filter = {missionStatus: 'missionStarted'}
-      const doll = await Doll.findOneAndUpdate( filter, {$push: { bodyPart: createdDollPiece._id }}, {
-         new: true 
+
+      const filter = { missionStatus: 'missionStarted' }
+      const doll = await Doll.findOneAndUpdate(filter, { $push: { bodyPart: createdDollPiece._id } }, {
+        new: true
       });
     })
-    
-  
+
+
   } catch (error) {
     console.log(error);
     throw error;
@@ -42,21 +42,22 @@ const getAllDollPieces = async () => {
 
 const updateMissionStatus = async (updateData) => {
   try {
-  
-    await Doll.update( updateData);
+    await Doll.update(updateData)
+    const doll = await Doll.find()
+    return doll
   } catch (error) {
     throw error;
   }
 };
 
 const updateDollPiece = async (pieceName, updateData) => {
-
   try {
     const filter = { pieceName };
-    const dollPieces = await DollPiece.findOneAndUpdate(filter, updateData, {
+    await DollPiece.findOneAndUpdate(filter, updateData, {
       new: true
     });
-    return dollPieces;
+    const UpdateDollPieces = await DollPiece.findOne({ filter })
+    return UpdateDollPieces;
   } catch (error) {
     throw error;
   }
