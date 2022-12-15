@@ -42,7 +42,7 @@ const getAllDollPieces = async () => {
 
 const updateMissionStatus = async (updateData) => {
   try {
-    await Doll.update(updateData)
+    await Doll.update({}, updateData)
     const doll = await Doll.find()
     return doll
   } catch (error) {
@@ -56,7 +56,8 @@ const updateDollPiece = async (pieceName, updateData) => {
     await DollPiece.findOneAndUpdate(filter, updateData, {
       new: true
     });
-    const UpdateDollPieces = await DollPiece.findOne({ filter })
+    const filterPieceName = {pieceName: filter.pieceName.pieceName}
+    const UpdateDollPieces = await DollPiece.findOne(filterPieceName)
     return UpdateDollPieces;
   } catch (error) {
     throw error;
