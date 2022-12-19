@@ -39,6 +39,17 @@ events = (socket) => {
       socket.emit("changeAcolitAttributes", error);
     }
   });
+  
+  //START DOLL MISSION
+  socket.on("startDollMission" ,async () => {
+    try {
+      await dollService.createDollAndDollPiece();
+      io.emit("startDollMission");
+    } catch (error) {
+      console.log(error);
+      socket.emit("startDollMissionError", error);
+    }
+  })
 
   //CHANGE DOLL MISSION STATUS
   socket.on("changeDollMissionStatus", async (data) => {

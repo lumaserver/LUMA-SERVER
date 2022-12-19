@@ -92,19 +92,18 @@ const changeCryptValue = async (email) => {
 };
 
 //UPDATE money and health
-const updateUser = async (userEmail, updateData) => {
+const updateUser = async (data) => {
   try {
-    const filter = { email: userEmail };
-    console.log(filter);
-
-    const moneyAndHealth = await User.findOneAndUpdate(filter, updateData, {
-      new: true,
-    });
-    return moneyAndHealth;
+  const filter = { email: data.email };
+  const updateData = data  
+  const moneyAndHealth = await User.findOneAndUpdate(filter, updateData, {
+  new: true,
+  });
+  return moneyAndHealth;
   } catch (error) {
-    throw error;
+  throw error;
   }
-};
+  };
 
 //UPDATE Acolit Resistance And Concentration with CRON
 const updateAcolitResistanceAndConcentration = async () => {

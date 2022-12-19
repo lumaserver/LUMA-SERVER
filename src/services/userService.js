@@ -44,16 +44,12 @@ const getUserByEmail = async (email) => {
 
 const updateUser = async (data) => {
   try {
-
-    const userEmail = data.email
-    const updateData = data.data
-    const update = await User.updateUser(userEmail, updateData);
- 
-    return update;
+  const update = await User.updateUser(data);
+  return update;
   } catch (error) {
-    throw error
+  throw error
   }
-}
+  }
 
 const updateAcolitResistanceAndConcentration = async () => {
   try {
