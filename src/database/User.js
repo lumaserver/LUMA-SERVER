@@ -99,6 +99,7 @@ const updateUser = async (data) => {
   const moneyAndHealth = await User.findOneAndUpdate(filter, updateData, {
   new: true,
   });
+  
   return moneyAndHealth;
   } catch (error) {
   throw error;
