@@ -31,8 +31,8 @@ const createDollAndDollPiece = async () => {
 const getAllDollPieces = async () => {
   try {
     const allDollParts = await Doll.find().populate('bodyPart');
-    console.log(`Database ${allDollParts}`)
-    return allDollParts;
+    console.log(`Database ${allDollParts[0]}`)
+    return allDollParts[0];
   } catch (error) {
     console.log(error);
     throw error;
