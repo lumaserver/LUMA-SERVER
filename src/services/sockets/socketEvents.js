@@ -33,7 +33,7 @@ events = (socket) => {
         });
         io.to(joshua).emit("newUser", changedAcolit);
       }
-      socket.broadcast.emit("changeAcolitAttributes", changedAcolit);
+      io.emit("changeAcolitAttributes", changedAcolit);
     } catch (error) {
       console.log(error);
       socket.emit("changeAcolitAttributes", error);
@@ -45,7 +45,7 @@ events = (socket) => {
     try {
       const changeDollMissionStatus = await dollService.updateMissionStatus(data)
       console.log(`events ${changeDollMissionStatus}`)
-      socket.broadcast.emit("changeDollMissionStatus", changeDollMissionStatus);
+      io.emit("changeDollMissionStatus", changeDollMissionStatus);
     } catch (error) {
       console.log(error);
       socket.emit("changeDollMissionStatus", error);
@@ -57,7 +57,7 @@ events = (socket) => {
     try {
       const changeDollPiece = await dollService.updateDollPiece(data)
       console.log(`events doll pieces ${changeDollPiece}`)
-      socket.broadcast.emit("changeDollPiece", changeDollPiece);
+      io.emit("changeDollPiece", changeDollPiece);
     } catch (error) {
       console.log(error);
       socket.emit("changeDollPiece", error);
