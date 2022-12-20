@@ -85,6 +85,7 @@ const changeCryptValue = async (email) => {
     const isInTheCrypt = await User.findOneAndUpdate(filter, update, {
       new: true,
     });
+    console.log(`database Inside ${isInTheCrypt}`)
     return isInTheCrypt;
   } catch (error) {
     throw error;
