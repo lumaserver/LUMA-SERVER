@@ -90,6 +90,18 @@ events = (socket) => {
     }
   });
 
+  //CHANGE RESET DOLL MISSION
+  socket.on("resetDollMission", async () => {
+    try {
+      await dollService.deleteDollAndDollPieces()
+      //console.log(`events ${changeDollMissionStatus}`)
+      io.emit("resetDollMission", {});
+    } catch (error) {
+      console.log(error);
+      socket.emit("resetDollMission", error);
+    }
+  });
+
   //CHANGE DOLL PIECES
   socket.on("changeDollPiece", async (data) => {
     try {
