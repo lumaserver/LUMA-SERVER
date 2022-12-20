@@ -46,7 +46,7 @@ const getAllDollPieces = async () => {
 
 const updateMissionStatus = async (updateData) => {
   try {
-    await Doll.update({}, updateData)
+    await Doll.updateMany({}, updateData)
     const doll = await Doll.find()
     return doll
   } catch (error) {
