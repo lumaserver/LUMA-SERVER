@@ -64,9 +64,13 @@ events = (socket) => {
   //START DOLL MISSION
   socket.on("startDollMission", async () => {
     try {
-      await dollService.createDollAndDollPiece();
-      const newDoll = await dollService.getAllDollPieces();
-      console.log(newDoll)
+      await dollService.createDollAndDollPiece()
+        /*.then(async () => {
+          const newDoll = await dollService.getAllDollPieces();
+          console.log(newDoll)
+        })*/
+        const newDoll = await dollService.getAllDollPieces();
+          console.log(newDoll)
       io.emit("startDollMission", newDoll);
     } catch (error) {
       console.log(error);
