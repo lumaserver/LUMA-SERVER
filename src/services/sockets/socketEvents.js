@@ -41,31 +41,29 @@ events = (socket) => {
   });
 
   //CHANGE ACOLIT ISINSIDE
- 
+
   socket.on("changeAcolitIsInside", async (email) => {
     try {
       console.log(email)
       const changedAcolitIsInside = await userService.changeCryptValue(email)
-      if (data.idSocket != null) {
-        const allUsers = await userService.getAllActiveUsers();
-        joshua = allUsers.filter((allUsers) => {
-          return allUsers.isJoshua == true;
-        });
-        io.to(joshua).emit("changeAcolitIsInside", changedAcolitIsInside);
-      }
-      io.emit("changeAcolitIsInside", changedAcolitIsInside);
+
+      const allUsers = await userService.getAllActiveUsers();
+      joshua = allUsers.filter((allUsers) => {
+        return allUsers.isJoshua == true;
+      });
+      io.to(joshua).emit("changeAcolitIsInside", changedAcolitIsInside);
       console.log(`Events Inside ${changedAcolitIsInside}`)
     } catch (error) {
       console.log(error);
       socket.emit("changeAcolitIsInside", error);
     }
   });
-  
+
   //START DOLL MISSION
-  socket.on("startDollMission" ,async () => {
+  socket.on("startDollMission", async () => {
     try {
       await dollService.createDollAndDollPiece();
-      const newDoll= await dollService.getAllDollPieces();
+      const newDoll = await dollService.getAllDollPieces();
       console.log(newDoll)
       io.emit("startDollMission", newDoll);
     } catch (error) {
