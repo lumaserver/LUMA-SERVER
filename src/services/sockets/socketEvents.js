@@ -42,20 +42,20 @@ events = (socket) => {
 
   //CHANGE ACOLIT ISINSIDE
 
-  socket.on("changeAcolitIsInside", async (email) => {
+  socket.on("changeCriptStatus", async (email) => {
     try {
-      console.log(email)
+      //console.log(email)
       const changedAcolitIsInside = await userService.changeCryptValue(email)
 
       const allUsers = await userService.getAllActiveUsers();
       joshua = allUsers.filter((allUsers) => {
         return allUsers.isJoshua == true;
       });
-      io.to(joshua).emit("changeAcolitIsInside", changedAcolitIsInside);
+      io.to(joshua).emit("changeCriptStatus", changedAcolitIsInside);
       console.log(`Events Inside ${changedAcolitIsInside}`)
     } catch (error) {
       console.log(error);
-      socket.emit("changeAcolitIsInside", error);
+      socket.emit("changeCriptStatus", error);
     }
   });
 
