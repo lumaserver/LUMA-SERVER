@@ -35,7 +35,7 @@ const getAllDollPieces = async () => {
     console.log(`Database1 ${typeof allDollParts[0]}`)
     console.log(`Database2 ${typeof allDollParts}`)
     console.log(`Database3 ${typeof allDollParts.bodyPart}`)
-    return allDollParts;
+    return allDollParts[0];
   } catch (error) {
     console.log(error);
     throw error;
