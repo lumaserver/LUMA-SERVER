@@ -51,7 +51,9 @@ events = (socket) => {
       joshua = allUsers.filter((allUsers) => {
         return allUsers.isJoshua == true;
       });
-      io.to(joshua).emit("changeCriptStatus", changedAcolitIsInside);
+      io.emit("changeCriptStatus", changedAcolitIsInside);
+
+      //io.to(joshua).emit("changeCriptStatus", changedAcolitIsInside);
       console.log(`Events Inside ${changedAcolitIsInside}`)
     } catch (error) {
       console.log(error);
