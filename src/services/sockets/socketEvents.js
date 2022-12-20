@@ -54,6 +54,7 @@ events = (socket) => {
         io.to(joshua).emit("changeAcolitIsInside", changedAcolitIsInside);
       }
       io.emit("changeAcolitIsInside", changedAcolitIsInside);
+      console.log(`Events Inside ${changedAcolitIsInside}`)
     } catch (error) {
       console.log(error);
       socket.emit("changeAcolitIsInside", error);
