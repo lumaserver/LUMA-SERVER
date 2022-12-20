@@ -95,7 +95,7 @@ events = (socket) => {
     try {
       await dollService.deleteDollAndDollPieces()
       //console.log(`events ${changeDollMissionStatus}`)
-      io.emit("resetDollMission", {});
+      io.emit("resetDollMission", undefined);
     } catch (error) {
       console.log(error);
       socket.emit("resetDollMission", error);
