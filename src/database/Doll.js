@@ -48,7 +48,7 @@ const updateMissionStatus = async (updateData) => {
   try {
     await Doll.updateMany({}, updateData)
     const doll = await Doll.find()
-    return doll
+    return doll[0]
   } catch (error) {
     throw error;
   }
