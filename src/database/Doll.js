@@ -8,7 +8,7 @@ const createDollAndDollPiece = async () => {
   try {
     let dollToInsert = new Doll()
     const createdDoll = await dollToInsert.save()
-    console.log(`database create doll ${createdDoll}`)
+    //console.log(`database create doll ${createdDoll}`)
       .then(async () => {
         dollPiecesData.map(async (item) => {
 
