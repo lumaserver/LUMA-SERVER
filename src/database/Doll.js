@@ -30,13 +30,16 @@ const createDollAndDollPiece = async () => {
 //GET all doll pieces
 const getAllDollPieces = async () => {
   try {
-   /*  const allDollParts = await Doll.find().populate('bodyPart');
+     const allDoll = await Doll.find()
     //console.log(`Database ${allDollParts[0].bodypart}`)
-    console.log(`Database1 ${typeof allDollParts[0]}`)
+    /* console.log(`Database1 ${typeof allDollParts[0]}`)
     console.log(`Database2 ${typeof allDollParts}`)
     console.log(`Database3 ${typeof allDollParts.bodyPart}`) */
    const allDollParts = await DollPiece.find();
-   console.log(`Database ${allDollParts}`)
+   console.log(`Database1 ${allDoll}`)
+   console.log(`Database2 ${allDollParts}`)
+
+   
 
     return allDollParts;
   } catch (error) {
