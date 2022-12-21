@@ -33,10 +33,10 @@ const updateMissionStatus = async (updateData) => {
   }
 }
 
-const updateDollPiece = async (pieceName, updateData) => {
+const updateDollPiece = async (updateData) => {
   try {
-    const dollPieces = await Doll.updateDollPiece(pieceName, updateData);
-    return dollPieces;
+    const dollPiece = await Doll.updateDollPiece(updateData);
+    return dollPiece;
   } catch (error) {
     throw error
   }

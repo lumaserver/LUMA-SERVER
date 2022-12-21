@@ -54,15 +54,14 @@ const updateMissionStatus = async (updateData) => {
   }
 };
 
-const updateDollPiece = async (pieceName, updateData) => {
+const updateDollPiece = async (updateData) => {
   try {
-    const filter = { pieceName };
+    const filter = { pieceName: updateData.pieceName };
     await DollPiece.findOneAndUpdate(filter, updateData, {
       new: true
     });
-    const filterPieceName = {pieceName: filter.pieceName.pieceName}
-    const UpdateDollPieces = await DollPiece.findOne(filterPieceName)
-    return UpdateDollPieces;
+    const UpdateDollPiece = await DollPiece.findOne(filter)
+    return UpdateDollPiece;
   } catch (error) {
     throw error;
   }
