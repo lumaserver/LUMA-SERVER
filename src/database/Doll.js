@@ -24,6 +24,7 @@ const createDollAndDollPiece = async () => {
           });
           console.log(`database create doll and pieces ${doll}`)
         })
+      
 
       })
 
