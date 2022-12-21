@@ -9,23 +9,24 @@ const createDollAndDollPiece = async () => {
     let dollToInsert = new Doll();
     const createdDoll = await dollToInsert.save();
     console.log(`database create doll ${createdDoll}`)
-    dollPiecesData.map(async (item) => {
+      .then(async () => {
+        dollPiecesData.map(async (item) => {
 
-      let dollPiecesToInsert = new DollPiece(item);
-      console.log(`database insert pieces ${dollPiecesToInsert}`)
+          let dollPiecesToInsert = new DollPiece(item);
+          console.log(`database insert pieces ${dollPiecesToInsert}`)
 
-      const createdDollPiece = await dollPiecesToInsert.save();
-      console.log(`database create pieces ${createdDollPiece}`)
+          const createdDollPiece = await dollPiecesToInsert.save();
+          console.log(`database create pieces ${createdDollPiece}`)
 
-      const filter = { missionStatus: 'missionStarted' }
-      const doll = await Doll.findOneAndUpdate(filter, { $push: { bodyPart: createdDollPiece._id } }, {
-        new: true
-      });
-      console.log(`database create doll and pieces ${doll}`)
+          const filter = { missionStatus: 'missionStarted' }
+          const doll = await Doll.findOneAndUpdate(filter, { $push: { bodyPart: createdDollPiece._id } }, {
+            new: true
+          });
+          console.log(`database create doll and pieces ${doll}`)
+        })
 
-     
-    })
-    
+      })
+
   } catch (error) {
     console.log(error);
     throw error;
@@ -37,13 +38,13 @@ const getAllDollPieces = async () => {
   try {
 
     const allDollParts = await Doll.find().populate('bodyPart')
-    
+
     //console.log(`Database ${allDollParts[0].bodypart}`)
     console.log(`Database1 ${allDollParts[0]}`)
     console.log(`Database2 ${allDollParts}`)
-    console.log(`Database3 ${typeof allDollParts[0]}`) 
+    console.log(`Database3 ${typeof allDollParts[0]}`)
 
-   //const allDollParts = await DollPiece.find();
+    //const allDollParts = await DollPiece.find();
 
     return allDollParts[0];
   } catch (error) {
