@@ -27,7 +27,6 @@ const createDollAndDollPiece = async () => {
         .catch(error => {
           // ocurrió un error durante la creacion de la muñeca y las piezas
         });     
-
       })
 
   } catch (error) {
