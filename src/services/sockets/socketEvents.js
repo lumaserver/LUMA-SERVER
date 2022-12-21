@@ -39,7 +39,19 @@ events = (socket) => {
       socket.emit("changeAcolitAttributes", error);
     }
   });
+//CREATE NEW USER
 
+socket.on("createUser", async (data) => {
+  try {
+    const newUser = await userService.createNewUser(data)
+    io.emit("createUser", newUser);
+  } catch (error) {
+    console.log(error);
+    socket.emit("createUser", error);
+  }
+});
+
+  
   //CHANGE ACOLIT ISINSIDE
 
   socket.on("changeCriptStatus", async (email) => {
