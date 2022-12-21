@@ -7,7 +7,7 @@ const io = server.socketIO;
 
 events = (socket) => {
   console.log({ Clientsocket: socket.id });
-
+  let idSocket = {idSocket: socket.id}
 
   // TEST BROADCAST
   socket.on("test_broadcast", async (data) => {
@@ -43,7 +43,12 @@ events = (socket) => {
 
 socket.on("createUser", async (data) => {
   try {
-    const newUser = await userService.createNewUser(data)
+    const user = {
+      ...idSocket,
+      ...data
+    } 
+    console.log(`createUser Events ${user}`)
+    const newUser = await userService.createNewUser(user)
     io.emit("createUser", newUser);
   } catch (error) {
     console.log(error);
