@@ -75,7 +75,7 @@ events = (socket) => {
      io.emit("startDollMission", newDoll); */
     } catch (error) {
       console.log(error);
-      socket.emit("startDollMissionError", error);
+      socket.emit("startDollMission", error);
     }
   })
 
