@@ -8,16 +8,21 @@ const createDollAndDollPiece = async () => {
   try {
     let dollToInsert = new Doll();
     const createdDoll = await dollToInsert.save();
+    console.log(`database create doll ${createdDoll}`)
     dollPiecesData.map(async (item) => {
 
       let dollPiecesToInsert = new DollPiece(item);
+      console.log(`database insert pieces ${dollPiecesToInsert}`)
 
       const createdDollPiece = await dollPiecesToInsert.save();
+      console.log(`database create pieces ${createdDollPiece}`)
 
       const filter = { missionStatus: 'missionStarted' }
       const doll = await Doll.findOneAndUpdate(filter, { $push: { bodyPart: createdDollPiece._id } }, {
         new: true
       });
+      console.log(`database create doll and pieces ${doll}`)
+
      
     })
     

@@ -88,7 +88,7 @@ socket.on("createUser", async (data) => {
         io.emit("startDollMission", newDoll);
       }) */
       const newDoll = await dollService.getAllDollPieces();
-      console.log(`startDollMission Events ${newDoll}`)
+     // console.log(`startDollMission Events ${newDoll}`)
       io.emit("startDollMission", newDoll);
     } catch (error) {
       console.log(error);
