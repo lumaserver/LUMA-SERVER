@@ -32,7 +32,7 @@ const getAllDollPieces = async () => {
   try {
 
     const allDollParts = await Doll.find().populate('bodyPart')
-    .then(bodyPart=>console.log(bodyPart))
+    .then(onsole.log(`then parts ${allDollParts}`))
     .catch(error=>console.log(error));
     //console.log(`Database ${allDollParts[0].bodypart}`)
     console.log(`Database1 ${allDollParts[0]}`)
