@@ -36,7 +36,7 @@ const getAllDollPieces = async () => {
     console.log(`Database2 ${typeof allDollParts}`)
     console.log(`Database3 ${typeof allDollParts.bodyPart}`) */
    const allDollParts = await DollPiece.find();
-
+   console.log(`Database ${allDollParts}`)
 
     return allDollParts;
   } catch (error) {
