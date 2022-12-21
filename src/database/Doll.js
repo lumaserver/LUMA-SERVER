@@ -10,6 +10,7 @@ const createDollAndDollPiece = async () => {
     const createdDoll = await dollToInsert.save()
     console.log(`database create doll ${createdDoll}`)
 
+//Promise.all para no perder la sincronia del map, ejecuta cada secuencia por cada vez que tiene que recorrer el map
     await Promise.all(
 
       dollPiecesData.map(async (item) => {
@@ -36,15 +37,8 @@ const createDollAndDollPiece = async () => {
 //GET all doll pieces
 const getAllDollPieces = async () => {
   try {
-
     const allDollParts = await Doll.find().populate('bodyPart')
-
-    //console.log(`Database ${allDollParts[0].bodypart}`)
-    console.log(`Database1 ${allDollParts[0]}`)
-    console.log(`Database2 ${allDollParts}`)
-    console.log(`Database3 ${typeof allDollParts[0]}`)
-
-    //const allDollParts = await DollPiece.find();
+    console.log(`Database getAllDollPieces ${allDollParts[0]}`)
 
     return allDollParts[0];
   } catch (error) {
