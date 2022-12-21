@@ -10,7 +10,7 @@ const createDollAndDollPiece = async () => {
     const createdDoll = await dollToInsert.save()
     console.log(`database create doll ${createdDoll}`)
 
-    const result = await Promise.all(
+    await Promise.all(
 
       dollPiecesData.map(async (item) => {
 
