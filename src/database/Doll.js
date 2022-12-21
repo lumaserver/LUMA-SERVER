@@ -15,7 +15,7 @@ const createDollAndDollPiece = async () => {
           let dollPiecesToInsert = new DollPiece(item);
           console.log(`database insert pieces ${dollPiecesToInsert}`)
 
-          const createdDollPiece = await dollPiecesToInsert.save();
+          const createdDollPiece = await dollPiecesToInsert.save()
           console.log(`database create pieces ${createdDollPiece}`)
 
           const filter = { missionStatus: 'missionStarted' }
