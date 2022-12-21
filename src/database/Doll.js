@@ -24,7 +24,6 @@ const createDollAndDollPiece = async () => {
         return  await Doll.findOneAndUpdate(filter, { $push: { bodyPart: createdDollPiece._id } }, {
           new: true
         });
-      
       })
     ) 
   } catch (error) {
