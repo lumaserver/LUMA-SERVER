@@ -9,12 +9,11 @@ const createDollAndDollPiece = async () => {
     let dollToInsert = new Doll()
     const createdDoll = await dollToInsert.save()
     //console.log(`database create doll ${createdDoll}`)
-      .then(async () => {
-        dollPiecesData.map(async (item) => {
+        dollPiecesData.map( (item) => {
 
           let dollPiecesToInsert = new DollPiece(item);
           console.log(`database insert pieces ${dollPiecesToInsert}`)
-
+          .then(async () => {
           const createdDollPiece = await dollPiecesToInsert.save()
           console.log(`database create pieces ${createdDollPiece}`)
 
