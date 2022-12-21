@@ -9,11 +9,11 @@ const createDollAndDollPiece = async () => {
     let dollToInsert = new Doll()
     const createdDoll = await dollToInsert.save()
     //console.log(`database create doll ${createdDoll}`)
-        dollPiecesData.map( (item) => {
+        dollPiecesData.map(async (item) => {
 
           let dollPiecesToInsert = new DollPiece(item);
           console.log(`database insert pieces ${dollPiecesToInsert}`)
-          .then(async () => {
+
           const createdDollPiece = await dollPiecesToInsert.save()
           console.log(`database create pieces ${createdDollPiece}`)
 
@@ -22,10 +22,7 @@ const createDollAndDollPiece = async () => {
             new: true
           });
           console.log(`database create doll and pieces ${doll}`)
-        })
-        .catch(error => {
-          // ocurrió un error durante la creacion de la muñeca y las piezas
-        });     
+   
       })
 
   } catch (error) {
