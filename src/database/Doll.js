@@ -10,7 +10,7 @@ const createDollAndDollPiece = async () => {
     const createdDoll = await dollToInsert.save()
     console.log(`database create doll ${createdDoll}`)
 
-    await Promise.all(
+    const result = await Promise.all(
 
       dollPiecesData.map(async (item) => {
 
@@ -24,6 +24,7 @@ const createDollAndDollPiece = async () => {
         return  await Doll.findOneAndUpdate(filter, { $push: { bodyPart: createdDollPiece._id } }, {
           new: true
         });
+        
       })
     ) 
   } catch (error) {
