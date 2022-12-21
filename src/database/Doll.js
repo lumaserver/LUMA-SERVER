@@ -42,7 +42,7 @@ const getAllDollPieces = async () => {
    //const allDollParts = await DollPiece.find();
    
 
-    return allDollParts[0];
+    return allDollParts;
   } catch (error) {
     console.log(error);
     throw error;
