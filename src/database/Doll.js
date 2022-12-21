@@ -24,7 +24,9 @@ const createDollAndDollPiece = async () => {
           });
           console.log(`database create doll and pieces ${doll}`)
         })
-      
+        .catch(error => {
+          // ocurrió un error durante la creacion de la muñeca y las piezas
+        });     
 
       })
 
