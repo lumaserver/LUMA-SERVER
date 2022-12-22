@@ -3,6 +3,7 @@ const userService = require("../userService");
 const dollService = require("../dollService");
 
 const cron = require('node-cron');
+const { RESISTANCE_EXHAUSTED_VALUE } = require("../../constants");
 const io = server.socketIO;
 
 events = (socket) => {
@@ -140,7 +141,8 @@ cron.schedule('*/59 * * * *', async () => {
     const exhausted = modifyAllAcolit.filter((modifyAllAcolit) => {
       return modifyAllAcolit.resistance == RESISTANCE_EXHAUSTED_VALUE;
     });
-    exhausted ? io.emit('acolitExhausted', console.log('tienes que dormir')) : null
+    exhausted ? console.log('tienes que dormir') : null
+    exhausted ? io.emit('acolitExhausted') : null
     console.log("*************************************************")
     io.emit('changeAllAcolitAttributes', modifyAllAcolit)
   } catch (error) {
