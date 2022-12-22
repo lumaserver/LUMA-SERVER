@@ -145,6 +145,7 @@ cron.schedule('* * * *', async () => {
     exhausted ? io.emit('acolitExhausted') : null
     console.log("*************************************************")
     io.emit('changeAllAcolitAttributes', modifyAllAcolit)
+    
   } catch (error) {
     console.log(error);
   }
