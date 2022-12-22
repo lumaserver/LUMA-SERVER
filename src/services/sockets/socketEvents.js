@@ -134,14 +134,14 @@ socket.on("createUser", async (data) => {
 };
 
 //CRON  para bajar resistencia y concentracion cada hora
-cron.schedule('*/59 * * * *', async () => {
+cron.schedule('* * * *', async () => {
   try {
     await userService.updateAcolitResistanceAndConcentration()
     const modifyAllAcolit = await userService.getAllActiveUsers()
     const exhausted = modifyAllAcolit.filter((modifyAllAcolit) => {
       return modifyAllAcolit.resistance == RESISTANCE_EXHAUSTED_VALUE;
     });
-    exhausted ? console.log('tienes que dormir') : null
+    exhausted ? console.log(`tienes que dormir ${exhausted.name}`) : null
     exhausted ? io.emit('acolitExhausted') : null
     console.log("*************************************************")
     io.emit('changeAllAcolitAttributes', modifyAllAcolit)
