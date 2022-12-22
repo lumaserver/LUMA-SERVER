@@ -82,11 +82,6 @@ socket.on("createUser", async (data) => {
   socket.on("startDollMission", async () => {
     try {
       await dollService.createDollAndDollPiece()
-      /* .then(async () => {
-        const newDoll = await dollService.getAllDollPieces();
-        console.log(newDoll)
-        io.emit("startDollMission", newDoll);
-      }) */
       const newDoll = await dollService.getAllDollPieces();
      // console.log(`startDollMission Events ${newDoll}`)
       io.emit("startDollMission", newDoll);
@@ -142,6 +137,10 @@ cron.schedule('*/59 * * * *', async () => {
   try {
     await userService.updateAcolitResistanceAndConcentration()
     const modifyAllAcolit = await userService.getAllActiveUsers()
+    const exhausted = modifyAllAcolit.filter((modifyAllAcolit) => {
+      return modifyAllAcolit.resistance == RESISTANCE_EXHAUSTED_VALUE;
+    });
+    exhausted ? io.emit('acolitExhausted', console.log('tienes que dormir')) : null
     console.log("*************************************************")
     io.emit('changeAllAcolitAttributes', modifyAllAcolit)
   } catch (error) {

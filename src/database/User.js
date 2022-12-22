@@ -4,8 +4,8 @@ const { ACOLIT_AWAKE_STATUS, DESCENT_RESISTENCE,
   RISE_CONCENTRATION,
   ACOLIT_SLEEP_STATUS,
   ACOLIT_UNCONSCIOUS_STATUS, 
-  RESISTANTE_MIN_VALUE,
-  RESISTANTE_MAX_VALUE} = require("../constants");
+  RESISTANCE_MIN_VALUE,
+  RESISTANCE_MAX_VALUE} = require("../constants");
 const User = require("../models/userModel");
 
 const loginUser = async (newUser) => {
@@ -111,12 +111,12 @@ const updateUser = async (data) => {
 const updateAcolitResistanceAndConcentration = async () => {
   try {
     await User.updateMany(
-      { isJoshua: { $eq: false }, acolitStatus: { $eq: ACOLIT_AWAKE_STATUS }, resistance: { $gt: RESISTANTE_MIN_VALUE } },
+      { isJoshua: { $eq: false }, acolitStatus: { $eq: ACOLIT_AWAKE_STATUS }, resistance: { $gt: RESISTANCE_MIN_VALUE } },
       { $inc: { resistance: DESCENT_RESISTENCE, concentration: DESCENT_CONCENTRATION } },
     )
       .then(async () => {
         await User.updateMany(
-          { isJoshua: { $eq: false }, acolitStatus: { $eq: ACOLIT_SLEEP_STATUS }, resistance: { $lt: RESISTANTE_MAX_VALUE } },
+          { isJoshua: { $eq: false }, acolitStatus: { $eq: ACOLIT_SLEEP_STATUS }, resistance: { $lt: RESISTANCE_MAX_VALUE } },
           { $inc: { resistance: RISE_RESISTENCE, concentration: RISE_CONCENTRATION, } },
         );
       })
@@ -136,12 +136,12 @@ const updateAcolitStatusByResistance = async () => {
   try {
 
     const updateAcolitStatus = await User.updateMany(
-      { isJoshua: { $eq: false }, acolitStatus: { $eq: ACOLIT_AWAKE_STATUS }, resistance: { $lte: RESISTANTE_MIN_VALUE } },
+      { isJoshua: { $eq: false }, acolitStatus: { $eq: ACOLIT_AWAKE_STATUS }, resistance: { $lte: RESISTANCE_MIN_VALUE } },
       { $set: { acolitStatus: ACOLIT_UNCONSCIOUS_STATUS } },
     )
     .then(() => {
       return User.updateMany(
-        { isJoshua: { $eq: false }, acolitStatus: { $eq: ACOLIT_SLEEP_STATUS }, resistance: { $eq: RESISTANTE_MAX_VALUE } },
+        { isJoshua: { $eq: false }, acolitStatus: { $eq: ACOLIT_SLEEP_STATUS }, resistance: { $eq: RESISTANCE_MAX_VALUE } },
         { $set: { acolitStatus: ACOLIT_AWAKE_STATUS } },
       );
     })    

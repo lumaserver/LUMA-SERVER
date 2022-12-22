@@ -8,14 +8,16 @@ const ACOLIT_UNCONSCIOUS_STATUS = 'unconscious'
 const DESCENT_RESISTENCE = -10
 const RISE_RESISTENCE = 10
 
+
 // Valores de bajada o subida de concentración en el CRON
 const DESCENT_CONCENTRATION = -10
 const RISE_CONCENTRATION = 10
 
 /*Valores para controlar en minimo y maximo de la resistencia en el filtro del UPDATEMANY 
 porque los min y max del esquema esta funcion no las tiene en cuenta*/
-const RESISTANTE_MIN_VALUE= 10
-const RESISTANTE_MAX_VALUE = 100
+const RESISTANCE_MIN_VALUE= 10
+const RESISTANCE_MAX_VALUE = 100
+const RESISTANCE_EXHAUSTED_VALUE = 20
 
 
 module.exports = {
@@ -30,8 +32,9 @@ module.exports = {
     DESCENT_CONCENTRATION,
     RISE_CONCENTRATION,
 
-    RESISTANTE_MIN_VALUE,
-    RESISTANTE_MAX_VALUE,
+    RESISTANCE_MIN_VALUE,
+    RESISTANCE_MAX_VALUE,
+    RESISTANCE_EXHAUSTED_VALUE,
 
 };
 
