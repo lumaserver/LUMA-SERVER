@@ -4,23 +4,30 @@ const DollPiece = require("../models/dollPieceModel");
 
 //POST create doll and dollPieces documents
 const createDollAndDollPiece = async () => {
-  
-  try {
-    let dollToInsert = new Doll();
-    const createdDoll = await dollToInsert.save();
-    dollPiecesData.map(async (item) => { 
 
-      let dollPiecesToInsert = new DollPiece(item);
-      
-      const createdDollPiece = await dollPiecesToInsert.save();
-    
-      const filter = {missionStatus: 'missionStarted'}
-      const doll = await Doll.findOneAndUpdate( filter, {$push: { bodyPart: createdDollPiece._id }}, {
-         new: true 
-      });
-    })
-    
-  
+  try {
+    let dollToInsert = new Doll()
+    const createdDoll = await dollToInsert.save()
+    console.log(`database create doll ${createdDoll}`)
+
+//Promise.all para no perder la sincronia del map, ejecuta cada secuencia por cada vez que tiene que recorrer el map
+    await Promise.all(
+
+      dollPiecesData.map(async (item) => {
+
+        let dollPiecesToInsert = new DollPiece(item);
+        console.log(`database insert pieces ${dollPiecesToInsert}`)
+
+        const createdDollPiece = await dollPiecesToInsert.save()
+        console.log(`database create pieces ${createdDollPiece}`)
+
+        const filter = { missionStatus: 'missionStarted' }
+        return  await Doll.findOneAndUpdate(filter, { $push: { bodyPart: createdDollPiece._id } }, {
+          new: true
+        });
+        
+      })
+    ) 
   } catch (error) {
     console.log(error);
     throw error;
@@ -30,8 +37,9 @@ const createDollAndDollPiece = async () => {
 //GET all doll pieces
 const getAllDollPieces = async () => {
   try {
-    const allDollParts = await Doll.find().populate('bodyPart');
-    console.log(allDollParts)
+    const allDollParts = await Doll.find().populate('bodyPart')
+    console.log(`Database getAllDollPieces ${allDollParts[0]}`)
+
     return allDollParts[0];
   } catch (error) {
     console.log(error);
@@ -43,20 +51,22 @@ const getAllDollPieces = async () => {
 
 const updateMissionStatus = async (updateData) => {
   try {
-  
-    await Doll.update( updateData);
+    await Doll.updateMany({}, updateData)
+    const doll = await Doll.find()
+    return doll[0]
   } catch (error) {
     throw error;
   }
 };
 
-const updateDollPiece = async (pieceName, updateData) => {
-
+const updateDollPiece = async (updateData) => {
   try {
-    const filter = { pieceName };
+    const filter = { pieceName: updateData.pieceName };
     await DollPiece.findOneAndUpdate(filter, updateData, {
       new: true
     });
+    const UpdateDollPiece = await DollPiece.findOne(filter)
+    return UpdateDollPiece;
   } catch (error) {
     throw error;
   }

@@ -2,7 +2,9 @@ const userService = require("../services/userService");
 
 //POST
 const createNewUser = async (req, res) => {
+  //console.log(req.body)
   const { token } = req.body;
+  // const { idSocket } = req.body;
   const { name, email, picture } = req.body.claims;
 
   if (!token || !name || !email || !picture) {
@@ -20,11 +22,6 @@ const createNewUser = async (req, res) => {
     name,
     email,
     picture,
-    isJoshua: false,
-    isActive: true,
-    isInside: false,
-    health: 100,
-    money: 29
   };
 
   try {
@@ -47,10 +44,10 @@ const getAllActiveUsers = async (req, res) => {
       return allUsers.isActive == true && allUsers.isJoshua == false
     });
 
-      if(activeUsers.length == 0){
-        return res.status(400).send({message: "There is no active users"});
-      }
-        return res.send({ status: "OK", data: activeUsers });
+    if (activeUsers.length == 0) {
+      return res.status(400).send({ message: "There is no active users" });
+    }
+    return res.send({ status: "OK", data: activeUsers });
   } catch (error) {
     res.status(error?.status || 500).send({
       status: "FAILED",
@@ -64,7 +61,7 @@ const changeCryptValue = async (req, res) => {
   const email = req.params.email;
   try {
     const isInTheCrypt = await userService.changeCryptValue(email);
-    if(isInTheCrypt){
+    if (isInTheCrypt) {
       return res.send({ status: "OK", data: isInTheCrypt.isInside });
     }
   } catch (error) {
@@ -79,11 +76,11 @@ const changeCryptValue = async (req, res) => {
 //UPDATE money and health
 const updateUser = async (req, res) => {
   const userEmail = req.params.email;
-  const updateData= req.body;
-  
+  const updateData = req.body;
+
   try {
-    await userService.updateUser(userEmail, updateData );
-    return res.send({ status: "OK"});
+    await userService.updateUser(userEmail, updateData);
+    return res.send({ status: "OK" });
   } catch (error) {
     res.status(error?.status || 500).send({
       status: "FAILED",

@@ -30,12 +30,30 @@ const changeCryptValue = async (email) => {
   }
 }
 
+//GET current user
+const getUserByEmail = async (email) => {
+  try {
+    const currentUser = await User.getUserByEmail(email);
+    return currentUser;
+  } catch (error) {
+    throw error
+  }
+}
+
 //UPDATE money and health
 
-const updateUser = async (userEmail, updateData) => {
+const updateUser = async (data) => {
   try {
-    const update = await User.updateUser(userEmail, updateData);
+  const update = await User.updateUser(data);
+  return update;
+  } catch (error) {
+  throw error
+  }
+  }
 
+const updateAcolitResistanceAndConcentration = async () => {
+  try {
+    const update = await User.updateAcolitResistanceAndConcentration();
     return update;
   } catch (error) {
     throw error
@@ -47,5 +65,7 @@ module.exports = {
   createNewUser,
   getAllActiveUsers,
   changeCryptValue,
-  updateUser
+  updateUser,
+  getUserByEmail,
+  updateAcolitResistanceAndConcentration,
 };

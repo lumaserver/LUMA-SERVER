@@ -25,17 +25,18 @@ const getAllDollPieces = async () => {
 
 const updateMissionStatus = async (updateData) => {
   try {
-    await Doll.updateMissionStatus(updateData);
+    const dollUpdate = await Doll.updateMissionStatus(updateData);
+    return dollUpdate
 
   } catch (error) {
     throw error
   }
 }
 
-const updateDollPiece = async (pieceName, updateData) => {
+const updateDollPiece = async (updateData) => {
   try {
-    await Doll.updateDollPiece(pieceName, updateData);
-
+    const dollPiece = await Doll.updateDollPiece(updateData);
+    return dollPiece;
   } catch (error) {
     throw error
   }
