@@ -27,13 +27,13 @@ events = (socket) => {
     try {
       console.log(data)
       const changedAcolit = await userService.updateUser(data)
-      if (data.idSocket != null) {
+    /*   if (data.idSocket != null) {
         const allUsers = await userService.getAllActiveUsers();
         joshua = allUsers.filter((allUsers) => {
           return allUsers.isJoshua == true;
         });
         io.to(joshua).emit("newUser", changedAcolit);
-      }
+      } */
       io.emit("changeAcolitAttributes", changedAcolit);
     } catch (error) {
       console.log(error);
@@ -49,7 +49,8 @@ socket.on("createUser", async (data) => {
       ...data
     } 
     console.log(`createUser Events ${user}`)
-    const newUser = await userService.createNewUser(user)
+    const newUser = await router.post
+    //const newUser = await userService.createNewUser(user)
     io.emit("createUser", newUser);
   } catch (error) {
     console.log(error);
