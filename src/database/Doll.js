@@ -65,7 +65,7 @@ const updateDollPiece = async (updateData) => {
     await DollPiece.findOneAndUpdate(filter, updateData, {
       new: true
     });
-    const UpdateDollPiece = await DollPiece.findOne(filter)
+    const UpdateDollPiece = await DollPiece.find()
     return UpdateDollPiece;
   } catch (error) {
     throw error;
