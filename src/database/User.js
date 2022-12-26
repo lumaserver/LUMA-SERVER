@@ -58,10 +58,8 @@ const loginUser = async (newUser) => {
 const getAllActiveUsers = async () => {
   try {
     const allUsers = await User.find();
-    allUsers = allUsers.filter(item => {
-      item.isJoshua == false
-    })
-    return allUsers;
+    const allAcolit = allUsers.filter(item =>  item.isJoshua == false)
+    return allAcolit;
   } catch (error) {
     console.log(error);
     throw error;
