@@ -8,19 +8,29 @@ const getAllData = async (req, res) => {
 
     const allDollParts = await dollService.getAllDollPieces();
 
-    let users = await userService.getUserByEmail(userEmail);
+    let user = await userService.getUserByEmail(userEmail);
+    
+    let allData = {};
 
-    if (users.isJoshua) {
+    if (user.isJoshua) {
       const allUsers = await userService.getAllActiveUsers();
-      users = allUsers.filter((allUsers) => {
+      const users = allUsers.filter((allUsers) => {
         return allUsers.isJoshua == false;
       });
-    } 
+      allData = {
+        users: users,
+        doll: allDollParts,
+      };
+    }
+    
+    if(!user.isJoshua) {
+      allData = {
+        user: user,
+        doll: allDollParts,
+      };
+    }
 
-    const allData = {
-      users: [users],
-      doll: allDollParts,
-    };
+    
 
     if (allData.length == 0) {
       return res.status(400).send({ message: "There is no active users" });
