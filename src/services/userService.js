@@ -14,7 +14,7 @@ const createNewUser = async (newUser) => {
 const getAllActiveUsers = async () => {
   try {
     const allActiveUsers = await User.getAllActiveUsers();
-    console.log(`UserService getAllActiveUsers ${allActiveUsers}`)
+    console.log(`UserService getAllActiveUsers`)
 
     return allActiveUsers;
   } catch (error) {
@@ -55,9 +55,11 @@ const updateUser = async (data) => {
 
 const updateAcolitResistanceAndConcentration = async () => {
   try {
-    const update = await User.updateAcolitResistanceAndConcentration();
-    console.log(`UserService updateAcolitResistanceAndConcentration ${update}`)
-    return update;
+    await User.updateAcolitResistanceAndConcentration();
+
+    //const update = await User.updateAcolitResistanceAndConcentration();
+    //console.log(`UserService updateAcolitResistanceAndConcentration ${update}`)
+   // return update;
   } catch (error) {
     throw error
   }

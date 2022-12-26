@@ -135,12 +135,12 @@ const updateAcolitResistanceAndConcentration = async () => {
 const updateAcolitStatusByResistance = async () => {
   try {
 
-    const updateAcolitStatus = await User.updateMany(
+    await User.updateMany(
       { isJoshua: { $eq: false }, acolitStatus: { $eq: ACOLIT_AWAKE_STATUS }, resistance: { $lte: RESISTANCE_MIN_VALUE } },
       { $set: { acolitStatus: ACOLIT_UNCONSCIOUS_STATUS } },
     )
-    .then(() => {
-      return User.updateMany(
+    .then(async() => {
+      await User.updateMany(
         { isJoshua: { $eq: false }, acolitStatus: { $eq: ACOLIT_SLEEP_STATUS }, resistance: { $eq: RESISTANCE_MAX_VALUE } },
         { $set: { acolitStatus: ACOLIT_AWAKE_STATUS } },
       );
