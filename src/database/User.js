@@ -7,6 +7,7 @@ const { ACOLIT_AWAKE_STATUS, DESCENT_RESISTENCE,
   RESISTANCE_MIN_VALUE,
   RESISTANCE_MAX_VALUE} = require("../constants");
 const User = require("../models/userModel");
+const { all } = require("../routes/userRoutes");
 
 const loginUser = async (newUser) => {
   try {
@@ -57,6 +58,9 @@ const loginUser = async (newUser) => {
 const getAllActiveUsers = async () => {
   try {
     const allUsers = await User.find();
+    allUsers = allUsers.filter(item => {
+      item.isJoshua == false
+    })
     return allUsers;
   } catch (error) {
     console.log(error);
