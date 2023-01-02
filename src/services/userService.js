@@ -56,10 +56,6 @@ const updateUser = async (data) => {
 const updateAcolitResistanceAndConcentration = async () => {
   try {
     await User.updateAcolitResistanceAndConcentration();
-
-    //const update = await User.updateAcolitResistanceAndConcentration();
-    //console.log(`UserService updateAcolitResistanceAndConcentration ${update}`)
-   // return update;
   } catch (error) {
     throw error
   }
