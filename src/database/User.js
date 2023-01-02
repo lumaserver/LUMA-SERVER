@@ -120,11 +120,14 @@ const updateAcolitResistanceAndConcentration = async () => {
     await User.updateMany(
       { isJoshua: { $eq: false }, acolitStatus: { $eq: ACOLIT_AWAKE_STATUS }, resistance: { $gt: RESISTANCE_MIN_VALUE } },
       { $inc: { resistance: DESCENT_RESISTENCE, concentration: DESCENT_CONCENTRATION } },
+    //  console.log(`update resistance -1`)
     )
       .then(async () => {
         await User.updateMany(
           { isJoshua: { $eq: false }, acolitStatus: { $eq: ACOLIT_SLEEP_STATUS }, resistance: { $lt: RESISTANCE_MAX_VALUE } },
           { $inc: { resistance: RISE_RESISTENCE, concentration: RISE_CONCENTRATION, } },
+    //  console.log(`update resistance +1`)
+
         );
       })
       .then(async() => {
@@ -145,11 +148,15 @@ const updateAcolitStatusByResistance = async () => {
     await User.updateMany(
       { isJoshua: { $eq: false }, acolitStatus: { $eq: ACOLIT_AWAKE_STATUS }, resistance: { $lte: RESISTANCE_MIN_VALUE } },
       { $set: { acolitStatus: ACOLIT_UNCONSCIOUS_STATUS } },
+     // console.log(`update status unconscious`)
+
     )
     .then(async() => {
       await User.updateMany(
         { isJoshua: { $eq: false }, acolitStatus: { $eq: ACOLIT_SLEEP_STATUS }, resistance: { $eq: RESISTANCE_MAX_VALUE } },
         { $set: { acolitStatus: ACOLIT_AWAKE_STATUS } },
+     // console.log(`update status awake`)
+
       );
     })    
   } catch (error) {
