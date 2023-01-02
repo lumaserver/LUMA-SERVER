@@ -133,7 +133,7 @@ socket.on("createUser", async (data) => {
     console.log("Client disconnected: ", socket.id);
   });
 };
-/* 
+
 //CRON  para bajar resistencia y concentracion cada hora
 cron.schedule('59 * * * *', async () => {
   try {
@@ -147,5 +147,5 @@ cron.schedule('59 * * * *', async () => {
   }
 
 });
- */
+ 
 exports.socketEvents = events;
