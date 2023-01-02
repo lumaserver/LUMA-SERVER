@@ -107,7 +107,6 @@ events = (socket) => {
     } catch (error) {
       console.log(error);
       socket.emit("toastNotification", { notificationType: 'error', description: error })
-        ;
     }
   });
 
