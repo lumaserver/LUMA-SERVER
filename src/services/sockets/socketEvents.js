@@ -38,7 +38,8 @@ events = (socket) => {
       io.emit("changeAcolitAttributes", changedAcolit);
     } catch (error) {
       console.log(error);
-      socket.emit("toastNotification", { notificationType: 'error', description: error })
+      socket.emit("changeAcolitAttributes", error )
+      //socket.emit("toastNotification", { notificationType: 'error', description: error })
 
     }
   });
@@ -52,11 +53,13 @@ events = (socket) => {
       }
       //console.log(`createNewUser Events ${user}`)
       const newUser = await authMiddleware.firebaseAuth(user);
-      newUser ? socket.emit("createNewUser", newUser) : socket.emit("toastNotification", {});
+      newUser ? socket.emit("createNewUser", newUser) : socket.emit("toastNotification", message);
 
     } catch (error) {
       console.log(error);
-      socket.emit("toastNotification", { notificationType: 'error', description: error })
+      socket.emit("createNewUser", error )
+
+      //socket.emit("toastNotification", { notificationType: 'error', description: error })
     }
   });
 
