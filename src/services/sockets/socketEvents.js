@@ -10,6 +10,17 @@ const io = server.socketIO;
 events = (socket) => {
   console.log({ Clientsocket: socket.id });
   let idSocket = { idSocket: socket.id }
+
+  // TEST BROADCAST
+  socket.on("test_broadcast", async (data) => {
+    try {
+      socket.broadcast.emit("test_broadcast", data);
+    } catch (error) {
+      console.log(error);
+      socket.emit("test_broadcastError", error);
+    }
+  });
+
   //CHANGE USER DATA
   let joshua = null;
 
@@ -27,8 +38,7 @@ events = (socket) => {
       io.emit("changeAcolitAttributes", changedAcolit);
     } catch (error) {
       console.log(error);
-      //socket.emit("toastNotification", { notificationType: 'error', description: error })
-      socket.emit("toastNotification", error)
+      socket.emit("toastNotification", { notificationType: 'error', description: error })
 
     }
   });
@@ -46,11 +56,10 @@ events = (socket) => {
 
     } catch (error) {
       console.log(error);
-      //socket.emit("toastNotification", { notificationType: 'error', description: error })
-      socket.emit("toastNotification", error)
-
+      socket.emit("toastNotification", { notificationType: 'error', description: error })
     }
   });
+
 
   //CHANGE ACOLIT ISINSIDE
 
@@ -69,10 +78,7 @@ events = (socket) => {
       //console.log(`Events Inside ${changedAcolitIsInside}`)
     } catch (error) {
       console.log(error);
-      //socket.emit("toastNotification", { notificationType: 'error', description: error })
-      socket.emit("toastNotification", error)
-
-
+      socket.emit("changeCriptStatus", error);
     }
   });
 
@@ -85,10 +91,7 @@ events = (socket) => {
       io.emit("startDollMission", newDoll);
     } catch (error) {
       console.log(error);
-      //socket.emit("toastNotification", { notificationType: 'error', description: error })
-      socket.emit("toastNotification", error)
-
-
+      socket.emit("startDollMission", error);
     }
   })
 
@@ -100,10 +103,7 @@ events = (socket) => {
       io.emit("changeDollMissionStatus", changeDollMissionStatus);
     } catch (error) {
       console.log(error);
-      //socket.emit("toastNotification", { notificationType: 'error', description: error })
-      socket.emit("toastNotification", error)
-
-
+      socket.emit("changeDollMissionStatus", error);
     }
   });
 
@@ -115,9 +115,7 @@ events = (socket) => {
       io.emit("resetDollMission", null);
     } catch (error) {
       console.log(error);
-      //socket.emit("toastNotification", { notificationType: 'error', description: error })
-      socket.emit("toastNotification", error)
-
+      socket.emit("resetDollMission", error);
     }
   });
 
@@ -129,10 +127,7 @@ events = (socket) => {
       io.emit("changeDollPiece", changeDollPiece);
     } catch (error) {
       console.log(error);
-     // socket.emit("toastNotification", { notificationType: 'error', description: error })
-     socket.emit("toastNotification", error)
-
-
+      socket.emit("changeDollPiece", error);
     }
   });
 
@@ -152,9 +147,6 @@ cron.schedule('*/30 * * * *', async () => {
 
   } catch (error) {
     console.log(error);
-    //socket.emit("toastNotification", { notificationType: 'error', description: error })
-    socket.emit("toastNotification", error)
-
   }
 
 });
