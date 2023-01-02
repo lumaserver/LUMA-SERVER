@@ -99,15 +99,15 @@ const updateUser = async (data) => {
   try {
   const filter = { email: data.email };
   const updateData = data  
-  if(data.resistance == POTION_RESISTANCE_VALUE ){
+  if(updateData.resistance == POTION_RESISTANCE_VALUE ){
     updateData = {acolitStatus: "awake"}
   }
 
-  const moneyAndHealth = await User.findOneAndUpdate(filter, updateData, {
+  const acolitUpdate = await User.findOneAndUpdate(filter, updateData, {
   new: true,
   });
   
-  return moneyAndHealth;
+  return acolitUpdate;
   } catch (error) {
   throw error;
   }
