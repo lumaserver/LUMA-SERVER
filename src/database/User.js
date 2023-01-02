@@ -99,9 +99,9 @@ const updateUser = async (data) => {
   try {
   const filter = { email: data.email };
   const updateData = data  
-  if(updateData.resistance == POTION_RESISTANCE_VALUE ){
+  /* if(updateData.resistance == POTION_RESISTANCE_VALUE ){
     updateData = {acolitStatus: "awake"}
-  }
+  } */
 
   const acolitUpdate = await User.findOneAndUpdate(filter, updateData, {
   new: true,
