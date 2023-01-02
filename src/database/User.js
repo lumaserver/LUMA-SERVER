@@ -99,9 +99,9 @@ const changeCryptValue = async (email) => {
 const updateUser = async (updateData) => {
   try {
   const filter = { email: updateData.email };
- console.log(`Update Acolit 1 ${updateData.resistance}`)
+ //console.log(`Update Acolit 1 ${updateData.resistance}`)
    if(updateData.resistance == POTION_RESISTANCE_VALUE ){
-    console.log(`Update Acolit 2 ${updateData.resistance}`)
+  //  console.log(`Update Acolit 2 ${updateData.resistance}`)
     updateData.acolitStatus = "awake"
   } 
   const acolitUpdate = await User.findOneAndUpdate(filter, updateData, {

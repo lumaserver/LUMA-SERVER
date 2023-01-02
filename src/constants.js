@@ -5,12 +5,12 @@ const ACOLIT_TIRED_STATUS = 'tired'
 const ACOLIT_UNCONSCIOUS_STATUS = 'unconscious'
 
 // Valores de bajada o subida de resistencia en el CRON
-const DESCENT_RESISTENCE = -10
+const DESCENT_RESISTENCE = -1
 const RISE_RESISTENCE = 10
 
 
 // Valores de bajada o subida de concentración en el CRON
-const DESCENT_CONCENTRATION = -10
+const DESCENT_CONCENTRATION = -1
 const RISE_CONCENTRATION = 10
 
 /*Valores para controlar en minimo y maximo de la resistencia en el filtro del UPDATEMANY 
