@@ -95,13 +95,13 @@ const changeCryptValue = async (email) => {
 };
 
 //UPDATE money and health
-const updateUser = async (data) => {
+const updateUser = async (updateData) => {
   try {
-  const filter = { email: data.email };
-  const updateData = data  
-  /* if(updateData.resistance == POTION_RESISTANCE_VALUE ){
-    updateData = {acolitStatus: "awake"}
-  } */
+  const filter = { email: updateData.email };
+ 
+   if(updateData.resistance === POTION_RESISTANCE_VALUE ){
+    updateData.acolitStatus = "awake"
+  } 
 
   const acolitUpdate = await User.findOneAndUpdate(filter, updateData, {
   new: true,
