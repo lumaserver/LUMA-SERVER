@@ -5,7 +5,8 @@ const { ACOLIT_AWAKE_STATUS, DESCENT_RESISTENCE,
   ACOLIT_SLEEP_STATUS,
   ACOLIT_UNCONSCIOUS_STATUS, 
   RESISTANCE_MIN_VALUE,
-  RESISTANCE_MAX_VALUE} = require("../constants");
+  RESISTANCE_MAX_VALUE,
+  POTION_RESISTANCE_VALUE} = require("../constants");
 const User = require("../models/userModel");
 const { all } = require("../routes/userRoutes");
 
