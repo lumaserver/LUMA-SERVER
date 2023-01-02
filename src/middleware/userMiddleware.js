@@ -1,13 +1,18 @@
 const admin = require("../config/firebaseConfig");
+import firebaseEmail from "./emailMiddleware";
 
-const firebaseAuth = async (req, res, next) => {
-  const token = req.body.token;
+const firebaseAuth = async (data) => {
+  const token = data.token;
   try {
     const decodeValue = await admin.auth().verifyIdToken(token);
+    
     if (decodeValue) {
-      return next();
+      const newUser = await firebaseEmail(data);
+      return newUser;
+    }else{
+      return
     }
-    return res.json({ message: "Unauthorized" });
+   
   } catch (error) {
     return res.json({ message: error });
   }

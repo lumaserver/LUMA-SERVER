@@ -1,6 +1,7 @@
 const server = require("../../index");
 const userService = require("../userService");
 const dollService = require("../dollService");
+const authMiddleware = require('../../middleware/userMiddleware');
 
 const cron = require('node-cron');
 const { RESISTANCE_EXHAUSTED_VALUE } = require("../../constants");
@@ -8,18 +9,7 @@ const io = server.socketIO;
 
 events = (socket) => {
   console.log({ Clientsocket: socket.id });
-  let idSocket = {idSocket: socket.id}
-
-  // TEST BROADCAST
-  socket.on("test_broadcast", async (data) => {
-    try {
-      socket.broadcast.emit("test_broadcast", data);
-    } catch (error) {
-      console.log(error);
-      socket.emit("test_broadcastError", error);
-    }
-  });
-
+  let idSocket = { idSocket: socket.id }
   //CHANGE USER DATA
   let joshua = null;
 
@@ -27,38 +17,39 @@ events = (socket) => {
     try {
       console.log(data)
       const changedAcolit = await userService.updateUser(data)
-    /*   if (data.idSocket != null) {
-        const allUsers = await userService.getAllActiveUsers();
-        joshua = allUsers.filter((allUsers) => {
-          return allUsers.isJoshua == true;
-        });
-        io.to(joshua).emit("newUser", changedAcolit);
-      } */
+      /*   if (data.idSocket != null) {
+          const allUsers = await userService.getAllActiveUsers();
+          joshua = allUsers.filter((allUsers) => {
+            return allUsers.isJoshua == true;
+          });
+          io.to(joshua).emit("newUser", changedAcolit);
+        } */
       io.emit("changeAcolitAttributes", changedAcolit);
     } catch (error) {
       console.log(error);
-      socket.emit("changeAcolitAttributes", error);
+      socket.emit("toastNotification", { notificationType: 'error', description: error })
+
     }
   });
-//CREATE NEW USER
+  //CREATE NEW USER
 
-socket.on("createUser", async (data) => {
-  try {
-    const user = {
-      ...idSocket,
-      ...data
-    } 
-    console.log(`createUser Events ${user}`)
-    const newUser = await router.post
-    //const newUser = await userService.createNewUser(user)
-    io.emit("createUser", newUser);
-  } catch (error) {
-    console.log(error);
-    socket.emit("createUser", error);
-  }
-});
+  socket.on("createNewUser", async (data) => {
+    try {
+      const user = {
+        ...idSocket,
+        ...data
+      }
+      //console.log(`createNewUser Events ${user}`)
+      const newUser = await authMiddleware.firebaseAuth(user);
+      newUser ? socket.emit("createNewUser", newUser) : socket.emit("toastNotification", {});
 
-  
+    } catch (error) {
+      console.log(error);
+      socket.emit("toastNotification", { notificationType: 'error', description: error })
+    }
+  });
+
+
   //CHANGE ACOLIT ISINSIDE
 
   socket.on("changeCriptStatus", async (email) => {
@@ -73,10 +64,11 @@ socket.on("createUser", async (data) => {
       io.emit("changeCriptStatus", changedAcolitIsInside);
 
       //io.to(joshua).emit("changeCriptStatus", changedAcolitIsInside);
-      console.log(`Events Inside ${changedAcolitIsInside}`)
+      //console.log(`Events Inside ${changedAcolitIsInside}`)
     } catch (error) {
       console.log(error);
-      socket.emit("changeCriptStatus", error);
+      socket.emit("toastNotification", { notificationType: 'error', description: error })
+
     }
   });
 
@@ -85,11 +77,12 @@ socket.on("createUser", async (data) => {
     try {
       await dollService.createDollAndDollPiece()
       const newDoll = await dollService.getAllDollPieces();
-     // console.log(`startDollMission Events ${newDoll}`)
+      // console.log(`startDollMission Events ${newDoll}`)
       io.emit("startDollMission", newDoll);
     } catch (error) {
       console.log(error);
-      socket.emit("startDollMission", error);
+      socket.emit("toastNotification", { notificationType: 'error', description: error })
+
     }
   })
 
@@ -101,7 +94,8 @@ socket.on("createUser", async (data) => {
       io.emit("changeDollMissionStatus", changeDollMissionStatus);
     } catch (error) {
       console.log(error);
-      socket.emit("changeDollMissionStatus", error);
+      socket.emit("toastNotification", { notificationType: 'error', description: error })
+
     }
   });
 
@@ -113,7 +107,8 @@ socket.on("createUser", async (data) => {
       io.emit("resetDollMission", null);
     } catch (error) {
       console.log(error);
-      socket.emit("resetDollMission", error);
+      socket.emit("toastNotification", { notificationType: 'error', description: error })
+        ;
     }
   });
 
@@ -125,7 +120,8 @@ socket.on("createUser", async (data) => {
       io.emit("changeDollPiece", changeDollPiece);
     } catch (error) {
       console.log(error);
-      socket.emit("changeDollPiece", error);
+      socket.emit("toastNotification", { notificationType: 'error', description: error })
+
     }
   });
 
@@ -141,12 +137,13 @@ cron.schedule('*/30 * * * *', async () => {
     const modifyAllAcolit = await userService.getAllActiveUsers()
     console.log("*************************************************")
     io.emit('changeAllAcolitAttributes', modifyAllAcolit)
-    console.log(modifyAllAcolit)
+   // console.log(modifyAllAcolit)
 
   } catch (error) {
     console.log(error);
+    socket.emit("toastNotification", { notificationType: 'error', description: error })
   }
 
 });
- 
+
 exports.socketEvents = events;

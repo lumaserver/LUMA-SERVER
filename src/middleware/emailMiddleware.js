@@ -1,15 +1,17 @@
 const admin = require("../config/firebaseConfig");
+const userService = require("../services/userService");
 
-const firebaseEmail = async (req, res, next) => {
-  const email = req.body.claims.email;
+const firebaseEmail = async (data) => {
+  const email = data.claims.email;
   try {
     if (
       /^\w+([\.-]?\w+)*@\ikasle.aeg.eus/.test(email) ||
       process.env.LUMA_ADMIN === email || process.env.MORTIMER === email
     ) {
-      return next();
+      const createdUser = await userService.createNewUser(newUser);
+      return createdUser;
     } else {
-      throw new Error("email unauthorized");
+      return
     }
   } catch (error) {
     return res.status(401).send({message: error.message});
