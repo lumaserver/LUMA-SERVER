@@ -49,7 +49,6 @@ events = (socket) => {
     }
   });
 
-
   //CHANGE ACOLIT ISINSIDE
 
   socket.on("changeCriptStatus", async (email) => {
