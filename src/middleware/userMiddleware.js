@@ -16,7 +16,7 @@ const firebaseAuth = async (data) => {
     }
    
   } catch (error) {
-    return res.json({ message: error });
+    return null;
   }
 };
 
