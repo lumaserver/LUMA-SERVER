@@ -36,10 +36,13 @@ const loginUser = async (newUser) => {
         });
         const createdUser = await userToInsert.save();
         return createdUser;
-
       } else {
-        
-        const createdUser = await allUser.save();
+
+        let userToInsert = new User({
+          ...allUser
+        });
+
+        const createdUser = await userToInsert.save();
         return createdUser;
       }
     }
