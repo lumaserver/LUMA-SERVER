@@ -13,6 +13,7 @@ const {
 const User = require("../models/userModel");
 
 const loginUser = async (newUser) => {
+  console.log(newUser)
   try {
     const user = await User.findOne({ email: newUser.claims.email });
     if (!user) {
@@ -49,7 +50,7 @@ const loginUser = async (newUser) => {
         return createdUser;
       }
     } else {
-      
+
       const updatedUser = await User.findOneAndUpdate(
         { idToken: newUser.token },
         { isActive: true, idSocket: newUser.idSocket },
