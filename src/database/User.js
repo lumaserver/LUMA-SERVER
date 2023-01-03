@@ -16,7 +16,7 @@ const loginUser = async (newUser) => {
       //insert new admin user
       let allUser ={
         idToken: newUser.token,
-        idSocket: newUser.idToken,
+        idSocket: newUser.idSocket,
         name: newUser.claims.name,
         email: newUser.claims.email,
         picture: newUser.claims.picture,
