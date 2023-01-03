@@ -11,7 +11,7 @@ const User = require("../models/userModel");
 
 const loginUser = async (newUser) => {
   try {
-    const user = await User.findOne({ email: newUser.email });
+    const user = await User.findOne({ email: newUser.claims.email });
     if (!user) {
       //insert new admin user
       let allUser ={
