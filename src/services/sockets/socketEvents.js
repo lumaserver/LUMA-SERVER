@@ -1,7 +1,7 @@
 const server = require("../../index");
 const userService = require("../userService");
 const dollService = require("../dollService");
-const authMiddleware = require('../../middleware/userMiddleware');
+const firebaseAuth = require('../../middleware/userMiddleware');
 
 const cron = require('node-cron');
 const { RESISTANCE_EXHAUSTED_VALUE } = require("../../constants");
@@ -46,14 +46,15 @@ events = (socket) => {
   //CREATE NEW USER
 
   socket.on("createNewUser", async (data) => {
+    console.log(data)
     try {
       const user = {
         ...idSocket,
         ...data
       }
       //console.log(`createNewUser Events ${user}`)
-      const newUser = await authMiddleware.firebaseAuth(user);
-      newUser ? socket.emit("createNewUser", newUser) : socket.emit("toastNotification", message);
+      const newUser = await firebaseAuth(user);
+      newUser ? socket.emit("createNewUser", newUser) : socket.emit("toastNotification", "HEY");
 
     } catch (error) {
       console.log(error);
