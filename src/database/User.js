@@ -13,9 +13,10 @@ const {
 const User = require("../models/userModel");
 
 const loginUser = async (newUser) => {
-  console.log(newUser)
+  
   try {
     const user = await User.findOne({ email: newUser.claims.email });
+    console.log(user)
     if (!user) {
       //insert new admin user
       let allUser = {
@@ -27,8 +28,8 @@ const loginUser = async (newUser) => {
       };
 
       if (
-        process.env.LUMA_ADMIN === newUser.email ||
-        process.env.MORTIMER === newUser.email
+        process.env.LUMA_ADMIN === newUser.claims.email ||
+        process.env.MORTIMER === newUser.claims.email
       ) {
         let userToInsert = new User({
           ...allUser,
@@ -52,7 +53,7 @@ const loginUser = async (newUser) => {
     } else {
 
       const updatedUser = await User.findOneAndUpdate(
-        { idToken: newUser.token },
+        { email: newUser.claims.email },
         { isActive: true, idSocket: newUser.idSocket },
         { new: true }
       );
