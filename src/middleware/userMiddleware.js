@@ -10,7 +10,7 @@ const firebaseAuth = async (data) => {
     
     if (decodeValue) {
       const newUser = await firebaseEmail(data);
-      console.log(newUser)
+      
       return newUser;
     }else{
       return null

@@ -9,7 +9,7 @@ const firebaseEmail = async (data) => {
       process.env.LUMA_ADMIN === email || process.env.MORTIMER === email
     ) {
       const createdUser = await userService.createNewUser(data);
-      console.log(createdUser)
+      
       return createdUser;
     } else {
       return null
