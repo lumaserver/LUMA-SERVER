@@ -54,8 +54,8 @@ events = (socket) => {
       }
       //console.log(`createNewUser Events ${user}`)
       const newUser = await firebaseAuth(user);
-      console.log(newUser)
-      newUser ? socket.emit("createNewUser", newUser) : socket.emit("toastNotification", "HEY");
+      
+      newUser ? io.to(idSocket).emit("createNewUser", newUser) : io.to(idSocket).emit("toastNotification", "HEY");
 
     } catch (error) {
       console.log(error);
