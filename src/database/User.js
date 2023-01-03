@@ -19,7 +19,7 @@ const loginUser = async (newUser) => {
         idSocket: newUser.idToken,
         name: newUser.claims.name,
         email: newUser.claims.email,
-        picture: newUser.picture,
+        picture: newUser.claims.picture,
       }
 
       if (
