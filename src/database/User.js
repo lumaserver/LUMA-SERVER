@@ -8,19 +8,25 @@ const { ACOLIT_AWAKE_STATUS, DESCENT_RESISTENCE,
   RESISTANCE_MAX_VALUE,
   POTION_RESISTANCE_VALUE} = require("../constants");
 const User = require("../models/userModel");
-const { all } = require("../routes/userRoutes");
 
 const loginUser = async (newUser) => {
   try {
     const user = await User.findOne({ email: newUser.email });
     if (!user) {
       //insert new admin user
+      let allUser ={
+        idToken: newUser.token,
+        idSocket: newUser.idToken,
+        name: newUser.claims.name,
+        email: newUser.claims.email,
+        picture: newUser.picture,
+      }
 
       if (
         process.env.LUMA_ADMIN === newUser.email || process.env.MORTIMER === newUser.email
       ) {
         let userToInsert = new User({
-          ...newUser,
+          ...allUser,
           isJoshua: true,
           isInside: null,
           health: 999999,
@@ -30,20 +36,17 @@ const loginUser = async (newUser) => {
         });
         const createdUser = await userToInsert.save();
         return createdUser;
+
       } else {
-
-        let userToInsert = new User({
-          ...newUser
-        });
-
-        const createdUser = await userToInsert.save();
+        
+        const createdUser = await allUser.save();
         return createdUser;
       }
     }
     if (!user.isActive) {
       //update user to active
       const updatedUser = await User.findOneAndUpdate(
-        { idToken: idToken },
+        { idToken: newUser.token },
         { isActive: true },
         { new: true }        
       );

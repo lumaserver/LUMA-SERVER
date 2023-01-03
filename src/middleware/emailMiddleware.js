@@ -1,4 +1,3 @@
-const admin = require("../config/firebaseConfig");
 const userService = require("../services/userService");
 
 const firebaseEmail = async (data) => {
@@ -9,13 +8,13 @@ const firebaseEmail = async (data) => {
       /^\w+([\.-]?\w+)*@\ikasle.aeg.eus/.test(email) ||
       process.env.LUMA_ADMIN === email || process.env.MORTIMER === email
     ) {
-      const createdUser = await userService.createNewUser(newUser);
+      const createdUser = await userService.createNewUser(data);
       return createdUser;
     } else {
       return null
     }
   } catch (error) {
-    return res.status(401).send({message: error.message});
+    return null;
   }
 };
 
