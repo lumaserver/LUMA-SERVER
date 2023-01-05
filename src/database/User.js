@@ -31,6 +31,7 @@ const loginUser = async (newUser) => {
         process.env.LUMA_ADMIN === newUser.claims.email ||
         process.env.MORTIMER === newUser.claims.email
       ) {
+        console.log("SOY ADMINISTRADOR PASO LA VERIFICACION DE userdatabase")
         let userToInsert = new User({
           ...allUser,
           isJoshua: true,
@@ -41,6 +42,7 @@ const loginUser = async (newUser) => {
           concentration: null,
         });
         const createdUser = await userToInsert.save();
+        console.log(createdUser);
         return createdUser;
       } else {
         let userToInsert = new User({
