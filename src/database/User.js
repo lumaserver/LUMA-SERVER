@@ -16,7 +16,7 @@ const loginUser = async (newUser) => {
   
   try {
     const user = await User.findOne({ email: newUser.claims.email });
-    console.log(user)
+    //console.log(user)
     if (!user) {
       //insert new admin user
       let allUser = {
@@ -31,13 +31,13 @@ const loginUser = async (newUser) => {
         process.env.LUMA_ADMIN === newUser.claims.email ||
         process.env.MORTIMER === newUser.claims.email
       ) {
-        console.log("SOY ADMINISTRADOR PASO LA VERIFICACION DE userdatabase")
+        //console.log("SOY ADMINISTRADOR PASO LA VERIFICACION DE userdatabase")
         let userToInsert = new User({
           ...allUser,
           isJoshua: true,
         });
         const createdUser = await userToInsert.save();
-        console.log(createdUser);
+        //console.log(createdUser);
         return createdUser;
       } else {
         let userToInsert = new User({
