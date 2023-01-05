@@ -51,7 +51,7 @@ const loginUser = async (newUser) => {
         return createdUser;
       }
     } else {
-
+      
       const updatedUser = await User.findOneAndUpdate(
         { email: newUser.claims.email },
         { isActive: true, idSocket: newUser.idSocket },
