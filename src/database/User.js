@@ -35,11 +35,6 @@ const loginUser = async (newUser) => {
         let userToInsert = new User({
           ...allUser,
           isJoshua: true,
-          isInside: false,
-          health: 999999,
-          money: 999999,
-          resistance: 999999,
-          concentration: 999999,
         });
         const createdUser = await userToInsert.save();
         console.log(createdUser);
