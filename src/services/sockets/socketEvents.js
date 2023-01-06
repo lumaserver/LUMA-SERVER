@@ -1,13 +1,15 @@
 const server = require("../../index");
 const userService = require("../userService");
 const dollService = require("../dollService");
+const firebaseAuth = require('../../middleware/userMiddleware');
 
 const cron = require('node-cron');
+const { RESISTANCE_EXHAUSTED_VALUE } = require("../../constants");
 const io = server.socketIO;
 
 events = (socket) => {
   console.log({ Clientsocket: socket.id });
-  let idSocket = {idSocket: socket.id}
+  let idSocket = { idSocket: socket.id }
 
   // TEST BROADCAST
   socket.on("test_broadcast", async (data) => {
@@ -26,37 +28,40 @@ events = (socket) => {
     try {
       console.log(data)
       const changedAcolit = await userService.updateUser(data)
-      if (data.idSocket != null) {
-        const allUsers = await userService.getAllActiveUsers();
-        joshua = allUsers.filter((allUsers) => {
-          return allUsers.isJoshua == true;
-        });
-        io.to(joshua).emit("newUser", changedAcolit);
-      }
+      /*   if (data.idSocket != null) {
+          const allUsers = await userService.getAllActiveUsers();
+          joshua = allUsers.filter((allUsers) => {
+            return allUsers.isJoshua == true;
+          });
+          io.to(joshua).emit("newUser", changedAcolit);
+        } */
       io.emit("changeAcolitAttributes", changedAcolit);
     } catch (error) {
       console.log(error);
-      socket.emit("changeAcolitAttributes", error);
+      socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
     }
   });
-//CREATE NEW USER
+  //CREATE NEW USER
 
-socket.on("createUser", async (data) => {
-  try {
-    const user = {
-      ...idSocket,
-      ...data
-    } 
-    console.log(`createUser Events ${user}`)
-    const newUser = await userService.createNewUser(user)
-    io.emit("createUser", newUser);
-  } catch (error) {
-    console.log(error);
-    socket.emit("createUser", error);
-  }
-});
+  socket.on("createNewUser", async (data) => {
 
-  
+    try {
+      const user = {
+        ...idSocket,
+        ...data
+      }
+      //console.log(`createNewUser Events ${user}`)
+      const newUser = await firebaseAuth(user);
+
+      newUser ? io.emit("createNewUser", newUser) : socket.emit("toastNotification", { title: "error", message: "Invalid user, please try again", noUser: "no use", toastType: "showErrorToast"});
+
+    } catch (error) {
+      console.log(error);
+      socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
+    }
+  });
+
+
   //CHANGE ACOLIT ISINSIDE
 
   socket.on("changeCriptStatus", async (email) => {
@@ -71,10 +76,11 @@ socket.on("createUser", async (data) => {
       io.emit("changeCriptStatus", changedAcolitIsInside);
 
       //io.to(joshua).emit("changeCriptStatus", changedAcolitIsInside);
-      console.log(`Events Inside ${changedAcolitIsInside}`)
+      //console.log(`Events Inside ${changedAcolitIsInside}`)
     } catch (error) {
       console.log(error);
-      socket.emit("changeCriptStatus", error);
+      socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
+
     }
   });
 
@@ -82,17 +88,12 @@ socket.on("createUser", async (data) => {
   socket.on("startDollMission", async () => {
     try {
       await dollService.createDollAndDollPiece()
-      /* .then(async () => {
-        const newDoll = await dollService.getAllDollPieces();
-        console.log(newDoll)
-        io.emit("startDollMission", newDoll);
-      }) */
       const newDoll = await dollService.getAllDollPieces();
-     // console.log(`startDollMission Events ${newDoll}`)
+      // console.log(`startDollMission Events ${newDoll}`)
       io.emit("startDollMission", newDoll);
     } catch (error) {
       console.log(error);
-      socket.emit("startDollMission", error);
+      socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
     }
   })
 
@@ -104,7 +105,7 @@ socket.on("createUser", async (data) => {
       io.emit("changeDollMissionStatus", changeDollMissionStatus);
     } catch (error) {
       console.log(error);
-      socket.emit("changeDollMissionStatus", error);
+      socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
     }
   });
 
@@ -116,7 +117,7 @@ socket.on("createUser", async (data) => {
       io.emit("resetDollMission", null);
     } catch (error) {
       console.log(error);
-      socket.emit("resetDollMission", error);
+      socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
     }
   });
 
@@ -128,7 +129,7 @@ socket.on("createUser", async (data) => {
       io.emit("changeDollPiece", changeDollPiece);
     } catch (error) {
       console.log(error);
-      socket.emit("changeDollPiece", error);
+      socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
     }
   });
 
@@ -138,14 +139,18 @@ socket.on("createUser", async (data) => {
 };
 
 //CRON  para bajar resistencia y concentracion cada hora
-cron.schedule('*/59 * * * *', async () => {
+cron.schedule('*/30 * * * *', async () => {
   try {
     await userService.updateAcolitResistanceAndConcentration()
     const modifyAllAcolit = await userService.getAllActiveUsers()
     console.log("*************************************************")
     io.emit('changeAllAcolitAttributes', modifyAllAcolit)
+    // console.log(modifyAllAcolit)
+
   } catch (error) {
     console.log(error);
+    socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
+
   }
 
 });

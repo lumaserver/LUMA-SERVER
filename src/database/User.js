@@ -1,53 +1,61 @@
-const { ACOLIT_AWAKE_STATUS, DESCENT_RESISTENCE,
+const {
+  ACOLIT_AWAKE_STATUS,
+  DESCENT_RESISTENCE,
   RISE_RESISTENCE,
   DESCENT_CONCENTRATION,
   RISE_CONCENTRATION,
   ACOLIT_SLEEP_STATUS,
-  ACOLIT_UNCONSCIOUS_STATUS, 
-  RESISTANTE_MIN_VALUE,
-  RESISTANTE_MAX_VALUE} = require("../constants");
+  ACOLIT_UNCONSCIOUS_STATUS,
+  RESISTANCE_MIN_VALUE,
+  RESISTANCE_MAX_VALUE,
+  POTION_RESISTANCE_VALUE,
+} = require("../constants");
 const User = require("../models/userModel");
 
 const loginUser = async (newUser) => {
+  
   try {
-    const user = await User.findOne({ email: newUser.email });
+    const user = await User.findOne({ email: newUser.claims.email });
+    //console.log(user)
     if (!user) {
       //insert new admin user
+      let allUser = {
+        idToken: newUser.token,
+        idSocket: newUser.idSocket,
+        name: newUser.claims.name,
+        email: newUser.claims.email,
+        picture: newUser.claims.picture,
+      };
 
       if (
-        process.env.LUMA_ADMIN === newUser.email || process.env.MORTIMER === newUser.email
+        process.env.LUMA_ADMIN === newUser.claims.email ||
+        process.env.MORTIMER === newUser.claims.email
       ) {
+        //console.log("SOY ADMINISTRADOR PASO LA VERIFICACION DE userdatabase")
         let userToInsert = new User({
-          ...newUser,
+          ...allUser,
           isJoshua: true,
-          isInside: null,
-          health: 999999,
-          money: 999999,
-          resistance: null,
-          concentration: null,
         });
         const createdUser = await userToInsert.save();
+        //console.log(createdUser);
         return createdUser;
       } else {
-
         let userToInsert = new User({
-          ...newUser
+          ...allUser,
         });
 
         const createdUser = await userToInsert.save();
         return createdUser;
       }
-    }
-    if (!user.isActive) {
-      //update user to active
+    } else {
+      
       const updatedUser = await User.findOneAndUpdate(
-        { idToken: idToken },
-        { isActive: true },
-        { new: true }        
+        { email: newUser.claims.email },
+        { isActive: true, idSocket: newUser.idSocket },
+        { new: true }
       );
       return updatedUser;
     }
-    return user;
   } catch (error) {
     console.log(error);
     throw error;
@@ -57,7 +65,8 @@ const loginUser = async (newUser) => {
 const getAllActiveUsers = async () => {
   try {
     const allUsers = await User.find();
-    return allUsers;
+    const allAcolit = allUsers.filter((item) => item.isJoshua == false);
+    return allAcolit;
   } catch (error) {
     console.log(error);
     throw error;
@@ -66,7 +75,7 @@ const getAllActiveUsers = async () => {
 
 const getUserByEmail = async (email) => {
   try {
-    const getUserByEmail = await User.findOne({ email }); 
+    const getUserByEmail = await User.findOne({ email });
     return getUserByEmail;
   } catch (error) {
     console.log(error);
@@ -80,12 +89,12 @@ const changeCryptValue = async (email) => {
     const filter = { email: updateUser.email };
     const update = { isInside: updateUser.isInside };
 
-    update.isInside ? update.isInside = false : update.isInside = true;
+    update.isInside ? (update.isInside = false) : (update.isInside = true);
 
     const isInTheCrypt = await User.findOneAndUpdate(filter, update, {
       new: true,
     });
-    console.log(`database Inside ${isInTheCrypt}`)
+    console.log(`database Inside ${isInTheCrypt}`);
     return isInTheCrypt;
   } catch (error) {
     throw error;
@@ -93,40 +102,63 @@ const changeCryptValue = async (email) => {
 };
 
 //UPDATE money and health
-const updateUser = async (data) => {
+const updateUser = async (updateData) => {
   try {
-  const filter = { email: data.email };
-  const updateData = data  
-  const moneyAndHealth = await User.findOneAndUpdate(filter, updateData, {
-  new: true,
-  });
-  
-  return moneyAndHealth;
+    const filter = { email: updateData.email };
+    //console.log(`Update Acolit 1 ${updateData.resistance}`)
+    if (updateData.resistance == POTION_RESISTANCE_VALUE) {
+      //  console.log(`Update Acolit 2 ${updateData.resistance}`)
+      updateData.acolitStatus = "awake";
+    }
+    const acolitUpdate = await User.findOneAndUpdate(filter, updateData, {
+      new: true,
+    });
+
+    return acolitUpdate;
   } catch (error) {
-  throw error;
+    throw error;
   }
-  };
+};
 
 //UPDATE Acolit Resistance And Concentration with CRON
 const updateAcolitResistanceAndConcentration = async () => {
   try {
     await User.updateMany(
-      { isJoshua: { $eq: false }, acolitStatus: { $eq: ACOLIT_AWAKE_STATUS }, resistance: { $gt: RESISTANTE_MIN_VALUE } },
-      { $inc: { resistance: DESCENT_RESISTENCE, concentration: DESCENT_CONCENTRATION } },
+      {
+        isJoshua: { $eq: false },
+        acolitStatus: { $eq: ACOLIT_AWAKE_STATUS },
+        resistance: { $gt: RESISTANCE_MIN_VALUE },
+      },
+      {
+        $inc: {
+          resistance: DESCENT_RESISTENCE,
+          concentration: DESCENT_CONCENTRATION,
+        },
+      }
+      //  console.log(`update resistance -1`)
     )
       .then(async () => {
         await User.updateMany(
-          { isJoshua: { $eq: false }, acolitStatus: { $eq: ACOLIT_SLEEP_STATUS }, resistance: { $lt: RESISTANTE_MAX_VALUE } },
-          { $inc: { resistance: RISE_RESISTENCE, concentration: RISE_CONCENTRATION, } },
+          {
+            isJoshua: { $eq: false },
+            acolitStatus: { $eq: ACOLIT_SLEEP_STATUS },
+            resistance: { $lt: RESISTANCE_MAX_VALUE },
+          },
+          {
+            $inc: {
+              resistance: RISE_RESISTENCE,
+              concentration: RISE_CONCENTRATION,
+            },
+          }
+          //  console.log(`update resistance +1`)
         );
       })
-      .then(async() => {
-        await updateAcolitStatusByResistance()
+      .then(async () => {
+        await updateAcolitStatusByResistance();
       })
-      .catch(error => {
+      .catch((error) => {
         // ocurrió un error durante la actualización de los acólitos
       });
-      
   } catch (error) {
     throw error;
   }
@@ -134,21 +166,29 @@ const updateAcolitResistanceAndConcentration = async () => {
 
 const updateAcolitStatusByResistance = async () => {
   try {
-
-    const updateAcolitStatus = await User.updateMany(
-      { isJoshua: { $eq: false }, acolitStatus: { $eq: ACOLIT_AWAKE_STATUS }, resistance: { $lte: RESISTANTE_MIN_VALUE } },
-      { $set: { acolitStatus: ACOLIT_UNCONSCIOUS_STATUS } },
-    )
-    .then(() => {
-      return User.updateMany(
-        { isJoshua: { $eq: false }, acolitStatus: { $eq: ACOLIT_SLEEP_STATUS }, resistance: { $eq: RESISTANTE_MAX_VALUE } },
-        { $set: { acolitStatus: ACOLIT_AWAKE_STATUS } },
+    await User.updateMany(
+      {
+        isJoshua: { $eq: false },
+        acolitStatus: { $eq: ACOLIT_AWAKE_STATUS },
+        resistance: { $lte: RESISTANCE_MIN_VALUE },
+      },
+      { $set: { acolitStatus: ACOLIT_UNCONSCIOUS_STATUS } }
+      // console.log(`update status unconscious`)
+    ).then(async () => {
+      await User.updateMany(
+        {
+          isJoshua: { $eq: false },
+          acolitStatus: { $eq: ACOLIT_SLEEP_STATUS },
+          resistance: { $eq: RESISTANCE_MAX_VALUE },
+        },
+        { $set: { acolitStatus: ACOLIT_AWAKE_STATUS } }
+        // console.log(`update status awake`)
       );
-    })    
+    });
   } catch (error) {
     throw error;
   }
-}
+};
 
 module.exports = {
   loginUser,

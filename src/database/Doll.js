@@ -16,10 +16,10 @@ const createDollAndDollPiece = async () => {
       dollPiecesData.map(async (item) => {
 
         let dollPiecesToInsert = new DollPiece(item);
-        console.log(`database insert pieces ${dollPiecesToInsert}`)
+        //console.log(`database insert pieces ${dollPiecesToInsert}`)
 
         const createdDollPiece = await dollPiecesToInsert.save()
-        console.log(`database create pieces ${createdDollPiece}`)
+        //console.log(`database create pieces ${createdDollPiece}`)
 
         const filter = { missionStatus: 'missionStarted' }
         return  await Doll.findOneAndUpdate(filter, { $push: { bodyPart: createdDollPiece._id } }, {
@@ -38,7 +38,7 @@ const createDollAndDollPiece = async () => {
 const getAllDollPieces = async () => {
   try {
     const allDollParts = await Doll.find().populate('bodyPart')
-    console.log(`Database getAllDollPieces ${allDollParts[0]}`)
+    //console.log(`Database getAllDollPieces ${allDollParts[0]}`)
 
     return allDollParts[0];
   } catch (error) {
@@ -65,7 +65,7 @@ const updateDollPiece = async (updateData) => {
     await DollPiece.findOneAndUpdate(filter, updateData, {
       new: true
     });
-    const UpdateDollPiece = await DollPiece.findOne(filter)
+    const UpdateDollPiece = await DollPiece.find()
     return UpdateDollPiece;
   } catch (error) {
     throw error;
