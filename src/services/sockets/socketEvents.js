@@ -69,7 +69,7 @@ events = (socket) => {
         ...idSocket,
         ...data
       }
-      console.log(`updateIdSocket ${user}`)
+      console.log(`updateIdSocket ${user.data} and ${user.idSocket}`)
         await userService.updateUser(user);  
     } catch (error) {
       console.log(error);
