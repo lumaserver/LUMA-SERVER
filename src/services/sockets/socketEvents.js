@@ -82,7 +82,18 @@ events = (socket) => {
     } catch (error) {
       console.log(error);
       socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
+    }
+  });
 
+  // LOG OUT, ID SOCKET IN NULL
+
+  socket.on("logOut", async (data) => {
+    try {
+      console.log(`log out ${data.email} and ${data.idSocket}`)
+        await userService.updateUser(data);  
+    } catch (error) {
+      console.log(error);
+      socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
     }
   });
 
