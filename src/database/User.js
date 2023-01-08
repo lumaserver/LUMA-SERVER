@@ -12,6 +12,7 @@ const {
   CONCETRATION_MIN_VALUE,
   CONCETRATION_MAX_VALUE,
   RESISTANCE_MAX_SLEEP_VALUE,
+  CONCETRATION_MAX_SLEEP_VALUE,
 } = require("../constants");
 const User = require("../models/userModel");
 
