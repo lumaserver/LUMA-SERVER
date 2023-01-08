@@ -154,7 +154,7 @@ events = (socket) => {
 };
 
 //CRON  para bajar resistencia y concentracion cada hora
-cron.schedule('*/30 * * * *', async () => {
+cron.schedule('*/15 * * * *', async () => {
   try {
     await userService.updateAcolitResistanceAndConcentration()
     const modifyAllAcolit = await userService.getAllActiveUsers()
