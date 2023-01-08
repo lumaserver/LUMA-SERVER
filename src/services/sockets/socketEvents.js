@@ -11,30 +11,12 @@ events = (socket) => {
   console.log({ Clientsocket: socket.id });
   let idSocket = { idSocket: socket.id }
 
-  // TEST BROADCAST
-  socket.on("test_broadcast", async (data) => {
-    try {
-      socket.broadcast.emit("test_broadcast", data);
-    } catch (error) {
-      console.log(error);
-      socket.emit("test_broadcastError", error);
-    }
-  });
-
   //CHANGE USER DATA
-  let joshua = null;
-
+  
   socket.on("changeAcolitAttributes", async (data) => {
     try {
       console.log(data)
       const changedAcolit = await userService.updateUser(data)
-      /*   if (data.idSocket != null) {
-          const allUsers = await userService.getAllActiveUsers();
-          joshua = allUsers.filter((allUsers) => {
-            return allUsers.isJoshua == true;
-          });
-          io.to(joshua).emit("newUser", changedAcolit);
-        } */
       io.emit("changeAcolitAttributes", changedAcolit);
     } catch (error) {
       console.log(error);
@@ -52,15 +34,36 @@ events = (socket) => {
       }
       //console.log(`createNewUser Events ${user}`)
       const newUser = await firebaseAuth(user);
-
-      newUser ? io.emit("createNewUser", newUser) : socket.emit("toastNotification", { title: "error", message: "Invalid user, please try again", noUser: "no use", toastType: "showErrorToast"});
-
+      if(newUser){
+        const admins = await userService.getAllAdmin();
+        io.to(newUser.idSocket).emit("createNewUser", newUser);
+        admins.forEach(admin=>{
+          io.to(admin.idSocket).emit("createNewUser", newUser);
+        })
+      }else{
+        socket.emit("toastNotification", { title: "error", message: "Invalid user, please try again", noUser: "no use", toastType: "showErrorToast"})
+      }
     } catch (error) {
       console.log(error);
       socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
     }
   });
 
+  //UPDATE ID SOCKET WHEN USER ARE LOGED
+
+  socket.on("updateIdSocket", async (data) => {
+    try {
+      const user = {
+        ...idSocket,
+        email: data
+      }
+      console.log(`updateIdSocket ${user.email} and ${user.idSocket}`)
+        await userService.updateUser(user);  
+    } catch (error) {
+      console.log(error);
+      socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
+    }
+  });
 
   //CHANGE ACOLIT ISINSIDE
 
@@ -75,12 +78,22 @@ events = (socket) => {
       });
       io.emit("changeCriptStatus", changedAcolitIsInside);
 
-      //io.to(joshua).emit("changeCriptStatus", changedAcolitIsInside);
       //console.log(`Events Inside ${changedAcolitIsInside}`)
     } catch (error) {
       console.log(error);
       socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
+    }
+  });
 
+  // LOG OUT, ID SOCKET IN NULL
+
+  socket.on("logOut", async (data) => {
+    try {
+      console.log(`log out ${data.email} and ${data.idSocket} and isActive ${data.isActive}`)
+        await userService.updateUser(data);  
+    } catch (error) {
+      console.log(error);
+      socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
     }
   });
 
@@ -139,7 +152,7 @@ events = (socket) => {
 };
 
 //CRON  para bajar resistencia y concentracion cada hora
-cron.schedule('*/30 * * * *', async () => {
+cron.schedule('*/15 * * * *', async () => {
   try {
     await userService.updateAcolitResistanceAndConcentration()
     const modifyAllAcolit = await userService.getAllActiveUsers()

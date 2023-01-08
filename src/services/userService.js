@@ -21,6 +21,17 @@ const getAllActiveUsers = async () => {
     throw error
   }
 }
+//GET all ADMIN
+const getAllAdmin = async () => {
+  try {
+    const allActiveUsers = await User.getAllAdmin();
+    console.log(`UserService getAllAdmin`)
+
+    return allActiveUsers;
+  } catch (error) {
+    throw error
+  }
+}
 
 const changeCryptValue = async (email) => {
   try {
@@ -69,4 +80,5 @@ module.exports = {
   updateUser,
   getUserByEmail,
   updateAcolitResistanceAndConcentration,
+  getAllAdmin
 };
