@@ -9,6 +9,8 @@ const {
   RESISTANCE_MIN_VALUE,
   RESISTANCE_MAX_VALUE,
   POTION_RESISTANCE_VALUE,
+  CONCETRATION_MIN_VALUE,
+  CONCETRATION_MAX_VALUE,
 } = require("../constants");
 const User = require("../models/userModel");
 
@@ -119,6 +121,7 @@ const updateUser = async (updateData) => {
     if (updateData.resistance == POTION_RESISTANCE_VALUE) {
       //  console.log(`Update Acolit 2 ${updateData.resistance}`)
       updateData.acolitStatus = "awake";
+      updateData.concentration = POTION_RESISTANCE_VALUE
     }
     const acolitUpdate = await User.findOneAndUpdate(filter, updateData, {
       new: true,
@@ -138,6 +141,7 @@ const updateAcolitResistanceAndConcentration = async () => {
         isJoshua: { $eq: false },
         acolitStatus: { $eq: ACOLIT_AWAKE_STATUS },
         resistance: { $gt: RESISTANCE_MIN_VALUE },
+        concentration: { $gt: CONCETRATION_MIN_VALUE },
       },
       {
         $inc: {
@@ -153,6 +157,7 @@ const updateAcolitResistanceAndConcentration = async () => {
             isJoshua: { $eq: false },
             acolitStatus: { $eq: ACOLIT_SLEEP_STATUS },
             resistance: { $lt: RESISTANCE_MAX_VALUE },
+            concentration: { $lt: CONCETRATION_MAX_VALUE }
           },
           {
             $inc: {
