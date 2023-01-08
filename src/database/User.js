@@ -72,6 +72,16 @@ const getAllActiveUsers = async () => {
     throw error;
   }
 };
+const getAllAdmin = async () => {
+  try {
+    const allUsers = await User.find();
+    const allAdmin = allUsers.filter((item) => item.isJoshua == true);
+    return allAdmin;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
 
 const getUserByEmail = async (email) => {
   try {
@@ -198,4 +208,5 @@ module.exports = {
   updateAcolitResistanceAndConcentration,
   updateAcolitStatusByResistance,
   getUserByEmail,
+  getAllAdmin,
 };

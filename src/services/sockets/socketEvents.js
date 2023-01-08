@@ -28,13 +28,7 @@ events = (socket) => {
     try {
       console.log(data)
       const changedAcolit = await userService.updateUser(data)
-      /*   if (data.idSocket != null) {
-          const allUsers = await userService.getAllActiveUsers();
-          joshua = allUsers.filter((allUsers) => {
-            return allUsers.isJoshua == true;
-          });
-          io.to(joshua).emit("newUser", changedAcolit);
-        } */
+       
       io.emit("changeAcolitAttributes", changedAcolit);
     } catch (error) {
       console.log(error);
@@ -52,8 +46,18 @@ events = (socket) => {
       }
       //console.log(`createNewUser Events ${user}`)
       const newUser = await firebaseAuth(user);
+      if(newUser){
+        const admins = await userService.getAllAdmin();
 
-      newUser ? io.emit("createNewUser", newUser) : socket.emit("toastNotification", { title: "error", message: "Invalid user, please try again", noUser: "no use", toastType: "showErrorToast"});
+        io.to(idSocket).emit("createNewUser", newUser);
+        admins.forEach(admin=>{
+          io.to(admin.idSocket).emit("createNewUser", newUser);
+        })
+
+      }else{
+        socket.emit("toastNotification", { title: "error", message: "Invalid user, please try again", noUser: "no use", toastType: "showErrorToast"})
+      }
+      
 
     } catch (error) {
       console.log(error);
