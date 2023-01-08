@@ -48,23 +48,33 @@ events = (socket) => {
       const newUser = await firebaseAuth(user);
       if(newUser){
         const admins = await userService.getAllAdmin();
-
         io.to(idSocket).emit("createNewUser", newUser);
         admins.forEach(admin=>{
           io.to(admin.idSocket).emit("createNewUser", newUser);
         })
-
       }else{
         socket.emit("toastNotification", { title: "error", message: "Invalid user, please try again", noUser: "no use", toastType: "showErrorToast"})
       }
-      
-
     } catch (error) {
       console.log(error);
       socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
     }
   });
 
+  //UPDATE ID SOCKET WHEN USER ARE LOGED
+
+  socket.on("updateIdSocket", async (data) => {
+    try {
+      const user = {
+        ...idSocket,
+        ...data
+      }
+        await userService.updateUser(user);  
+    } catch (error) {
+      console.log(error);
+      socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
+    }
+  });
 
   //CHANGE ACOLIT ISINSIDE
 
