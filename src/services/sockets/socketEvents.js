@@ -11,24 +11,12 @@ events = (socket) => {
   console.log({ Clientsocket: socket.id });
   let idSocket = { idSocket: socket.id }
 
-  // TEST BROADCAST
-  socket.on("test_broadcast", async (data) => {
-    try {
-      socket.broadcast.emit("test_broadcast", data);
-    } catch (error) {
-      console.log(error);
-      socket.emit("test_broadcastError", error);
-    }
-  });
-
   //CHANGE USER DATA
-  let joshua = null;
-
+  
   socket.on("changeAcolitAttributes", async (data) => {
     try {
       console.log(data)
       const changedAcolit = await userService.updateUser(data)
-       
       io.emit("changeAcolitAttributes", changedAcolit);
     } catch (error) {
       console.log(error);
@@ -90,7 +78,6 @@ events = (socket) => {
       });
       io.emit("changeCriptStatus", changedAcolitIsInside);
 
-      //io.to(joshua).emit("changeCriptStatus", changedAcolitIsInside);
       //console.log(`Events Inside ${changedAcolitIsInside}`)
     } catch (error) {
       console.log(error);

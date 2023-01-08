@@ -11,6 +11,7 @@ const {
   POTION_RESISTANCE_VALUE,
   CONCETRATION_MIN_VALUE,
   CONCETRATION_MAX_VALUE,
+  RESISTANCE_MAX_SLEEP_VALUE,
 } = require("../constants");
 const User = require("../models/userModel");
 
@@ -156,8 +157,8 @@ const updateAcolitResistanceAndConcentration = async () => {
           {
             isJoshua: { $eq: false },
             acolitStatus: { $eq: ACOLIT_SLEEP_STATUS },
-            resistance: { $lt: RESISTANCE_MAX_VALUE },
-            concentration: { $lt: CONCETRATION_MAX_VALUE }
+            resistance: { $lte: RESISTANCE_MAX_SLEEP_VALUE },
+            concentration: { $lte: CONCETRATION_MAX_SLEEP_VALUE }
           },
           {
             $inc: {
