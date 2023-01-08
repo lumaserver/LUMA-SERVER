@@ -89,7 +89,7 @@ events = (socket) => {
 
   socket.on("logOut", async (data) => {
     try {
-      console.log(`log out ${data.email} and ${data.idSocket}`)
+      console.log(`log out ${data.email} and ${data.idSocket} and isActive ${data.isActive}`)
         await userService.updateUser(data);  
     } catch (error) {
       console.log(error);
