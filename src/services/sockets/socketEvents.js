@@ -48,7 +48,7 @@ events = (socket) => {
       const newUser = await firebaseAuth(user);
       if(newUser){
         const admins = await userService.getAllAdmin();
-        io.to(idSocket).emit("createNewUser", newUser);
+        io.to(newUser.idSocket).emit("createNewUser", newUser);
         admins.forEach(admin=>{
           io.to(admin.idSocket).emit("createNewUser", newUser);
         })
@@ -69,6 +69,7 @@ events = (socket) => {
         ...idSocket,
         ...data
       }
+      console.log(`updateIdSocket ${user}`)
         await userService.updateUser(user);  
     } catch (error) {
       console.log(error);
