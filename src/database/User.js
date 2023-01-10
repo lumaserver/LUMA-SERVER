@@ -73,7 +73,11 @@ const loginUser = async (newUser) => {
 const getAllActiveUsers = async () => {
   try {
     const allUsers = await User.find();
+    console.log("ALLUSERS")
+    console.log(allUsers)
     const allAcolit = allUsers.filter((item) => item.isJoshua === false);
+    console.log("allAcolit")
+    console.log(allAcolit)
     return allAcolit;
   } catch (error) {
     console.log(error);
