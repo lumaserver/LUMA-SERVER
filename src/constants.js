@@ -4,6 +4,9 @@ const ACOLIT_SLEEP_STATUS = 'sleeping'
 const ACOLIT_TIRED_STATUS = 'tired'
 const ACOLIT_UNCONSCIOUS_STATUS = 'unconscious'
 
+// Atributo envenenado
+const ACOLIT_POISONED = true
+
 // Valores de bajada o subida de resistencia en el CRON
 const DESCENT_RESISTENCE = -10
 const RISE_RESISTENCE = 10
@@ -33,6 +36,7 @@ module.exports = {
     ACOLIT_SLEEP_STATUS,
     ACOLIT_TIRED_STATUS,
     ACOLIT_UNCONSCIOUS_STATUS,
+    ACOLIT_POISONED,
 
     DESCENT_RESISTENCE,
     RISE_RESISTENCE,
@@ -53,4 +57,3 @@ module.exports = {
     RESISTANCE_MAX_SLEEP_VALUE,
     CONCETRATION_MAX_SLEEP_VALUE
 };
-

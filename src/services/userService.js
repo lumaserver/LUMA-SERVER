@@ -72,6 +72,15 @@ const updateAcolitResistanceAndConcentration = async () => {
   }
 }
 
+//POISON ALL MALE ACOLITS
+const poisonAllMaleAcolits = async () => {
+  try {
+    await User.poisonAllMaleAcolits();
+  } catch (error) {
+    throw error;
+  }
+}
+
 
 module.exports = {
   createNewUser,
@@ -80,5 +89,6 @@ module.exports = {
   updateUser,
   getUserByEmail,
   updateAcolitResistanceAndConcentration,
-  getAllAdmin
+  getAllAdmin,
+  poisonAllMaleAcolits
 };

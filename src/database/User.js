@@ -13,11 +13,11 @@ const {
   CONCETRATION_MAX_VALUE,
   RESISTANCE_MAX_SLEEP_VALUE,
   CONCETRATION_MAX_SLEEP_VALUE,
+  ACOLIT_POISONED,
 } = require("../constants");
 const User = require("../models/userModel");
 
 const loginUser = async (newUser) => {
-  
   try {
     const user = await User.findOne({ email: newUser.claims.email });
     //console.log(user)
@@ -30,29 +30,33 @@ const loginUser = async (newUser) => {
         email: newUser.claims.email,
         picture: newUser.claims.picture,
       };
+      let userToInsert = {};
 
       if (
         process.env.LUMA_ADMIN === newUser.claims.email ||
         process.env.MORTIMER === newUser.claims.email
       ) {
-        //console.log("SOY ADMINISTRADOR PASO LA VERIFICACION DE userdatabase")
-        let userToInsert = new User({
+        userToInsert = new User({
           ...allUser,
           isJoshua: true,
+          genre: "admin",
         });
-        const createdUser = await userToInsert.save();
-        //console.log(createdUser);
-        return createdUser;
       } else {
-        let userToInsert = new User({
-          ...allUser,
-        });
-
-        const createdUser = await userToInsert.save();
-        return createdUser;
+        if (process.env.ACOLITA === newUser.claims.email) {
+          userToInsert = new User({
+            ...allUser,
+            genre: "female",
+          });
+        } else {
+          userToInsert = new User({
+            ...allUser,
+            genre: "male",
+          });
+        }
       }
+      const createdUser = await userToInsert.save();
+      return createdUser;
     } else {
-      
       const updatedUser = await User.findOneAndUpdate(
         { email: newUser.claims.email },
         { isActive: true, idSocket: newUser.idSocket },
@@ -69,7 +73,11 @@ const loginUser = async (newUser) => {
 const getAllActiveUsers = async () => {
   try {
     const allUsers = await User.find();
-    const allAcolit = allUsers.filter((item) => item.isJoshua == false);
+    console.log("ALLUSERS")
+    console.log(allUsers)
+    const allAcolit = allUsers.filter((item) => item.isJoshua === false);
+    console.log("allAcolit")
+    console.log(allAcolit)
     return allAcolit;
   } catch (error) {
     console.log(error);
@@ -123,7 +131,7 @@ const updateUser = async (updateData) => {
     if (updateData.resistance == POTION_RESISTANCE_VALUE) {
       //  console.log(`Update Acolit 2 ${updateData.resistance}`)
       updateData.acolitStatus = "awake";
-      updateData.concentration = POTION_RESISTANCE_VALUE
+      updateData.concentration = POTION_RESISTANCE_VALUE;
     }
     const acolitUpdate = await User.findOneAndUpdate(filter, updateData, {
       new: true,
@@ -159,7 +167,7 @@ const updateAcolitResistanceAndConcentration = async () => {
             isJoshua: { $eq: false },
             acolitStatus: { $eq: ACOLIT_SLEEP_STATUS },
             resistance: { $lte: RESISTANCE_MAX_SLEEP_VALUE },
-            concentration: { $lte: CONCETRATION_MAX_SLEEP_VALUE }
+            concentration: { $lte: CONCETRATION_MAX_SLEEP_VALUE },
           },
           {
             $inc: {
@@ -207,6 +215,20 @@ const updateAcolitStatusByResistance = async () => {
   }
 };
 
+const poisonAllMaleAcolits = async () => {
+  try {
+    await User.updateMany(
+      {
+        isJoshua: { $eq: false },
+        genre: { $eq: "male" },
+      },
+      { $set: { poisoned: ACOLIT_POISONED } }
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   loginUser,
   getAllActiveUsers,
@@ -216,4 +238,5 @@ module.exports = {
   updateAcolitStatusByResistance,
   getUserByEmail,
   getAllAdmin,
+  poisonAllMaleAcolits,
 };
