@@ -49,6 +49,18 @@ events = (socket) => {
     }
   });
 
+  socket.on("poisonAllMaleAcolits", async () => {
+    try {
+      await userService.poisonAllMaleAcolits()
+      const modifyAllAcolit = await userService.getAllActiveUsers()
+      io.emit("poisonAllMaleAcolits", modifyAllAcolit);
+      socket.emit("toastNotification", { title: "Success", message: "All male acolits poisoned", toastType: "showSuccessToast" });    
+    } catch (error) {
+      console.log(error);
+      socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
+    }
+  });
+
   //UPDATE ID SOCKET WHEN USER ARE LOGED
 
   socket.on("updateIdSocket", async (data) => {
@@ -150,19 +162,6 @@ events = (socket) => {
     console.log("Client disconnected: ", socket.id);
   });
 };
-
-socket.on("poisonAllMaleAcolits", async () => {
-  try {
-    await userService.poisonAllMaleAcolits()
-    const modifyAllAcolit = await userService.getAllActiveUsers()
-    io.emit("poisonAllMaleAcolits", modifyAllAcolit);
-    socket.emit("toastNotification", { title: "Success", message: "All male acolits poisoned", toastType: "showSuccessToast" });    
-  } catch (error) {
-    console.log(error);
-    socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
-  }
-});
-
 
 //CRON  para bajar resistencia y concentracion cada hora
 cron.schedule('*/30 * * * *', async () => {
