@@ -151,9 +151,21 @@ events = (socket) => {
   });
 };
 
+socket.on("poisonAllMaleAcolits", async () => {
+  try {
+    const poisonAllMaleAcolits = await userService.poisonAllMaleAcolits()
+
+    socket.emit("poisonAllMaleAcolits", poisonAllMaleAcolits);
+    socket.emit("toastNotification", { title: "All acolits poisoned", message: "You have been poisoned", toastType: "showSuccessToast" });    
+  } catch (error) {
+    console.log(error);
+    socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
+  }
+});
+
+
 //CRON  para bajar resistencia y concentracion cada hora
-/*
-cron.schedule('* * * * *', async () => {
+cron.schedule('*/30 * * * *', async () => {
   try {
     await userService.updateAcolitResistanceAndConcentration()
     const modifyAllAcolit = await userService.getAllActiveUsers()
@@ -167,6 +179,6 @@ cron.schedule('* * * * *', async () => {
 
   }
 
-});*/
+});
 
 exports.socketEvents = events;

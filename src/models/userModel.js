@@ -9,6 +9,7 @@ const userSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
   picture: { type: String, required: true },
+  genre: {type: String, required: true},
   isJoshua: { type: Boolean, default: false, required: true },
   isActive: { type: Boolean, default: true, required: true },
   isInside: { type: Boolean, default: false, required: true },
@@ -17,8 +18,8 @@ const userSchema = new Schema({
   acolitStatus: { type: String, default: ACOLIT_AWAKE_STATUS, required: true },
   resistance: { type: Number, min: 10, max: 100, default: 100, required: true },
   concentration: { type: Number, min: 10, max: 100, default: 100, required: true },
+  poisoned: {type: Boolean, default: false, required: true},
 });
 
 module.exports = mongoose.model("User", userSchema);
-
 

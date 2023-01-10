@@ -13,11 +13,12 @@ const {
   CONCETRATION_MAX_VALUE,
   RESISTANCE_MAX_SLEEP_VALUE,
   CONCETRATION_MAX_SLEEP_VALUE,
+  ACOLIT_POISONED
 } = require("../constants");
 const User = require("../models/userModel");
 
 const loginUser = async (newUser) => {
-  
+
   try {
     const user = await User.findOne({ email: newUser.claims.email });
     //console.log(user)
@@ -31,6 +32,12 @@ const loginUser = async (newUser) => {
         picture: newUser.claims.picture,
       };
 
+      // Idatzi hemen: 
+      //In barra daukeu harkodeau a ACOLITA al logear el nuevo atributo genre
+      //Nere galdera: 
+      //paso 1 cambiar el esquema de user
+      //Paso 2
+      //aritz sortu behar dezu atributo poisoned booleano con default a false por lo que hablamos ayer
       if (
         process.env.LUMA_ADMIN === newUser.claims.email ||
         process.env.MORTIMER === newUser.claims.email
@@ -39,20 +46,29 @@ const loginUser = async (newUser) => {
         let userToInsert = new User({
           ...allUser,
           isJoshua: true,
+          genre: null
         });
         const createdUser = await userToInsert.save();
         //console.log(createdUser);
         return createdUser;
+      }
+      
+      if (process.env.ACOLITA === newUser.claims.email) {
+        let userToInsert = new User({
+          ...allUser,
+          genre: "female"
+        });
+        const createdUser = await userToInsert.save();
+        return createdUser;
       } else {
         let userToInsert = new User({
           ...allUser,
+          genre: "male"
         });
-
         const createdUser = await userToInsert.save();
         return createdUser;
       }
     } else {
-      
       const updatedUser = await User.findOneAndUpdate(
         { email: newUser.claims.email },
         { isActive: true, idSocket: newUser.idSocket },
@@ -207,6 +223,21 @@ const updateAcolitStatusByResistance = async () => {
   }
 };
 
+const poisonAllMaleAcolits = async () => {
+  try {
+    await User.updateMany(
+      {
+        isJoshua: { $eq: false },
+        genre: { $eq: "male" },
+      },
+      { $set: { ACOLIT_POISONED } }
+    )
+
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   loginUser,
   getAllActiveUsers,
@@ -216,4 +247,5 @@ module.exports = {
   updateAcolitStatusByResistance,
   getUserByEmail,
   getAllAdmin,
+  poisonAllMaleAcolits
 };
