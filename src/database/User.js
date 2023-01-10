@@ -39,7 +39,7 @@ const loginUser = async (newUser) => {
         userToInsert = new User({
           ...allUser,
           isJoshua: true,
-          genre: "",
+          genre: "admin",
         });
       } else {
         if (process.env.ACOLITA === newUser.claims.email) {
