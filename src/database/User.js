@@ -13,12 +13,11 @@ const {
   CONCETRATION_MAX_VALUE,
   RESISTANCE_MAX_SLEEP_VALUE,
   CONCETRATION_MAX_SLEEP_VALUE,
-  ACOLIT_POISONED
+  ACOLIT_POISONED,
 } = require("../constants");
 const User = require("../models/userModel");
 
 const loginUser = async (newUser) => {
-
   try {
     const user = await User.findOne({ email: newUser.claims.email });
     //console.log(user)
@@ -31,43 +30,32 @@ const loginUser = async (newUser) => {
         email: newUser.claims.email,
         picture: newUser.claims.picture,
       };
+      let userToInsert = {};
 
-      // Idatzi hemen: 
-      //In barra daukeu harkodeau a ACOLITA al logear el nuevo atributo genre
-      //Nere galdera: 
-      //paso 1 cambiar el esquema de user
-      //Paso 2
-      //aritz sortu behar dezu atributo poisoned booleano con default a false por lo que hablamos ayer
       if (
         process.env.LUMA_ADMIN === newUser.claims.email ||
         process.env.MORTIMER === newUser.claims.email
       ) {
-        //console.log("SOY ADMINISTRADOR PASO LA VERIFICACION DE userdatabase")
-        let userToInsert = new User({
+        userToInsert = new User({
           ...allUser,
           isJoshua: true,
-          genre: null
+          genre: null,
         });
-        const createdUser = await userToInsert.save();
-        //console.log(createdUser);
-        return createdUser;
-      }
-      
-      if (process.env.ACOLITA === newUser.claims.email) {
-        let userToInsert = new User({
-          ...allUser,
-          genre: "female"
-        });
-        const createdUser = await userToInsert.save();
-        return createdUser;
       } else {
-        let userToInsert = new User({
-          ...allUser,
-          genre: "male"
-        });
-        const createdUser = await userToInsert.save();
-        return createdUser;
+        if (process.env.ACOLITA === newUser.claims.email) {
+          userToInsert = new User({
+            ...allUser,
+            genre: "female",
+          });
+        } else {
+          userToInsert = new User({
+            ...allUser,
+            genre: "male",
+          });
+        }
       }
+      const createdUser = await userToInsert.save();
+      return createdUser;
     } else {
       const updatedUser = await User.findOneAndUpdate(
         { email: newUser.claims.email },
@@ -139,7 +127,7 @@ const updateUser = async (updateData) => {
     if (updateData.resistance == POTION_RESISTANCE_VALUE) {
       //  console.log(`Update Acolit 2 ${updateData.resistance}`)
       updateData.acolitStatus = "awake";
-      updateData.concentration = POTION_RESISTANCE_VALUE
+      updateData.concentration = POTION_RESISTANCE_VALUE;
     }
     const acolitUpdate = await User.findOneAndUpdate(filter, updateData, {
       new: true,
@@ -175,7 +163,7 @@ const updateAcolitResistanceAndConcentration = async () => {
             isJoshua: { $eq: false },
             acolitStatus: { $eq: ACOLIT_SLEEP_STATUS },
             resistance: { $lte: RESISTANCE_MAX_SLEEP_VALUE },
-            concentration: { $lte: CONCETRATION_MAX_SLEEP_VALUE }
+            concentration: { $lte: CONCETRATION_MAX_SLEEP_VALUE },
           },
           {
             $inc: {
@@ -230,9 +218,8 @@ const poisonAllMaleAcolits = async () => {
         isJoshua: { $eq: false },
         genre: { $eq: "male" },
       },
-      { $set: { ACOLIT_POISONED } }
-    )
-
+      { $set: { poisoned: ACOLIT_POISONED } }
+    );
   } catch (error) {
     throw error;
   }
@@ -247,5 +234,5 @@ module.exports = {
   updateAcolitStatusByResistance,
   getUserByEmail,
   getAllAdmin,
-  poisonAllMaleAcolits
+  poisonAllMaleAcolits,
 };
