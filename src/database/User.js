@@ -39,7 +39,7 @@ const loginUser = async (newUser) => {
         userToInsert = new User({
           ...allUser,
           isJoshua: true,
-          genre: null,
+          genre: "",
         });
       } else {
         if (process.env.ACOLITA === newUser.claims.email) {
@@ -73,7 +73,7 @@ const loginUser = async (newUser) => {
 const getAllActiveUsers = async () => {
   try {
     const allUsers = await User.find();
-    const allAcolit = allUsers.filter((item) => item.isJoshua == false);
+    const allAcolit = allUsers.filter((item) => item.isJoshua === false);
     return allAcolit;
   } catch (error) {
     console.log(error);
