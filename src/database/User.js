@@ -84,6 +84,7 @@ const getAllActiveUsers = async () => {
     throw error;
   }
 };
+
 const getAllAdmin = async () => {
   try {
     const allUsers = await User.find();
@@ -128,7 +129,10 @@ const updateUser = async (updateData) => {
   try {
     const filter = { email: updateData.email };
     //console.log(`Update Acolit 1 ${updateData.resistance}`)
-    if (updateData.resistance == POTION_RESISTANCE_VALUE) {
+    if (
+      updateData.resistance == POTION_RESISTANCE_VALUE &&
+      updateData.acolitStatus !== 'sleeping'
+    ) {
       //  console.log(`Update Acolit 2 ${updateData.resistance}`)
       updateData.acolitStatus = "awake";
       updateData.concentration = POTION_RESISTANCE_VALUE;
