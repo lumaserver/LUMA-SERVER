@@ -8,7 +8,7 @@ const jwtMiddleWare = require('../middleware/jwtAuthentication');
 const userController = require("../controllers/userController");
 
 
-router.post("/", authMiddleware, emailMiddleware, jwtMiddleWare, userController.createNewUser);
+router.post("/", authMiddleware, emailMiddleware, userController.createNewUser);
 
 router.get("/", userController.getAllActiveUsers );
 

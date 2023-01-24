@@ -2,12 +2,8 @@ const userService = require("../services/userService");
 
 //POST
 const createNewUser = async (req, res) => {
-  //console.log(req.body)
-  const { token } = req.body;
-  // const { idSocket } = req.body;
-  const { name, email, picture } = req.body.claims;
 
-  if (!token || !name || !email || !picture) {
+  if (req.body) {
     return res.status(400).send({
       status: "FAILED",
       data: {
@@ -17,16 +13,9 @@ const createNewUser = async (req, res) => {
     });
   }
 
-  const newUser = {
-    idToken: token,
-    name,
-    email,
-    picture,
-  };
-
   try {
-    const createdUser = await userService.createNewUser(newUser);
-    res.send({ status: "OK", data: createdUser.isJoshua });
+    const createdUser = await userService.createNewUser(req.body);
+    res.send({ status: "OK", data: createdUser });
   } catch (error) {
     res.status(error?.status || 500).send({
       status: "FAILED",

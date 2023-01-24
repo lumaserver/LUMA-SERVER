@@ -1,23 +1,25 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
-const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
+const authenticateToken = (token) => {
+
+  // const authHeader = req.headers["authorization"];
+  // const token = authHeader && authHeader.split(" ")[1];
+
   if (!token) {
     console.log("UNAUTHORIZED");
-    return res.sendStatus(401);
+    return null;
   }
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, email) => {
     if (error) {
       console.log("FORBIDDEN");
       console.log(error);
-      return res.sendStatus(403);
+     return null;
     }
 
     req.email = email;
-    next();
+    return true;
   });
 };
 exports.authenticateToken = authenticateToken;

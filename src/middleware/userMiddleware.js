@@ -1,23 +1,15 @@
-const firebaseEmail = require("./emailMiddleware");
 const admin = require("../config/firebaseConfig");
 
-
-const firebaseAuth = async (data) => {
-  
-  const token = data.token;
+const firebaseAuth = async (req, res, next) => {
+  const token = req.body.token;
   try {
     const decodeValue = await admin.auth().verifyIdToken(token);
-    
     if (decodeValue) {
-      const newUser = await firebaseEmail(data);
-      
-      return newUser;
-    }else{
-      return null
+      next();
     }
-   
+    res.send(400);
   } catch (error) {
-    return null;
+    res.send(400);
   }
 };
 
