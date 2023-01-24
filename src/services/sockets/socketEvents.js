@@ -12,7 +12,7 @@ events = (socket) => {
   let idSocket = { idSocket: socket.id }
 
   //CHANGE USER DATA
-  
+
   socket.on("changeAcolitAttributes", async (data) => {
     try {
       console.log(data)
@@ -54,7 +54,7 @@ events = (socket) => {
       await userService.poisonAllMaleAcolits()
       const modifyAllAcolit = await userService.getAllActiveUsers()
       io.emit("poisonAllMaleAcolits", modifyAllAcolit);
-      socket.emit("toastNotification", { title: "Success", message: "All male acolits poisoned", toastType: "showSuccessToast" });    
+      socket.emit("toastNotification", { title: "Success", message: "All male acolits poisoned", toastType: "showSuccessToast" });
     } catch (error) {
       console.log(error);
       socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
@@ -70,7 +70,7 @@ events = (socket) => {
         email: data
       }
       console.log(`updateIdSocket ${user.email} and ${user.idSocket}`)
-        await userService.updateUser(user);  
+        await userService.updateUser(user);
     } catch (error) {
       console.log(error);
       socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
@@ -102,7 +102,7 @@ events = (socket) => {
   socket.on("logOut", async (data) => {
     try {
       console.log(`log out ${data.email} and ${data.idSocket} and isActive ${data.isActive}`)
-        await userService.updateUser(data);  
+        await userService.updateUser(data);
     } catch (error) {
       console.log(error);
       socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
