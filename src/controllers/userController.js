@@ -2,7 +2,7 @@ const userService = require("../services/userService");
 
 //POST
 const createNewUser = async (req, res) => {
-
+console.log(req)
   if (req.body) {
     return res.status(400).send({
       status: "FAILED",

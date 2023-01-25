@@ -62,7 +62,6 @@ events = (socket) => {
   });
 
   //UPDATE ID SOCKET WHEN USER ARE LOGED
-
   socket.on("updateIdSocket", async (data) => {
     try {
       const user = {
@@ -78,7 +77,6 @@ events = (socket) => {
   });
 
   //CHANGE ACOLIT ISINSIDE
-
   socket.on("changeCriptStatus", async (email) => {
     try {
       //console.log(email)
@@ -98,7 +96,6 @@ events = (socket) => {
   });
 
   // LOG OUT, ID SOCKET IN NULL
-
   socket.on("logOut", async (data) => {
     try {
       console.log(`log out ${data.email} and ${data.idSocket} and isActive ${data.isActive}`)
@@ -162,6 +159,18 @@ events = (socket) => {
     console.log("Client disconnected: ", socket.id);
   });
 };
+
+  //VERIFY REFRESH TOKEN
+  // socket.on("refreshToken", async (data) => {
+  //   try {
+  //     console.log(`log out ${data.email} and ${data.idSocket} and isActive ${data.isActive}`)
+  //       await userService.updateUser(data);
+  //   } catch (error) {
+  //     console.log(error);
+  //     socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
+  //   }
+  // });
+
 
 //CRON  para bajar resistencia y concentracion cada hora
 /* cron.schedule('*30 * * * *', async () => {
