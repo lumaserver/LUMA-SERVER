@@ -9,7 +9,7 @@ const userController = require("../controllers/userController");
 
 router.post("/", authMiddleware, emailMiddleware, userController.createNewUser);
 
-router.get("/", jwtMiddleWare, userController.getAllActiveUsers);
+router.get("/", userController.getAllActiveUsers);
 
 router.patch("/cript/:email", userController.changeCryptValue);
 
