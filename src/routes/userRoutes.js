@@ -5,10 +5,9 @@ const authMiddleware = require("../middleware/userMiddleware");
 const emailMiddleware = require("../middleware/emailMiddleware");
 const jwtMiddleWare = require("../middleware/jwtAuthentication");
 const userController = require("../controllers/userController");
-const generateAccessToken = require("../utils/jwtGenerator");
-const generateRefreshToken = require("../utils/jwtGenerator");
 
-router.post("/", authMiddleware, emailMiddleware, generateAccessToken, generateRefreshToken, userController.createNewUser);
+
+router.post("/", authMiddleware, emailMiddleware, userController.createNewUser);
 
 router.get("/", userController.getAllActiveUsers);
 

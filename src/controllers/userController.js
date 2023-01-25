@@ -1,9 +1,13 @@
 const userService = require("../services/userService");
+const {
+  generateAccessToken,
+  generateRefreshToken,
+} = require("../utils/jwtGenerator");
 
 //POST
 const createNewUser = async (req, res) => {
-console.log(req)
-  if (req.body) {
+  // console.log(req.body);
+  /*  if (req.body) {
     return res.status(400).send({
       status: "FAILED",
       data: {
@@ -11,11 +15,20 @@ console.log(req)
           "One of the following keys is missing or is empty in request body: 'idToken', 'name', 'email'",
       },
     });
-  }
+  } */
 
   try {
     const createdUser = await userService.createNewUser(req.body);
-    res.send({ status: "OK", data: createdUser });
+    //console.log(`user ${createdUser}`)
+    const accessToken = await generateAccessToken(createdUser.email);
+    // console.log(`accessToken result ${accessToken}`)
+    const refreshToken = await generateRefreshToken(createdUser.email);
+    //console.log(`refresToken result ${refreshToken}`)
+    const user = createdUser.toObject();
+    user.accessToken = accessToken;
+    user.refreshToken = refreshToken;
+    res.status(201).send({ status: "OK", data: user });
+    //res.send({ status: "OK", data: createdUser });
   } catch (error) {
     res.status(error?.status || 500).send({
       status: "FAILED",
@@ -30,7 +43,7 @@ const getAllActiveUsers = async (req, res) => {
   try {
     const allUsers = await userService.getAllActiveUsers();
     const activeUsers = allUsers.filter((allUsers) => {
-      return allUsers.isActive == true && allUsers.isJoshua == false
+      return allUsers.isActive == true && allUsers.isJoshua == false;
     });
 
     if (activeUsers.length == 0) {
@@ -44,7 +57,7 @@ const getAllActiveUsers = async (req, res) => {
       data: { error: error?.message || error },
     });
   }
-}
+};
 
 const changeCryptValue = async (req, res) => {
   const email = req.params.email;
@@ -60,7 +73,7 @@ const changeCryptValue = async (req, res) => {
       data: { error: error?.message || error },
     });
   }
-}
+};
 
 //UPDATE money and health
 const updateUser = async (req, res) => {
@@ -77,12 +90,11 @@ const updateUser = async (req, res) => {
       data: { error: error?.message || error },
     });
   }
-}
-
+};
 
 module.exports = {
   createNewUser,
   getAllActiveUsers,
   changeCryptValue,
-  updateUser
+  updateUser,
 };

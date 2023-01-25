@@ -10,10 +10,14 @@ const firebaseEmail = async (req, res, next) => {
       //console.log("SOY ADMINISTRADOR PASO EL EMAIL MIDDLEWARE")
       next();
     } else {
-      res.send(400);
+    res.status(400).send({ status: "" });
+
+      //res.send(400);
     }
   } catch (error) {
-    res.send(400);
+    res.status(400).send({ status: "" });
+
+    //res.send(400);
   }
 };
 
