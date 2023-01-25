@@ -1,8 +1,8 @@
-name: staging deploy
+name: production deploy
 on:
   push:
     branches:
-      - staging
+      - production
 env:
   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 jobs:
