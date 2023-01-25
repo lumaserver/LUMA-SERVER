@@ -20,6 +20,7 @@ const getAllData = async (req, res) => {
       allData = {
         users: users,
         doll: allDollParts,
+        
       };
     }
     
