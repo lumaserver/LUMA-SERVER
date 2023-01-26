@@ -5,11 +5,11 @@ const {
 
 const createNewTokens = async (req, res) => {
     try {
-        const accessToken = await generateAccessToken(createdUser.email);
+        const accessToken = await generateAccessToken(req.email);
         // console.log(`accessToken result ${accessToken}`)
-        const refreshToken = await generateRefreshToken(createdUser.email);
+        const refreshToken = await generateRefreshToken(req.email);
         //console.log(`refresToken result ${refreshToken}`)
-        const user = createdUser.toObject();
+        const user = toObject();
         user.accessToken = accessToken;
         user.refreshToken = refreshToken;
         res.status(201).send({ status: "OK", user });
