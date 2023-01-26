@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const token = require("../controllers/tokenController");
+const tokenController = require("../controllers/tokenController");
 const jwtRefreshMiddleWare = require("../middleware/jwtRefreshGenerate");
 
 
-router.get("/:email", jwtRefreshMiddleWare, token.createNewTokens)
+router.get("/:email", jwtRefreshMiddleWare, tokenController.createNewTokens)
 
 module.exports = router;

@@ -5,9 +5,10 @@ const {
 
 const createNewTokens = async (req, res) => {
     try {
-        const accessToken = await generateAccessToken(req.email);
+        console.log(`controler token ${req.params.email}`)
+        const accessToken = await generateAccessToken(req.params.email);
         // console.log(`accessToken result ${accessToken}`)
-        const refreshToken = await generateRefreshToken(req.email);
+        const refreshToken = await generateRefreshToken(req.params.email);
         //console.log(`refresToken result ${refreshToken}`)
         const user = toObject();
         user.accessToken = accessToken;
