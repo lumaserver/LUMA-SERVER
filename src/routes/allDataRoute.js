@@ -4,6 +4,6 @@ const jwtMiddleWare = require("../middleware/jwtAuthentication");
 
 const dataController = require("../controllers/dataController");
 
-router.get("/:email", jwtMiddleWare, dataController.getAllData);
+router.get("/:email", dataController.getAllData);
 
 module.exports = router;
