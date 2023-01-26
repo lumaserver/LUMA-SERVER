@@ -15,7 +15,7 @@ const authenticateToken = (req, res, next) => {
     if (error) {
       console.log("FORBIDDEN");
       console.log(error);
-      res.status(403).send({ status: error });
+      res.status(403).send( error);
     }
     else {
       next()
