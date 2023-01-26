@@ -4,7 +4,7 @@ const {
 } = require("../utils/jwtGenerator");
 
 const createNewTokens = async (req, res) => {
-    const tokens = {}
+    
     try {
         
         console.log(`controler token ${req.params.email}`)  
@@ -12,10 +12,9 @@ const createNewTokens = async (req, res) => {
          console.log(`accessToken result ${accessToken}`)
         const refreshToken = await generateRefreshToken(req.params.email);
         console.log(`refresToken result ${refreshToken}`)
-        const newTokens = tokens.toObject();
-        newTokens.accessToken = accessToken;
-        newTokens.refreshToken = refreshToken;
-        res.status(201).send({ status: "OK", newTokens });
+        const tokens = {accessToken, refreshToken}
+   ;
+        res.status(201).send({ status: "OK", tokens });
         //res.send({ status: "OK", data: createdUser });
     } catch (error) {
         res.status(error?.status || 500).send({
