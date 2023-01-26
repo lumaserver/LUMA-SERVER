@@ -2,7 +2,7 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
 const authenticateToken = (req, res, next) => {
-console.log("aaa" + req.headers["authorization"])
+  console.log("aaa" + req.headers["authorization"])
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
@@ -17,9 +17,9 @@ console.log("aaa" + req.headers["authorization"])
       console.log(error);
       res.status(403).send({ status: error });
     }
-
-    req.email = email;
-    next()
+    else {
+      next()
+    }
   });
 
 };
