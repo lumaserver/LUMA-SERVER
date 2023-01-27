@@ -1,4 +1,4 @@
-import { GUEST_SESSION } from "../constants";
+const { GUEST_SESSION } = require("../constants");
 
 const {
   generateAccessToken,
