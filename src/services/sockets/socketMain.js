@@ -5,7 +5,9 @@ const io = server.socketIO;
 const socketEvents = require("./socketEvents").socketEvents;
 
 io.use(function (socket, next) {
+    console.log(`middleware socket ${socket}`)
   if (socket.handshake.query && socket.handshake.query.token) {
+    console.log(`If socket ${socket.handshake.query.token}`)
     jwt.verify(
       socket.handshake.query.token,
       "SECRET_KEY",
