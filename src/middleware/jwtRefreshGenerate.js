@@ -2,7 +2,7 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
 const newTokenGenerate = (req, res, next) => {
-  console.log("Refresh " + req.headers["authorization"])
+  //console.log("Refresh " + req.headers["authorization"])
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
