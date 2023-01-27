@@ -5,7 +5,7 @@ const io = server.socketIO;
 const socketEvents = require("./socketEvents").socketEvents;
 
 io.use(function (socket, next) {
-    console.log(`middleware socket ${socket}`)
+    console.log(`middleware socket ${socket.handshake.query} && ${socket.handshake.query.token}`)
   if (socket.handshake.query && socket.handshake.query.token) {
     console.log(`If socket ${socket.handshake.query.token}`)
     jwt.verify(
