@@ -27,7 +27,7 @@ const createNewUser = async (req, res) => {
     const user = createdUser.toObject();
     user.accessToken = accessToken;
     user.refreshToken = refreshToken;
-    res.status(201).send({ status: "OK", data: user });
+    res.status(201).send({ status: "OK", user });
     //res.send({ status: "OK", data: createdUser });
   } catch (error) {
     res.status(error?.status || 500).send({

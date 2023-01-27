@@ -13,6 +13,7 @@ const mongodbRoute = process.env.DB_ROUTE;
 const userRouter = require("./routes/userRoutes");
 const dollRouter = require("./routes/dollRoutes");
 const allDataRouter = require("./routes/allDataRoute");
+const tokenRouter = require("./routes/tokenRouter");
 
 
 const app = express();
@@ -32,6 +33,8 @@ app.use(bodyParser.json());
 
 app.use("/api/user", userRouter);
 app.use("/api/doll", dollRouter);
+app.use("/api/token", tokenRouter);
+
 app.use("", allDataRouter);
 
 
