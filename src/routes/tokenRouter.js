@@ -5,6 +5,6 @@ const jwtRefreshMiddleWare = require("../middleware/jwtRefreshGenerate");
 
 router.get("/:email", jwtRefreshMiddleWare, tokenController.createNewTokens);
 
-router.get("/", tokenController.createNewNonExpiredTokens);
+router.get("/", tokenController.createNewUnexpiredTokens);
 
 module.exports = router;

@@ -28,7 +28,7 @@ const createNewTokens = async (req, res) => {
   }
 };
 
-const createNewNonExpiredTokens = async (req, res) => {
+const createNewUnexpiredTokens = async (req, res) => {
   try {
     console.log(`controler token ${GUEST_SESSION}`);
     const accessToken = await generateGuestAccessToken(GUEST_SESSION);
@@ -49,5 +49,5 @@ const createNewNonExpiredTokens = async (req, res) => {
 
 module.exports = {
   createNewTokens,
-  createNewNonExpiredTokens,
+  createNewUnexpiredTokens,
 };
