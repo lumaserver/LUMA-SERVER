@@ -11,9 +11,7 @@ const generateAccessToken = async (email) => {
 
 const generateRefreshToken = async (email) => {
    console.log(`generate refresh token ${email}`)
-
    const result = await jwt.sign({data: email}, process.env.REFRESH_TOKEN_SECRET)
-   // console.log(`RefreshToken: ${result}`);
    return result
 }
 
