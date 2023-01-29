@@ -10,7 +10,7 @@ const generateGuestAccessToken = async (guest_Login) => {
 }
 
 const generateGuestRefreshToken = async (guest_Login) => {
-   console.log(`Guest Refres token ${guest_Login}`)
+   console.log(`Guest Refresh token ${guest_Login}`)
 
    const guestResult = await jwt.sign({data: guest_Login}, process.env.REFRESH_TOKEN_SECRET)
    // console.log(`RefreshToken: ${result}`);
