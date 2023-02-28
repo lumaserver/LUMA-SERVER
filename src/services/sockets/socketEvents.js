@@ -18,36 +18,15 @@ events = (socket) => {
       console.log(data)
       const changedAcolit = await userService.updateUser(data)
       io.emit("changeAcolitAttributes", changedAcolit);
+      if(data.acolitStatus != "sleeping" && data.acolitStatus != "awake"){
+        socket.emit("toastNotification", { title: "success", message: "changes were applied", toastType: "showSuccessToast" });
+      }
     } catch (error) {
       console.log(error);
       socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
     }
   });
-  //CREATE NEW USER
 
-  // socket.on("createNewUser", async (data) => {
-
-  //   try {
-  //     const user = {
-  //       ...idSocket,
-  //       ...data
-  //     }
-  //     //console.log(`createNewUser Events ${user}`)
-  //     const newUser = await firebaseAuth(user);
-  //     if(newUser){
-  //       const admins = await userService.getAllAdmin();
-  //       io.to(newUser.idSocket).emit("createNewUser", newUser);
-  //       admins.forEach(admin=>{
-  //         io.to(admin.idSocket).emit("createNewUser", newUser);
-  //       })
-  //     }else{
-  //       socket.emit("toastNotification", { title: "error", message: "Invalid user, please try again", noUser: "no use", toastType: "showErrorToast"})
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //     socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
-  //   }
-  // });
 
   socket.on("poisonAllMaleAcolits", async () => {
     try {
