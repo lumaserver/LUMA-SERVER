@@ -18,7 +18,6 @@ events = (socket) => {
       console.log(data)
       const changedAcolit = await userService.updateUser(data)
       io.emit("changeAcolitAttributes", changedAcolit);
-      socket.emit("toastNotification", { title: "success", message: "changes were applied", toastType: "showSuccessToast" });
     } catch (error) {
       console.log(error);
       socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
