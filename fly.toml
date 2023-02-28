@@ -1,5 +1,5 @@
 # fly.toml file generated for luma-production on 2022-11-08T10:21:42+01:00
-app = "luma-production"
+app = "luma-staging"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
