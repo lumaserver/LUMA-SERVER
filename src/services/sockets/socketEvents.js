@@ -18,9 +18,7 @@ events = (socket) => {
       console.log(data)
       const changedAcolit = await userService.updateUser(data)
       io.emit("changeAcolitAttributes", changedAcolit);
-      if(data.acolitStatus != "sleeping" && data.acolitStatus != "awake"){
-        socket.emit("toastNotification", { title: "success", message: "changes were applied", toastType: "showSuccessToast" });
-      }
+      socket.emit("toastNotification", { title: "success", message: "changes were applied", toastType: "showSuccessToast" });
     } catch (error) {
       console.log(error);
       socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
@@ -48,7 +46,7 @@ events = (socket) => {
         email: data
       }
       console.log(`updateIdSocket ${user.email} and ${user.idSocket}`)
-        await userService.updateUser(user);
+      await userService.updateUser(user);
     } catch (error) {
       console.log(error);
       socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
@@ -78,7 +76,7 @@ events = (socket) => {
   socket.on("logOut", async (data) => {
     try {
       console.log(`log out ${data.email} and ${data.idSocket} and isActive ${data.isActive}`)
-        await userService.updateUser(data);
+      await userService.updateUser(data);
     } catch (error) {
       console.log(error);
       socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
@@ -139,20 +137,20 @@ events = (socket) => {
   });
 };
 
-  //VERIFY REFRESH TOKEN
-  // socket.on("refreshToken", async (data) => {
-  //   try {
-  //     console.log(`log out ${data.email} and ${data.idSocket} and isActive ${data.isActive}`)
-  //       await userService.updateUser(data);
-  //   } catch (error) {
-  //     console.log(error);
-  //     socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
-  //   }
-  // });
+//VERIFY REFRESH TOKEN
+// socket.on("refreshToken", async (data) => {
+//   try {
+//     console.log(`log out ${data.email} and ${data.idSocket} and isActive ${data.isActive}`)
+//       await userService.updateUser(data);
+//   } catch (error) {
+//     console.log(error);
+//     socket.emit("toastNotification", { title: "error", message: error, toastType: "showErrorToast" });
+//   }
+// });
 
 
 //CRON  para bajar resistencia y concentracion cada hora
- cron.schedule('*/30 * * * *', async () => {
+cron.schedule('*/30 * * * *', async () => {
   try {
     await userService.updateAcolitResistanceAndConcentration()
     const modifyAllAcolit = await userService.getAllActiveUsers()
@@ -166,6 +164,6 @@ events = (socket) => {
 
   }
 
-}); 
+});
 
 exports.socketEvents = events;
